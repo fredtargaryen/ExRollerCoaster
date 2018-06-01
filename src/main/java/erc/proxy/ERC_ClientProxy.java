@@ -113,8 +113,8 @@ public class ERC_ClientProxy implements IProxy{
 		// Handler�̓o�^
 		Minecraft mc = Minecraft.getMinecraft();
 		ERC_Core.tickEventHandler = new ERC_ClientTickEventHandler(mc);
-		FMLCommonHandler.instance().bus().register(new ERC_TickEventHandler());
-		FMLCommonHandler.instance().bus().register(ERC_Core.tickEventHandler);
+		MinecraftForge.EVENT_BUS.register(new ERC_TickEventHandler());
+		MinecraftForge.EVENT_BUS.register(ERC_Core.tickEventHandler);
 		MinecraftForge.EVENT_BUS.register(new ERC_InputEventHandler(mc));
 		MinecraftForge.EVENT_BUS.register(new ERC_RenderEventHandler());
 		

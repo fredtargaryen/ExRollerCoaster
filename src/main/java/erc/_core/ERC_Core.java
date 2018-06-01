@@ -1,7 +1,24 @@
 /**
  * TODO
- *
+ * Registering TileEntities: may have been meant to remember the new ResourceLocation
+ * Exception loading model for variant erc:itemwrenchplaceblock#inventory for item "erc:itemwrenchplaceblock"
+ * "Parsing error loading recipe erc:coasterconnector
+ * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railinvisible'"
+ * "Parsing error loading recipe erc:erc.rail
+ * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
+ * "Parsing error loading recipe erc:erc.rail2
+ * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
+ * "Parsing error loading recipe erc:erc.railaccel
+ * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
+ * "Parsing error loading recipe erc:erc.railbranch
+ * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
+ * "Parsing error loading recipe erc:sushi
+ * com.google.gson.JsonSyntaxException: Unknown item 'erc:sushi'"
+ * "Parsing error loading recipe erc:wrench_c1
+ * * com.google.gson.JsonSyntaxException: Unknown item 'erc:wrench_c1'"
+ * ExRollerCoaster creative tab has no picture
  * What was sound 1003
+ * "Loading sushi model is failure" in console
  * Advanced models for sushi!
  * -FT
  */
@@ -113,14 +130,14 @@ public class ERC_Core {
 		InitItem_RC();
 		
 		// Register TileEntity
-		GameRegistry.registerTileEntity(TileEntityRailBase.class, "ERC:TileEntityRailBase");
-		GameRegistry.registerTileEntity(TileEntityRailNormal.class, "ERC:TileEntityRail");
-		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, "ERC:TileEntityRailRedAcc");
-		GameRegistry.registerTileEntity(TileEntityRailConstVelosity.class, "ERC:TileEntityRailconstvel");
-		GameRegistry.registerTileEntity(TileEntityRailDetector.class, "ERC:TileEntityRailDetector");
-		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, "ERC:TileEntityRailBranch");
-		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, "ERC:TileEntityInvisible");
-		GameRegistry.registerTileEntity(TileEntityNonGravityRail.class, "ERC:TileEntityNonGravity");
+		GameRegistry.registerTileEntity(TileEntityRailBase.class, new ResourceLocation("ERC:TileEntityRailBase"));
+		GameRegistry.registerTileEntity(TileEntityRailNormal.class, new ResourceLocation("ERC:TileEntityRail"));
+		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, new ResourceLocation("ERC:TileEntityRailRedAcc"));
+		GameRegistry.registerTileEntity(TileEntityRailConstVelosity.class, new ResourceLocation("ERC:TileEntityRailconstvel"));
+		GameRegistry.registerTileEntity(TileEntityRailDetector.class, new ResourceLocation("ERC:TileEntityRailDetector"));
+		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, new ResourceLocation("ERC:TileEntityRailBranch"));
+		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, new ResourceLocation("ERC:TileEntityInvisible"));
+		GameRegistry.registerTileEntity(TileEntityNonGravityRail.class, new ResourceLocation( "ERC:TileEntityNonGravity"));
 
 		proxy.preInit();
 
