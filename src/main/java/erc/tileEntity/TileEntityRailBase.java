@@ -2,7 +2,7 @@ package erc.tileEntity;
 
 import java.util.Iterator;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import erc._core.ERC_Logger;
 import erc._core.ERC_ReturnCoasterRot;
 import erc.entity.ERC_EntityCoaster;
@@ -21,11 +21,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import static erc.block.blockRailBase.META;
 
 public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	public Wrap_RailRenderer modelrail; //test
@@ -34,12 +38,12 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	public DataTileEntityRail BaseRail;
 	//next
 	public DataTileEntityRail NextRail;
-	// ƒR[ƒXƒ^[’·
+	// ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½ï¿½
 	public float Length;
-	// •`‰æŠÖ˜Aƒpƒ‰ƒƒ^
+	// ï¿½`ï¿½ï¿½Ö˜Aï¿½pï¿½ï¿½ï¿½ï¿½ï¿½^
 	protected int PosNum = 15;
 //	public int VertexNum = PosNum*4;
-//	Vec3 posArray[] = new Vec3[VertexNum];
+//	Vec3d posArray[] = new Vec3[VertexNum];
 	public boolean doesDrawGUIRotaArraw;
 	public ResourceLocation RailTexture;
 	
@@ -50,7 +54,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	public TileEntityRailBase()
 	{
 		super();
-//		for(int i = 0; i<VertexNum; ++i) posArray[i] = Vec3.createVectorHelper(0.0, 0.0, 0.0);
+//		for(int i = 0; i<VertexNum; ++i) posArray[i] = new Vec3d(0.0, 0.0, 0.0);
 		for(int i = 0; i<PosNum; ++i) fixedParamTTable[i] =0;
 		
 		BaseRail = new DataTileEntityRail();
@@ -70,10 +74,10 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		NextRail.SetPos(-1, -1, -1);
 	}
 	
-	public World getWorldObj(){return worldObj;}
-	public int getXcoord(){return this.xCoord;}
-	public int getYcoord(){return this.yCoord;}
-	public int getZcoord(){return this.zCoord;}
+	public World getworld(){return world;}
+	public int getXcoord(){return this.pos.getX();}
+	public int getYcoord(){return this.pos.getY();}
+	public int getZcoord(){return this.pos.getZ();}
 	public TileEntityRailBase getRail(){return this;}
 	
 	@Override
@@ -96,7 +100,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	
 	private void SetPrevRailPosition(int x, int y, int z)
 	{
-		if(x==xCoord && y==yCoord && z==zCoord)
+		if(x==this.getXcoord() && y==this.getYcoord() && z==this.getZcoord())
 		{
 			BaseRail.cx=-1;	BaseRail.cy=-1;	BaseRail.cz=-1;
 			ERC_Logger.warn("TileEntityRail SetPrevRailPosition : connect oneself");
@@ -117,11 +121,11 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 
 	public Wrap_TileEntityRail getPrevRailTileEntity()
 	{
-		return (Wrap_TileEntityRail) worldObj.getTileEntity(BaseRail.cx, BaseRail.cy, BaseRail.cz);
+		return (Wrap_TileEntityRail) world.getTileEntity(new BlockPos(BaseRail.cx, BaseRail.cy, BaseRail.cz));
 	}
 	public Wrap_TileEntityRail getNextRailTileEntity()
 	{
-		return ((Wrap_TileEntityRail)worldObj.getTileEntity(NextRail.cx, NextRail.cy, NextRail.cz));
+		return (Wrap_TileEntityRail) world.getTileEntity(new BlockPos(NextRail.cx, NextRail.cy, NextRail.cz));
 	}
 	
 	public void SetPosNum(int num)
@@ -139,10 +143,10 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	
 	@Override
 	public void invalidate() {
-		// ƒuƒƒbƒNíœ‚ÌÚ‘±ƒŒ[ƒ‹•ÛƒeƒXƒg
-		if(worldObj.isRemote)
+		// ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½íœï¿½ÌÚ‘ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ûï¿½ï¿½eï¿½Xï¿½g
+		if(world.isRemote)
 		{
-			double dist = Minecraft.getMinecraft().thePlayer.getDistance(xCoord+0.5, yCoord, zCoord+0.5);
+			double dist = Minecraft.getMinecraft().player.getDistance(this.getXcoord()+0.5, this.getYcoord(), this.getZcoord()+0.5);
 			if(6d > dist)
 			{
 				ERC_CoasterAndRailManager.SetPrevData(BaseRail.cx, BaseRail.cy, BaseRail.cz);
@@ -170,20 +174,18 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
     	this.CalcRailPosition();
 	}
 	
-	public void SetBaseRailPosition(int x, int y, int z, Vec3 BaseDir, Vec3 up, float power)
+	public void SetBaseRailPosition(int x, int y, int z, Vec3d BaseDir, Vec3d up, float power)
 	{
-		//@next_nFV‚µ‚­İ’u‚³‚ê‚½ƒuƒƒbƒN‚ÌÀ•W  prev_nF‘O‰ñİ’u‚µ‚½ƒuƒƒbƒN‚ÌÀ•W
-		BaseRail.vecPos.xCoord = (double)x + 0.5;
-		BaseRail.vecPos.yCoord = (double)y + 0.5;
-		BaseRail.vecPos.zCoord = (double)z + 0.5;
+		//ï¿½@next_nï¿½Fï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½İ’uï¿½ï¿½ï¿½ê‚½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìï¿½ï¿½W  prev_nï¿½Fï¿½Oï¿½ï¿½İ’uï¿½ï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìï¿½ï¿½W
+		BaseRail.vecPos = new Vec3d((double)x + 0.5, (double)y + 0.5, (double)z + 0.5);
 		SetBaseRailVectors(BaseRail.vecPos, BaseDir, up, power);
 	}
 	
-	public void SetBaseRailVectors(Vec3 posBase, Vec3 dirBase, Vec3 vecup, float power)
+	public void SetBaseRailVectors(Vec3d posBase, Vec3d dirBase, Vec3d vecup, float power)
 	{
-		CopyVector(BaseRail.vecPos, posBase);
-		CopyVector(BaseRail.vecDir, dirBase);
-		CopyVector(BaseRail.vecUp, vecup);
+		BaseRail.vecPos = new Vec3d(posBase.x, posBase.y, posBase.z);
+		BaseRail.vecDir = new Vec3d(dirBase.x, dirBase.y, dirBase.z);
+		BaseRail.vecUp = new Vec3d(vecup.x, vecup.y, vecup.z);
 		BaseRail.Power = power;
 	}
 	
@@ -195,13 +197,13 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	
 	public void SetNextRailVectors(TileEntityRailBase nexttile)
 	{
-		SetNextRailVectors(nexttile.BaseRail, nexttile.xCoord, nexttile.yCoord, nexttile.zCoord);//vecBase, nexttile.dirBase, nexttile.vecUp, nexttile.fUp, nexttile.fDirTwist, nexttile.Power);
+		SetNextRailVectors(nexttile.BaseRail, nexttile.getXcoord(), nexttile.getYcoord(), nexttile.getZcoord());//vecBase, nexttile.dirBase, nexttile.vecUp, nexttile.fUp, nexttile.fDirTwist, nexttile.Power);
 	}
 	public void SetNextRailVectors(DataTileEntityRail rail, int x, int y, int z)
 	{
 		SetNextRailVectors(rail.vecPos, rail.vecDir, rail.vecUp, rail.fUp, rail.fDirTwist, rail.Power, x, y, z);
 	}
-	public void SetNextRailVectors(Vec3 vecNext, Vec3 vecDir, Vec3 vecUp, float fUp, float fDirTwist, float Power, int cx, int cy, int cz) {
+	public void SetNextRailVectors(Vec3d vecNext, Vec3d vecDir, Vec3d vecUp, float fUp, float fDirTwist, float Power, int cx, int cy, int cz) {
 		this.NextRail.SetData(vecNext, vecDir, vecUp, fUp, fDirTwist, Power, cx, cy, cz);
 	}
 	
@@ -209,13 +211,6 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //	{
 //		return this;
 //	}
-	
-	private void CopyVector(Vec3 dest, Vec3 src)
-	{
-		dest.xCoord = src.xCoord;
-		dest.yCoord = src.yCoord;
-		dest.zCoord = src.zCoord;
-	}
 	
 	public void AddControlPoint(int n)
 	{
@@ -230,7 +225,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //	{
 //		this.VertexNum = this.PosNum*4;
 //		posArray = new Vec3[VertexNum];
-//		for(int i = 0; i<VertexNum; ++i) posArray[i] = Vec3.createVectorHelper(0.0, 0.0, 0.0);
+//		for(int i = 0; i<VertexNum; ++i) posArray[i] = new Vec3d(0.0, 0.0, 0.0);
 //		CalcRailPosition();
 //	}
 	
@@ -261,28 +256,30 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		case 2 : rot =  0.05f; break;
 		case 3 : rot =  0.5f; break;
 		}
-		int meta = worldObj.getBlockMetadata((int)this.xCoord, (int)this.yCoord, (int)this.zCoord);
+		int meta = world.getBlockState(new BlockPos((int)this.getXcoord(), (int)this.getYcoord(), (int)this.getZcoord())).getValue(META);
 		switch(flag)
 		{
-		case ROTRED : // ƒŒ[ƒ‹İ’u–Ê‚É‘Î‚µ‚Ä…•½‰ñ“]@§ŒÀ–³‚µ
+		case ROTRED : // ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½İ’uï¿½Ê‚É‘Î‚ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½]ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			ConvertVec3FromMeta(meta&7, BaseRail.vecDir, rot); break;
-		case ROTGREEN : // Œù”z‘Œ¸@fUp‚ğ‚¢‚¶‚é
+		case ROTGREEN : // ï¿½ï¿½ï¿½zï¿½ï¿½ï¿½ï¿½ï¿½@fUpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			BaseRail.addFUp(rot); break;
-		case ROTBLUE : // ‚Ğ‚Ë‚è’Ç‰Á
+		case ROTBLUE : // ï¿½Ğ‚Ë‚ï¿½Ç‰ï¿½
 			BaseRail.addTwist(rot); break;
 		default:
 			break;
 		}
 	}
-	 private void ConvertVec3FromMeta(int meta, Vec3 dir, float rot)
+	 private Vec3d ConvertVec3FromMeta(int meta, Vec3d dir, float rot)
     {
     	switch(meta){
-    	case 0:dir.rotateAroundY(-rot); break;
-    	case 1:dir.rotateAroundY(-rot); break;
-    	case 2:dir.rotateAroundZ(-rot); break;
-    	case 3:dir.rotateAroundZ(-rot); break;
-    	case 4:dir.rotateAroundX(-rot); break;
-    	case 5:dir.rotateAroundX(-rot); break;
+    	case 0:
+    	case 1: return this.rotateAroundY(dir, -rot);
+    	case 2:
+    	case 3: return this.rotateAroundZ(dir, -rot);
+    	case 4:
+    	case 5: return this.rotateAroundX(dir, -rot);
+			default:
+				return dir;
     	}
     }
 	
@@ -294,33 +291,33 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	public void Smoothing()
 	{
 		if(isConnectRail_prev1_next2());
-		// Prev‚ÆNext‚Ö‚Ì‚»‚ê‚¼‚ê‚ÌƒxƒNƒgƒ‹‚ÌNormalize‚ÌSub‚ğ©g‚ÌDirBase‚Ö
-		// Prev‚ÆNext‚Ç‚¿‚ç‚©‚ÌƒŒ[ƒ‹‚ª–³‚¢ê‡‚Í–³Œø
-		Wrap_TileEntityRail prevtl = BaseRail.getConnectionTileRail(worldObj);
-		Wrap_TileEntityRail nexttl = NextRail.getConnectionTileRail(worldObj);
+		// Prevï¿½ï¿½Nextï¿½Ö‚Ì‚ï¿½ï¿½ê‚¼ï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½Normalizeï¿½ï¿½Subï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½DirBaseï¿½ï¿½
+		// Prevï¿½ï¿½Nextï¿½Ç‚ï¿½ï¿½ç‚©ï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Í–ï¿½ï¿½ï¿½
+		Wrap_TileEntityRail prevtl = BaseRail.getConnectionTileRail(world);
+		Wrap_TileEntityRail nexttl = NextRail.getConnectionTileRail(world);
 		if(prevtl == null) return;
 		if(nexttl == null) return;
 		
-		//Smoothing‚Íthis.vecBase‚©‚çPrev.vecBase‚ÆNext.vecBase‚Ö‚Ì‚»‚ê‚¼‚ê‚ÌƒxƒNƒgƒ‹‚ÌNormalizeFn'-p'‚ªBase.dirBase
-//		Vec3 n = BaseRail.vecPos.subtract(nexttl.getRail().BaseRail.vecPos).normalize();
-//		Vec3 p = BaseRail.vecPos.subtract(prevtl.getRail().BaseRail.vecPos).normalize();
-		Vec3 n = nexttl.getRail().BaseRail.vecPos;
-		Vec3 p = prevtl.getRail().BaseRail.vecPos;
-		Vec3 tempDir = p.subtract(n).normalize();
+		//Smoothingï¿½ï¿½this.vecBaseï¿½ï¿½ï¿½ï¿½Prev.vecBaseï¿½ï¿½Next.vecBaseï¿½Ö‚Ì‚ï¿½ï¿½ê‚¼ï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½Normalizeï¿½Fn'-p'ï¿½ï¿½Base.dirBase
+//		Vec3d n = BaseRail.vecPos.subtract(nexttl.getRail().BaseRail.vecPos).normalize();
+//		Vec3d p = BaseRail.vecPos.subtract(prevtl.getRail().BaseRail.vecPos).normalize();
+		Vec3d n = nexttl.getRail().BaseRail.vecPos;
+		Vec3d p = prevtl.getRail().BaseRail.vecPos;
+		Vec3d tempDir = p.subtract(n).normalize();
 		BaseRail.vecDir = tempDir.normalize();
-		switch(worldObj.getBlockMetadata(xCoord, yCoord, zCoord)&7)
+		switch(world.getBlockState(new BlockPos(this.getXcoord(), this.getYcoord(), this.getZcoord())).getValue(META) & 7)
 		{
-		case 0: case 1: // ã‰º	y
-			BaseRail.vecDir.yCoord = 0; 
-			BaseRail.fUp = (tempDir.yCoord>0?-1:1) * (float) (tempDir.yCoord / Math.sqrt(tempDir.xCoord*tempDir.xCoord+tempDir.zCoord*tempDir.zCoord));
+		case 0: case 1: // ï¿½ã‰º	y
+			BaseRail.vecDir = new Vec3d(BaseRail.vecDir.x, 0, BaseRail.vecDir.z);
+			BaseRail.fUp = (tempDir.y>0?-1:1) * (float) (tempDir.y / Math.sqrt(tempDir.x*tempDir.x+tempDir.z*tempDir.z));
 			break;
-		case 2: case 3: // “ì–k	z
-			BaseRail.vecDir.zCoord = 0; 
-			BaseRail.fUp = (tempDir.zCoord>0?-1:1) * (float) (tempDir.zCoord / Math.sqrt(tempDir.xCoord*tempDir.xCoord+tempDir.yCoord*tempDir.yCoord));
+		case 2: case 3: // ï¿½ï¿½k	z
+			BaseRail.vecDir = new Vec3d(BaseRail.vecDir.x, BaseRail.vecDir.y, 0);
+			BaseRail.fUp = (tempDir.z>0?-1:1) * (float) (tempDir.z / Math.sqrt(tempDir.x*tempDir.x+tempDir.y*tempDir.y));
 			break;
-		case 4: case 5: // “Œ¼	x
-			BaseRail.vecDir.xCoord = 0; 
-			BaseRail.fUp = (tempDir.xCoord>0?-1:1) * (float) (tempDir.xCoord / Math.sqrt(tempDir.yCoord*tempDir.yCoord+tempDir.zCoord*tempDir.zCoord));
+		case 4: case 5: // ï¿½ï¿½ï¿½ï¿½	x
+			BaseRail.vecDir = new Vec3d(0, BaseRail.vecDir.y, BaseRail.vecDir.z);
+			BaseRail.fUp = (tempDir.x>0?-1:1) * (float) (tempDir.x / Math.sqrt(tempDir.y*tempDir.y+tempDir.z*tempDir.z));
 			break;
 		}
 		BaseRail.vecDir = BaseRail.vecDir.normalize();
@@ -359,31 +356,28 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	
 	public void CalcRailPosition()
 	{	
-//		if(!worldObj.isRemote)return;
+//		if(!world.isRemote)return;
 		
 		////pos
-		Vec3 Base = Vec3.createVectorHelper(BaseRail.vecUp.xCoord, BaseRail.vecUp.yCoord, BaseRail.vecUp.zCoord);
-		Base.xCoord *= 0.5; Base.yCoord *= 0.5; Base.zCoord *= 0.5;
-		Vec3 Next = BaseRail.vecPos.subtract(NextRail.vecPos);
-		Next.xCoord += NextRail.vecUp.xCoord*0.5; 
-		Next.yCoord += NextRail.vecUp.yCoord*0.5; 
-		Next.zCoord += NextRail.vecUp.zCoord*0.5;
+		Vec3d Base = new Vec3d(BaseRail.vecUp.x * 0.5, BaseRail.vecUp.y * 0.5, BaseRail.vecUp.z * 0.5);
+		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos);
+		Next = new Vec3d(Next.x + NextRail.vecUp.x * 0.5, Next.y + NextRail.vecUp.y * 0.5, Next.z + NextRail.vecUp.z * 0.5);
 		
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);
 //		float nextpow = ERC_MathHelper.Lerp(0.8f, BaseRail.Power, NextRail.Power);
-		Vec3 DirxPowb = BaseRail.CalcVec3DIRxPOW(BaseRail.Power);//basepow);
-		Vec3 DirxPown = NextRail.CalcVec3DIRxPOW(NextRail.Power);//nextpow);
+		Vec3d DirxPowb = BaseRail.CalcVec3DIRxPOW(BaseRail.Power);//basepow);
+		Vec3d DirxPown = NextRail.CalcVec3DIRxPOW(NextRail.Power);//nextpow);
 		
 		////pair of rail Vertex
-//		Vec3 vecpitch1 = vecUp.crossProduct(dirBase).normalize();
-//		Vec3 vecpitch2 = vecNextUp.crossProduct(dirNext).normalize();
-		Vec3 vecUp_1 = BaseRail.CalcVec3UpTwist();
-		Vec3 vecUp_2 = NextRail.CalcVec3UpTwist();
+//		Vec3d vecpitch1 = vecUp.crossProduct(dirBase).normalize();
+//		Vec3d vecpitch2 = vecNextUp.crossProduct(dirNext).normalize();
+		Vec3d vecUp_1 = BaseRail.CalcVec3UpTwist();
+		Vec3d vecUp_2 = NextRail.CalcVec3UpTwist();
 
-		// ƒXƒvƒ‰ƒCƒ“‹Èü‹——£ŒvZ€”õ
+		// ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Èï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
 		Length = 0;
-		Vec3 tempPrev = null;
+		Vec3d tempPrev = null;
 		fixedParamTTable[0] = 0;
 		if(modelrail!=null)modelrail.setModelNum(PosNum);
 		
@@ -393,7 +387,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 			float f = (float)i/(float)(PosNum-1);
 			
 			////spline
-			Vec3 center = ERC_MathHelper.Spline(f, Base, Next, DirxPowb, DirxPown);
+			Vec3d center = ERC_MathHelper.Spline(f, Base, Next, DirxPowb, DirxPown);
 			if(i>0)
 			{
 				Length += center.distanceTo(tempPrev);
@@ -415,11 +409,11 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //			if(PosNum-1 <= T) lT = fixedParamTTable[T];
 			f = fixedParamTTable[T];
 //			else lT = ERC_MathHelper.Lerp(f-(T/(float)(PosNum-1)), fixedParamTTable[T], fixedParamTTable[T+1]);
-			Vec3 center = ERC_MathHelper.Spline(f, Base, Next, DirxPowb, DirxPown);
+			Vec3d center = ERC_MathHelper.Spline(f, Base, Next, DirxPowb, DirxPown);
 //			ERC_Logger.info("f-t:"+(f-(T/(float)(PosNum-1))));
 					
-			Vec3 dir1;
-			// §Œä“_‚ª’†ŠÔ’n“_‚Å‚ ‚ê‚Î‘OŒã‚ÌƒxƒNƒgƒ‹A§ŒäŠî‘b“_‚Å‚ ‚ê‚Î§Œä•ûŒüƒxƒNƒgƒ‹‚ğ—p‚¢‚é
+			Vec3d dir1;
+			// ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Ô’nï¿½_ï¿½Å‚ï¿½ï¿½ï¿½Î‘Oï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½bï¿½_ï¿½Å‚ï¿½ï¿½ï¿½Îï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½
 			if(f <= 0.01f)
 			{
 				dir1 = DirxPowb.normalize();
@@ -431,13 +425,13 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 			else
 			{
 					 dir1 = ERC_MathHelper.Spline((f+0.01f), Base, Next, DirxPowb, DirxPown);
-				Vec3 dir2 = ERC_MathHelper.Spline((f-0.01f), Base, Next, DirxPowb, DirxPown);
+				Vec3d dir2 = ERC_MathHelper.Spline((f-0.01f), Base, Next, DirxPowb, DirxPown);
 				dir1 = dir2.subtract(dir1); // dir1 - dir2
 			}
 			
 			////pair of rail Vertex
-			Vec3 up = ERC_MathHelper.Slerp(f, vecUp_1, vecUp_2).normalize();
-			Vec3 cross = up.crossProduct(dir1);
+			Vec3d up = ERC_MathHelper.Slerp(f, vecUp_1, vecUp_2).normalize();
+			Vec3d cross = up.crossProduct(dir1);
 			cross = cross.normalize().normalize();
 
 			
@@ -448,14 +442,14 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //			}
 			
 			if(modelrail!=null)modelrail.construct(i, center, dir1, cross, ModelLen);
-//			// ¶
+//			// ï¿½ï¿½
 //			posArray[j  ].xCoord = center.xCoord - cross.xCoord*t1;
 //			posArray[j  ].yCoord = center.yCoord - cross.yCoord*t1;
 //			posArray[j  ].zCoord = center.zCoord - cross.zCoord*t1;
 //			posArray[j+1].xCoord = center.xCoord - cross.xCoord*t2;
 //			posArray[j+1].yCoord = center.yCoord - cross.yCoord*t2;
 //			posArray[j+1].zCoord = center.zCoord - cross.zCoord*t2;
-//			// ‰E 
+//			// ï¿½E 
 //			posArray[j+2].xCoord = center.xCoord + cross.xCoord*t2;
 //			posArray[j+2].yCoord = center.yCoord + cross.yCoord*t2;
 //			posArray[j+2].zCoord = center.zCoord + cross.zCoord*t2;
@@ -463,15 +457,15 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //			posArray[j+3].yCoord = center.yCoord + cross.yCoord*t1;
 //			posArray[j+3].zCoord = center.zCoord + cross.zCoord*t1;
 			
-//			// ˆÊ’u
+//			// ï¿½Ê’u
 //			posArray[j  ] = center;
-//			// Šp“x
-//			Vec3 crossHorz = Vec3.createVectorHelper(0, 1, 0).crossProduct(dir1);
-//			Vec3 dir_horz = Vec3.createVectorHelper(dir1.xCoord, 0, dir1.zCoord);
+//			// ï¿½pï¿½x
+//			Vec3d crossHorz = new Vec3d(0, 1, 0).crossProduct(dir1);
+//			Vec3d dir_horz = new Vec3d(dir1.xCoord, 0, dir1.zCoord);
 //			posArray[j+1].xCoord = -Math.toDegrees( Math.atan2(dir1.xCoord, dir1.zCoord) );
 //			posArray[j+1].yCoord = Math.toDegrees( ERC_MathHelper.angleTwoVec3(dir1, dir_horz) * (dir1.yCoord>0?-1f:1f) );
 //			posArray[j+1].zCoord = Math.toDegrees( ERC_MathHelper.angleTwoVec3(cross, crossHorz) * (cross.yCoord>0?1f:-1f) );
-//			// ’·‚³
+//			// ï¿½ï¿½ï¿½ï¿½
 //			if(i!=PosNum-1)posArray[j+2].xCoord = (fixedParamTTable[i+1]-fixedParamTTable[i])*Length;
 
 		
@@ -482,13 +476,13 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	
 	protected void calcFixedParamT()
 	{
-		///////////// fixedParamTC³
+		///////////// fixedParamTï¿½Cï¿½ï¿½
 		
-		// [0,1]‚ÌPosNumŒÂ•ªŠ„‚ÌŠÔŠu‹——£‚ÌŒvZ
+		// [0,1]ï¿½ï¿½PosNumï¿½Â•ï¿½ï¿½ï¿½ï¿½ÌŠÔŠuï¿½ï¿½ï¿½ï¿½ï¿½ÌŒvï¿½Z
 		float div = Length / (float)(PosNum-1);
 //		float divT = 1.0f / (float)PosNum;
 		float tempFixed[] = new float[PosNum];
-		// üŒ`•âŠÔ‚Ådiv‚ÌˆÊ’u‚ğ’T‚·
+		// ï¿½ï¿½ï¿½`ï¿½ï¿½Ô‚ï¿½divï¿½ÌˆÊ’uï¿½ï¿½Tï¿½ï¿½
 		int I=1;
 		for(int i=1; i<PosNum; ++i)
 		{
@@ -520,28 +514,26 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //        ERC_Logger.info(""+fixedParamTTable[3]);
 	}
 	
-	// ƒR[ƒXƒ^[‚ÌÀ•WXV‚ÆƒvƒŒƒCƒ„[ƒJƒƒ‰‰ñ“]—p	–ß‚è’l‚ÍƒŒ[ƒ‹‚ÌŒX‚«
+	// ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìï¿½ï¿½Wï¿½Xï¿½Vï¿½Æƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]ï¿½p	ï¿½ß‚ï¿½lï¿½Íƒï¿½ï¿½[ï¿½ï¿½ï¿½ÌŒXï¿½ï¿½
 	public double CalcRailPosition2(float t, ERC_ReturnCoasterRot ret, float viewyaw, float viewpitch, boolean riddenflag)
 	{	
-		//////////////ƒR[ƒXƒ^[§ŒäŒvZ
+		//////////////ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½ï¿½ï¿½ï¿½vï¿½Z
 		
 		////pos
-		Vec3 Base = Vec3.createVectorHelper(BaseRail.vecUp.xCoord, BaseRail.vecUp.yCoord, BaseRail.vecUp.zCoord);
-		Base.xCoord *= 0.5; Base.yCoord *= 0.5; Base.zCoord *= 0.5;
-		Vec3 Next = BaseRail.vecPos.subtract(NextRail.vecPos);
-		Next.xCoord += NextRail.vecUp.xCoord*0.5; 
-		Next.yCoord += NextRail.vecUp.yCoord*0.5; 
-		Next.zCoord += NextRail.vecUp.zCoord*0.5;
+		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z);
+		Base = new Vec3d(Base.x * 0.5, Base.y * 0.5, Base.z * 0.5);
+		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos);
+		Next = new Vec3d(NextRail.vecUp.x * 1.5, NextRail.vecUp.y * 1.5, NextRail.vecUp.z * 1.5);
 		
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);
 //		float nextpow = ERC_MathHelper.Lerp(0.8f, BaseRail.Power, NextRail.Power);
-		Vec3 DirxPowb = BaseRail.CalcVec3DIRxPOW(BaseRail.Power);//basepow);  
-		Vec3 DirxPown = NextRail.CalcVec3DIRxPOW(NextRail.Power);//nextpow);  
+		Vec3d DirxPowb = BaseRail.CalcVec3DIRxPOW(BaseRail.Power);//basepow);  
+		Vec3d DirxPown = NextRail.CalcVec3DIRxPOW(NextRail.Power);//nextpow);  
 		
 		////pair of rail Vertex
-		Vec3 vecUp_1 = BaseRail.CalcVec3UpTwist();
-		Vec3 vecUp_2 = NextRail.CalcVec3UpTwist();
+		Vec3d vecUp_1 = BaseRail.CalcVec3UpTwist();
+		Vec3d vecUp_2 = NextRail.CalcVec3UpTwist();
 	    
 		////spline
 		float lT=0f;
@@ -557,39 +549,37 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		
 		ret.Pos = ERC_MathHelper.Spline(t, Base, Next, DirxPowb, DirxPown);
 
-		Vec3 dir1;
-		// §Œä“_‚ª’†ŠÔ’n“_‚Å‚ ‚ê‚Î‘OŒã‚ÌƒxƒNƒgƒ‹A§ŒäŠî‘b“_‚Å‚ ‚ê‚Î§Œä•ûŒüƒxƒNƒgƒ‹‚ğ—p‚¢‚é
+		Vec3d dir1;
+		// ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Ô’nï¿½_ï¿½Å‚ï¿½ï¿½ï¿½Î‘Oï¿½ï¿½Ìƒxï¿½Nï¿½gï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½bï¿½_ï¿½Å‚ï¿½ï¿½ï¿½Îï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½pï¿½ï¿½ï¿½ï¿½
 		if(t <= 0.01f)
 		{
-//			dir1 = Vec3.createVectorHelper(BaseRail.vecDir.xCoord, BaseRail.vecDir.yCoord, BaseRail.vecDir.zCoord);
+//			dir1 = new Vec3d(BaseRail.vecDir.xCoord, BaseRail.vecDir.yCoord, BaseRail.vecDir.zCoord);
 			dir1 = DirxPowb.normalize();
 		}
 		if(t >= 0.99f)
 		{
-//			dir1 = Vec3.createVectorHelper(NextRail.vecDir.xCoord, NextRail.vecDir.yCoord, NextRail.vecDir.zCoord);
+//			dir1 = new Vec3d(NextRail.vecDir.xCoord, NextRail.vecDir.yCoord, NextRail.vecDir.zCoord);
 			dir1 = DirxPown.normalize();
 		}
 		else
 		{
 				 dir1 = ERC_MathHelper.Spline((t+0.01f), Base, Next, DirxPowb, DirxPown);
-			Vec3 dir2 = ERC_MathHelper.Spline((t-0.01f), Base, Next, DirxPowb, DirxPown);
+			Vec3d dir2 = ERC_MathHelper.Spline((t-0.01f), Base, Next, DirxPowb, DirxPown);
 			dir1 = dir2.subtract(dir1).normalize(); // dir1 - dir2
 		}
 		
 		////pair of rail Vertex
-		Vec3 up = ERC_MathHelper.Slerp(t, vecUp_1, vecUp_2).normalize();
-		Vec3 cross = up.crossProduct(dir1).normalize();
+		Vec3d up = ERC_MathHelper.Slerp(t, vecUp_1, vecUp_2).normalize();
+		Vec3d cross = up.crossProduct(dir1).normalize();
 		
 //		ERC_MathHelper.CalcCoasterRollMatrix(ret, ret.Pos, dir1, up);
-		
-		ret.Pos.xCoord += this.xCoord + 0.5 ;//+ up.xCoord;
-		ret.Pos.yCoord += this.yCoord + 0.5 ;//+ up.yCoord;
-		ret.Pos.zCoord += this.zCoord + 0.5 ;//+ up.zCoord;
+
+		ret.Pos = ret.Pos.addVector(this.getXcoord() + 0.5, this.getYcoord() + 0.5, this.getZcoord() + 0.5);//+ coords of up
 		
 		ret.Dir = dir1;
 		ret.Pitch = cross;
-		//////// ƒvƒŒƒCƒ„[À•WOffsetŒvZ
-		Vec3 fixUp = dir1.crossProduct(cross);
+		//////// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½WOffsetï¿½vï¿½Z
+		Vec3d fixUp = dir1.crossProduct(cross);
 		ret.offsetX = cross;
 		ret.offsetY = fixUp;
 		ret.offsetZ = dir1;
@@ -597,69 +587,67 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		
 //		if(riddenflag)
 		{
-			////////////// ƒvƒŒƒCƒ„[‰ñ“]—ÊŒvZ
+			////////////// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½]ï¿½ÊŒvï¿½Z
 			
 			/* memo
-			 * Œ³VecEEE dir1,up,cross
-			 * ‹“_‰ñ“]ŒãEEE dir_rotView
+			 * ï¿½ï¿½Vecï¿½Eï¿½Eï¿½E dir1,up,cross
+			 * ï¿½ï¿½ï¿½_ï¿½ï¿½]ï¿½ï¿½Eï¿½Eï¿½E dir_rotView
 			 */
 			
-			// ViewYaw‰ñ“]ƒxƒNƒgƒ‹@dir1->dir_rotView, cross->turnCross
-			Vec3 dir_rotView = ERC_MathHelper.rotateAroundVector(dir1, fixUp, Math.toRadians(viewyaw));
-			Vec3 turnCross = ERC_MathHelper.rotateAroundVector(cross, fixUp, Math.toRadians(viewyaw));
-			// ViewPitch‰ñ“]ƒxƒNƒgƒ‹ dir1->dir_rotView
-			Vec3 dir_rotViewPitch = ERC_MathHelper.rotateAroundVector(dir_rotView, turnCross, Math.toRadians(viewpitch));
-			// pitch—p dir_rotViewPitch‚Ì…•½ƒxƒNƒgƒ‹
-//			Vec3 dir_rotViewPitchHorz = Vec3.createVectorHelper(dir_rotViewPitch.xCoord, 0, dir_rotViewPitch.zCoord);
-			// roll—pturnCross‚Ì…•½ƒxƒNƒgƒ‹@ƒeƒXƒg
-			Vec3 crossHorz = Vec3.createVectorHelper(0, 1, 0).crossProduct(dir1);
-			if(crossHorz.lengthVector()==0.0)crossHorz=Vec3.createVectorHelper(1, 0, 0);
-			Vec3 crossHorzFix = Vec3.createVectorHelper(0, 1, 0).crossProduct(dir_rotViewPitch);
-			if(crossHorzFix.lengthVector()==0.0)crossHorzFix=Vec3.createVectorHelper(1, 0, 0);
+			// ViewYawï¿½ï¿½]ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½@dir1->dir_rotView, cross->turnCross
+			Vec3d dir_rotView = ERC_MathHelper.rotateAroundVector(dir1, fixUp, Math.toRadians(viewyaw));
+			Vec3d turnCross = ERC_MathHelper.rotateAroundVector(cross, fixUp, Math.toRadians(viewyaw));
+			// ViewPitchï¿½ï¿½]ï¿½xï¿½Nï¿½gï¿½ï¿½ dir1->dir_rotView
+			Vec3d dir_rotViewPitch = ERC_MathHelper.rotateAroundVector(dir_rotView, turnCross, Math.toRadians(viewpitch));
+			// pitchï¿½p dir_rotViewPitchï¿½Ìï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½
+//			Vec3d dir_rotViewPitchHorz = new Vec3d(dir_rotViewPitch.xCoord, 0, dir_rotViewPitch.zCoord);
+			// rollï¿½pturnCrossï¿½Ìï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½@ï¿½eï¿½Xï¿½g
+			Vec3d crossHorz = new Vec3d(0, 1, 0).crossProduct(dir1);
+			if(crossHorz.lengthVector()==0.0)crossHorz=new Vec3d(1, 0, 0);
+			Vec3d crossHorzFix = new Vec3d(0, 1, 0).crossProduct(dir_rotViewPitch);
+			if(crossHorzFix.lengthVector()==0.0)crossHorzFix=new Vec3d(1, 0, 0);
 			
-			Vec3 dir_horz = Vec3.createVectorHelper(dir1.xCoord, 0, dir1.zCoord);
+			Vec3d dir_horz = new Vec3d(dir1.x, 0, dir1.z);
 			if(dir_horz.lengthVector()==0.0)dir_horz=fixUp;
-//			Vec3 dir_WorldUp = Vec3.createVectorHelper(0, 1, 0);
+//			Vec3d dir_WorldUp = new Vec3d(0, 1, 0);
 			
 			// yaw OK
-			ret.yaw = (float) -Math.toDegrees( Math.atan2(dir1.xCoord, dir1.zCoord) );
+			ret.yaw = (float) -Math.toDegrees( Math.atan2(dir1.x, dir1.z) );
 //			ret.viewYaw = (float) -Math.toDegrees( Math.atan2(dir_rotViewPitch.xCoord, dir_rotViewPitch.zCoord) );
 
 			// pitch OK
-			ret.pitch = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(dir1, dir_horz) * (dir1.yCoord>=0?-1f:1f) );
+			ret.pitch = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(dir1, dir_horz) * (dir1.y>=0?-1f:1f) );
 //			ret.viewPitch = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(dir_rotViewPitch, dir_rotViewPitchHorz) * (dir_rotViewPitch.yCoord>=0?-1f:1f) );
 //			if(Float.isNaN(ret.viewPitch))
 //				ret.viewPitch=0;
 			
 			// roll
-			ret.roll = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(cross, crossHorz) * (cross.yCoord>=0?1f:-1f) );
+			ret.roll = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(cross, crossHorz) * (cross.y>=0?1f:-1f) );
 //			ret.viewRoll = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(turnCross, crossHorzFix) * (turnCross.yCoord>=0?1f:-1f) );
 //			if(Float.isNaN(ret.viewRoll))
 //				ret.viewRoll=0;
 		}
 		
-		return -dir1.normalize().yCoord;
+		return -dir1.normalize().y;
 	}
 	
 	public float CalcRailLength()
 	{	
 		////pos
-		Vec3 Base = Vec3.createVectorHelper(BaseRail.vecUp.xCoord, BaseRail.vecUp.yCoord, BaseRail.vecUp.zCoord);
-		Base.xCoord *= 0.5; Base.yCoord *= 0.5; Base.zCoord *= 0.5;
-		Vec3 Next = BaseRail.vecPos.subtract(NextRail.vecPos);
-		Next.xCoord += NextRail.vecUp.xCoord*0.5; 
-		Next.yCoord += NextRail.vecUp.yCoord*0.5; 
-		Next.zCoord += NextRail.vecUp.zCoord*0.5;
+		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z);
+		Base = Base.scale(0.5);
+		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos);
+		Next = Next.add(NextRail.vecUp.scale(0.5));
 		
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);
 //		float nextpow = ERC_MathHelper.Lerp(0.8f, BaseRail.Power, NextRail.Power);
-		Vec3 DirxPowb = BaseRail.CalcVec3DIRxPOW(BaseRail.Power);//basepow);  
-		Vec3 DirxPown = NextRail.CalcVec3DIRxPOW(NextRail.Power);//nextpow);  
+		Vec3d DirxPowb = BaseRail.CalcVec3DIRxPOW(BaseRail.Power);//basepow);  
+		Vec3d DirxPown = NextRail.CalcVec3DIRxPOW(NextRail.Power);//nextpow);  
 
-		// ƒXƒvƒ‰ƒCƒ“‹Èü‹——£ŒvZ€”õ
+		// ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Èï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
 		Length = 0;
-		Vec3 tempPrev = Base;
+		Vec3d tempPrev = Base;
 		fixedParamTTable[0]=0;
 		
 		for(int i = 0; i<PosNum; ++i)
@@ -668,7 +656,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 			float f = (float)i/(float)(PosNum-1);
 			
 			////spline
-			Vec3 center = ERC_MathHelper.Spline(f, Base, Next, DirxPowb, DirxPown);
+			Vec3d center = ERC_MathHelper.Spline(f, Base, Next, DirxPowb, DirxPown);
 			if(i>0)
 			{
 				Length += center.distanceTo(tempPrev);
@@ -683,7 +671,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	
 	public void CalcPrevRailPosition()
 	{
-		Wrap_TileEntityRail Wprevtile = BaseRail.getConnectionTileRail(worldObj);
+		Wrap_TileEntityRail Wprevtile = BaseRail.getConnectionTileRail(world);
 		if(Wprevtile == null)
 		{
 			return;
@@ -701,12 +689,12 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	public void onDeleteCoaster(){}
 //	public void onTileSetToWorld_Init(){}
 	
-	// “ÁêƒŒ[ƒ‹—pGUI‘€ìŠÖ”
+	// ï¿½ï¿½ï¿½êƒŒï¿½[ï¿½ï¿½ï¿½pGUIï¿½ï¿½ï¿½ï¿½Öï¿½
 	public void SpecialGUIInit(GUIRail gui){}
 	public void SpecialGUISetData(int flag){}
 	public String SpecialGUIDrawString(){return "";}
 	
-	// ”Ä—pƒŒ[ƒ‹ƒƒbƒZ[ƒW—p‚Ìƒf[ƒ^“Ç‚İ‘‚«ŠÖ”
+	// ï¿½Ä—pï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½Wï¿½pï¿½Ìƒfï¿½[ï¿½^ï¿½Ç‚İï¿½ï¿½ï¿½ï¿½Öï¿½
 	public void setDataToByteMessage(ByteBuf buf){}
 	public void getDataFromByteMessage(ByteBuf buf){}
 	
@@ -724,8 +712,8 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	{
 		modelrailindex = index;
 		
-//		if(worldObj==null)return;
-//		if(worldObj.isRemote)
+//		if(world==null)return;
+//		if(world.isRemote)
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			modelrail = ERC_ModelLoadManager.createRailRenderer(index, this);
@@ -734,7 +722,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		}
 	}
 	
-	// NBT‚Ì“Ç‚İæ‚èB
+	// NBTï¿½Ì“Ç‚İï¿½ï¿½B
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.readFromNBT(par1NBTTagCompound);      
@@ -751,11 +739,11 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
         modelrailindex = nbt.getInteger(tag+"railmodelindex");
         changeRailModelRenderer(modelrailindex);
 //        this.CreateNewRailVertexFromControlPoint();
-//        if(worldObj.isRemote)
+//        if(world.isRemote)
         	this.CalcRailPosition();
 //        else this.CalcRailLength();
     }
-    // ƒŒ[ƒ‹‚Ìî•ñ1‚Â•ª“Ç‚İæ‚è—p
+    // ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½1ï¿½Â•ï¿½ï¿½Ç‚İï¿½ï¿½p
     protected void readRailNBT(NBTTagCompound nbt, DataTileEntityRail rail, String tag)
     {
     	readVec3(nbt, rail.vecPos,  tag+"pos");
@@ -770,28 +758,26 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
         rail.cy = nbt.getInteger(tag+"cy"); 
         rail.cz = nbt.getInteger(tag+"cz"); 
         
-     // ©•ª©g‚ÉŒq‚ª‚é‚Ì‚ğ–h‚®           
-        if(rail.cx==xCoord && rail.cy==yCoord && rail.cz==zCoord)
+     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÉŒqï¿½ï¿½ï¿½ï¿½Ì‚ï¿½hï¿½ï¿½           
+        if(rail.cx==this.getXcoord() && rail.cy==this.getYcoord() && rail.cz==this.getZcoord())
         {
         	rail.cx=-1; rail.cy=-1; rail.cz=-1;
         }
     }
-    // NBT“Ç‚İ‚İ•â•
-    private void readVec3(NBTTagCompound nbt, Vec3 vec, String name)
+    // NBTï¿½Ç‚İï¿½ï¿½İ•â•
+    private Vec3d readVec3(NBTTagCompound nbt, Vec3d vec, String name)
     {
-    	vec.xCoord = nbt.getDouble(name+"x");
-    	vec.yCoord = nbt.getDouble(name+"y");
-    	vec.zCoord = nbt.getDouble(name+"z");
+    	return new Vec3d(nbt.getDouble(name+"x"), nbt.getDouble(name+"y"), nbt.getDouble(name+"z"));
     }
     
     /*
-     * ‚±‚¿‚ç‚ÍNBT‚ğ‘‚«‚Şƒƒ\ƒbƒhB
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½NBTï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Şƒï¿½ï¿½\ï¿½bï¿½hï¿½B
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         saveToNBT(par1NBTTagCompound, "");
-       
+       return par1NBTTagCompound;
     }
     public void saveToNBT(NBTTagCompound nbt, String tag)
     {
@@ -814,36 +800,36 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
         nbt.setInteger(tag+"cy", rail.cy); 
         nbt.setInteger(tag+"cz", rail.cz); 
         
-     // ©•ª©g‚ÉŒq‚ª‚é‚Ì‚ğ–h‚®           
-        if(rail.cx==xCoord && rail.cy==yCoord && rail.cz==zCoord)
+     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÉŒqï¿½ï¿½ï¿½ï¿½Ì‚ï¿½hï¿½ï¿½           
+        if(rail.cx==this.getXcoord() && rail.cy==this.getYcoord() && rail.cz==this.getZcoord())
         {
         	rail.cx=-1; rail.cy=-1; rail.cz=-1;
         }
     }
-    // NBT‘‚«‚İ•â•
-    private void writeVec3(NBTTagCompound nbt, Vec3 vec, String name)
+    // NBTï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ•â•
+    private void writeVec3(NBTTagCompound nbt, Vec3d vec, String name)
     {
-    	nbt.setDouble(name+"x", vec.xCoord);
-    	nbt.setDouble(name+"y", vec.yCoord);
-    	nbt.setDouble(name+"z", vec.zCoord);
+    	nbt.setDouble(name+"x", vec.x);
+    	nbt.setDouble(name+"y", vec.y);
+    	nbt.setDouble(name+"z", vec.z);
     }
     
 
 	@Override
-	public Packet getDescriptionPacket()
+	public SPacketUpdateTileEntity getUpdatePacket()
 	{
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
         this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+        return new SPacketUpdateTileEntity(this.pos, 1, nbtTagCompound);
 	}
  
 	@Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
-        this.readFromNBT(pkt.func_148857_g());
+        this.readFromNBT(pkt.getNbtCompound());
     }
 	
-	//ƒT[ƒo[‚ªƒNƒ‰ƒCƒAƒ“ƒg‚Ö§Œä“_‚ğ‘—M‚·‚é‚½‚ß‚Ì“¯ŠúŠÖ” ‘—M‘ÎÛƒvƒŒƒCƒ„[‚ªŒˆ‚Ü‚Á‚Ä‚¢‚é‚Æ‚«
+	//ï¿½Tï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½Öï¿½ï¿½ï¿½_ï¿½ğ‘—Mï¿½ï¿½ï¿½é‚½ï¿½ß‚Ì“ï¿½ï¿½ï¿½ï¿½Öï¿½ ï¿½ï¿½ï¿½Mï¿½ÎÛƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½
     public void syncData(EntityPlayerMP player)
     {
 //    	ERC_MessageRailStC packet = new ERC_MessageRailStC(
@@ -854,17 +840,17 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //    			BaseRail.Power, BaseRail.fUp, BaseRail.fDirTwist,
 //    			NextRail.Power, NextRail.fUp, NextRail.fDirTwist
 //    			);
-    	ERC_MessageRailStC packet = new ERC_MessageRailStC(xCoord, yCoord, zCoord, PosNum, modelrailindex);
+    	ERC_MessageRailStC packet = new ERC_MessageRailStC(this.getXcoord(), this.getYcoord(), this.getZcoord(), PosNum, modelrailindex);
     	packet.addRail(BaseRail);
     	packet.addRail(NextRail);
 	    ERC_PacketHandler.INSTANCE.sendTo(packet, player);
 //	    ERC_PacketHandler.INSTANCE.sendToAll(packet);
     }
 	
-	//©g‚ğ“¯Šú ƒvƒŒƒCƒ„[‘Sˆõ‚ª‘ÎÛi‚Ì‚Í‚¸Hj
+	//ï¿½ï¿½ï¿½gï¿½ğ“¯Šï¿½ ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ÎÛiï¿½Ì‚Í‚ï¿½ï¿½Hï¿½j
 	public void syncData()
 	{
-		ERC_MessageRailStC packet = new ERC_MessageRailStC(xCoord, yCoord, zCoord, PosNum, modelrailindex);
+		ERC_MessageRailStC packet = new ERC_MessageRailStC(this.getXcoord(), this.getYcoord(), this.getZcoord(), PosNum, modelrailindex);
     	packet.addRail(BaseRail);
     	packet.addRail(NextRail);
 	    ERC_PacketHandler.INSTANCE.sendToAll(packet);
@@ -872,16 +858,16 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 
 	public void connectionFromBack(int x, int y, int z)
 	{
-		// ©•ª‚É‚Â‚È‚°‚é—v¿‚Í”jŠü
-		if(x==xCoord && y==yCoord && z==zCoord)return;
+		// ï¿½ï¿½ï¿½ï¿½ï¿½É‚Â‚È‚ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Í”jï¿½ï¿½
+		if(x==this.getXcoord() && y==this.getYcoord() && z==this.getZcoord())return;
 				
 		this.SetPrevRailPosition(x, y, z);
     	this.syncData();
 	}
 	public void connectionToNext(DataTileEntityRail next, int x, int y, int z)
 	{
-		// ©•ª‚É‚Â‚È‚°‚é—v¿‚Í”jŠü
-		if(x==xCoord && y==yCoord && z==zCoord)return;
+		// ï¿½ï¿½ï¿½ï¿½ï¿½É‚Â‚È‚ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Í”jï¿½ï¿½
+		if(x==this.getXcoord() && y==this.getYcoord() && z==this.getZcoord())return;
 		
     	float power = ERC_MathHelper.CalcSmoothRailPower(BaseRail.vecDir, next.vecDir, BaseRail.vecPos, next.vecPos);
 		this.BaseRail.Power = power;
@@ -898,4 +884,35 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
     	this.CalcRailLength();
     	this.syncData();
 	}
+
+	private Vec3d rotateAroundX(Vec3d dir, double value)
+	{
+		double cosval = Math.cos(value);
+		double sinval = Math.sin(value);
+		return new Vec3d(dir.x,
+				dir.y * cosval - dir.z * sinval,
+				dir.y * sinval + dir.z * cosval);
+	}
+
+	private Vec3d rotateAroundY(Vec3d dir, double value)
+	{
+		double cosval = Math.cos(value);
+		double sinval = Math.sin(value);
+		return new Vec3d(dir.x * cosval + dir.z * sinval,
+				dir.y,
+				-dir.x * sinval + dir.z * cosval);
+	}
+
+	private Vec3d rotateAroundZ(Vec3d dir, double value)
+	{
+		double cosval = Math.cos(value);
+		double sinval = Math.sin(value);
+		return new Vec3d(dir.x * cosval - dir.y * sinval,
+				dir.x * sinval + dir.y * cosval,
+				dir.z);
+	}
+
+
+
+
 }

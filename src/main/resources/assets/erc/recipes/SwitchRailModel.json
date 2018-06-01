@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " L ",
+    "LRL",
+    " L "
+  ],
+  "key":
+  {
+    "R":
+    {
+      "item": "minecraft:rail",
+      "data": 0
+    },
+    "L":
+    {
+      "item": "erc:railpipe",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:SwitchRailModel",
+    "count": 1
+  }
+}

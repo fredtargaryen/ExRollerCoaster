@@ -2,7 +2,7 @@ package erc.handler;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import erc._core.ERC_Reflection;
 import erc.item.ERC_ItemSwitchingRailModel;
 import erc.item.Wrap_ItemCoaster;
@@ -28,23 +28,23 @@ public class ERC_InputEventHandler {
 	{
 	    if(Keyboard.isKeyDown(Keyboard.KEY_LMENU))
 	    {
-	    	wheelsum = event.dwheel;
+	    	wheelsum = event.getDwheel();
 	    	ERC_Reflection.setMouseDHweel(0);
 	    
 		    if(wheelsum != 0)
 		    {
-				if(mc.thePlayer == null)return;
-				ItemStack heldItemstack = mc.thePlayer.getHeldItem();
+				if(mc.player == null)return;
+				ItemStack heldItemstack = mc.player.getHeldItemMainhand();
 				if(heldItemstack == null)return;
 				Item heldItem = heldItemstack.getItem();
 				if(heldItem == null)return;
 				if(heldItem instanceof Wrap_ItemCoaster)
 				{
-					((Wrap_ItemCoaster)heldItem).ScrollMouseHweel(event.dwheel);
+					((Wrap_ItemCoaster)heldItem).ScrollMouseHweel(wheelsum);
 				}
 				else if(heldItem instanceof ERC_ItemSwitchingRailModel)
 				{
-					((ERC_ItemSwitchingRailModel)heldItem).ScrollMouseHweel(event.dwheel);
+					((ERC_ItemSwitchingRailModel)heldItem).ScrollMouseHweel(wheelsum);
 				}
 		    }
 	    }

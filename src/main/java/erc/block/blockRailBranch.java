@@ -5,9 +5,13 @@ import erc.message.ERC_PacketHandler;
 import erc.tileEntity.TileEntityRailBranch2;
 import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class blockRailBranch extends blockRailBase{
@@ -18,22 +22,22 @@ public class blockRailBranch extends blockRailBase{
 		return new TileEntityRailBranch2();
 	}
 
-	 @Override
-	public boolean canProvidePower() 
+	@Override
+	public boolean canProvidePower(IBlockState state)
 	 {
 		return true;
 	}
 
-	// ÔÎ“ü—Í§Œä
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+	// ï¿½ÔÎ“ï¿½ï¿½Íï¿½ï¿½ï¿½
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
     {
         if (!world.isRemote)
         {
-            boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
-            boolean flag2 = block.canProvidePower();
+            boolean flag = world.isBlockIndirectlyGettingPowered(pos) != 0;
+            boolean flag2 = block.canProvidePower(state);
             if (flag || flag2)
             {
-            	TileEntityRailBranch2 rail = (TileEntityRailBranch2)world.getTileEntity(x, y, z);
+            	TileEntityRailBranch2 rail = (TileEntityRailBranch2)world.getTileEntity(pos);
             	boolean tgle = rail.getToggleFlag();
             	
                 if (flag && !tgle)
@@ -41,7 +45,8 @@ public class blockRailBranch extends blockRailBase{
                 	rail.changeRail();
                 	rail.changeToggleFlag();
                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                	world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0); //Œø‰Ê‰¹H
+                	//Sound 1003?? - FT
+                	world.playSound((EntityPlayer)null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F); //ï¿½ï¿½ï¿½Ê‰ï¿½ï¿½H
                 }
                 else if(!flag && tgle)
                 {
@@ -51,16 +56,16 @@ public class blockRailBranch extends blockRailBase{
         }
     }
   
-    // TileEntity‰Šú‰»@Branch—p“Áêˆ—@ƒŒ[ƒ‹‚Q‚Â‚Æ‚à‰Šú‰»
+    // TileEntityï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@Branchï¿½pï¿½ï¿½ï¿½êˆï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Qï¿½Â‚Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     protected void onTileEntityInitFirst(World world, EntityLivingBase player, Wrap_TileEntityRail rail, int x, int y, int z)
 	{
-		// ƒuƒƒbƒNİ’u‚ÌƒvƒŒƒCƒ„[‚ÌŒü‚«
+		// ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½İ’uï¿½ï¿½ï¿½Ìƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌŒï¿½ï¿½ï¿½
     	TileEntityRailBranch2 railb = (TileEntityRailBranch2) rail;
-    	Vec3 metadir = ConvertVec3FromMeta(world.getBlockMetadata(x, y, z));
-    	Vec3 BaseDir = Vec3.createVectorHelper(
-				-Math.sin(Math.toRadians(player.rotationYaw)) * (metadir.xCoord!=0?0:1), 
-				Math.sin(Math.toRadians(player.rotationPitch)) * (metadir.yCoord!=0?0:1), 
-				Math.cos(Math.toRadians(player.rotationYaw)) * (metadir.zCoord!=0?0:1));
+    	Vec3d metadir = ConvertVec3FromMeta(world.getBlockState(new BlockPos(x, y, z)).getValue(META));
+    	Vec3d BaseDir = new Vec3d(
+				-Math.sin(Math.toRadians(player.rotationYaw)) * (metadir.x!=0?0:1),
+				Math.sin(Math.toRadians(player.rotationPitch)) * (metadir.y!=0?0:1),
+				Math.cos(Math.toRadians(player.rotationYaw)) * (metadir.z!=0?0:1));
     	
     	railb.SetBaseRailPosition(x, y, z, BaseDir, metadir, 20f);
     	
@@ -72,15 +77,15 @@ public class blockRailBranch extends blockRailBase{
 			double yaw = ((float)i-0.5) + Math.toRadians(player.rotationYaw);
 			double pit = ((float)i-0.5) - Math.toRadians(player.rotationPitch);
 			
-			Vec3 vecDir = Vec3.createVectorHelper(
-					-Math.sin(yaw) * (metadir.xCoord!=0?0:1), 
-					Math.sin(pit) * (metadir.yCoord!=0?0:1), 
-					Math.cos(yaw) * (metadir.zCoord!=0?0:1) );
+			Vec3d vecDir = new Vec3d(
+					-Math.sin(yaw) * (metadir.x!=0?0:1),
+					Math.sin(pit) * (metadir.y!=0?0:1),
+					Math.cos(yaw) * (metadir.z!=0?0:1) );
 						
-			// V‹Kİ’u‚ÌƒŒ[ƒ‹‚É‘Î‚µ‚ÄÀ•Wİ’èB@Œü‚«‚ÍƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚é•ûŒü‚Ö			
+			// ï¿½Vï¿½Kï¿½İ’uï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½É‘Î‚ï¿½ï¿½Äï¿½ï¿½Wï¿½İ’ï¿½Bï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½Íƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌŒï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½			
 //			railb.SetNextRailPosition(x+(int)(vecDir.xCoord*10), y+(int)(vecDir.yCoord*10), z+(int)(vecDir.zCoord*10));
 			railb.SetNextRailVectors(
-					Vec3.createVectorHelper(x+(int)(vecDir.xCoord*10)+0.5, y+(int)(vecDir.yCoord*10)+0.5, z+(int)(vecDir.zCoord*10)+0.5), 
+					new Vec3d(x+(int)(vecDir.x*10)+0.5, y+(int)(vecDir.y*10)+0.5, z+(int)(vecDir.z*10)+0.5),
 					vecDir, 
 					railb.getRail().BaseRail.vecUp, 
 					0f, 0f,

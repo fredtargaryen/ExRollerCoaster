@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "R",
+    "D"
+  ],
+  "key":
+  {
+    "R":
+    {
+      "item": "erc:railnormal",
+      "data": 0
+    },
+    "D":
+    {
+      "item": "minecraft:stone_pressure_plate",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:erc.raildetector",
+    "count": 1
+  }
+}

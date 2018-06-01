@@ -5,9 +5,13 @@ import erc.message.ERC_PacketHandler;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.TileEntityRailRedstoneAccelerator;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -23,16 +27,16 @@ public class blockRailRedstoneAccelerator extends blockRailBase{
 	}
 
 	@Override
-	public boolean canProvidePower() 
+	public boolean canProvidePower(IBlockState state)
 	{
 		return true;
 	}
 
-	public void onBlockAdded(World world, int x, int y, int z)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
         if (!world.isRemote)
         {
-        	boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
+        	boolean flag = world.isBlockIndirectlyGettingPowered(pos) == 0;
         	
         	if (flag)
             {
@@ -42,38 +46,42 @@ public class blockRailRedstoneAccelerator extends blockRailBase{
 //        		 if (flag != tgle)
                  {
 //                 	rail.changeToggleFlag();
-                 	world.setBlockMetadataWithNotify(x, y, z, 8^world.getBlockMetadata(x, y, z), 2);
+                 	world.setBlockState(pos, state.withProperty(META,8^state.getValue(META)), 2);
 //                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                 	world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0); //å¯â âπÅH
+                     //Sound 1003?? - FT
+                 	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0F, 0F); //ÔøΩÔøΩÔøΩ âÔøΩÔøΩH
                  }
             } 
         }
     }
+
     @Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack p_149689_6_) 
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-		super.onBlockPlacedBy(world, x, y, z, player, p_149689_6_);
-		TileEntityRailRedstoneAccelerator rail = (TileEntityRailRedstoneAccelerator) world.getTileEntity(x, y, z);
-		rail.setToggleFlag(0 != (8 & world.getBlockMetadata(x, y, z)));
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		TileEntityRailRedstoneAccelerator rail = (TileEntityRailRedstoneAccelerator) worldIn.getTileEntity(pos);
+		rail.setToggleFlag(0 != (8 & worldIn.getBlockState(pos).getValue(META)));
     }
 
-	// ê‘êŒì¸óÕóp
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+	// ÔøΩ‘êŒìÔøΩÔøΩÕóp
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
     {
         if (!world.isRemote)
         {
-            boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
+            boolean flag = world.isBlockIndirectlyGettingPowered(pos) == 0;
             
-            if (flag || block.canProvidePower())
+            if (flag || block.canProvidePower(state))
             {
-            	TileEntityRailRedstoneAccelerator rail = (TileEntityRailRedstoneAccelerator)world.getTileEntity(x, y, z);
+            	TileEntityRailRedstoneAccelerator rail = (TileEntityRailRedstoneAccelerator)world.getTileEntity(pos);
             	boolean tgle = rail.getToggleFlag();
 
                 if (flag != tgle)
                 {
                 	rail.changeToggleFlag();
                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                	world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0); //å¯â âπÅH
+                	//Sound 1003?? - FT
+                	world.playSound((EntityPlayer)null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0F, 0F); //ÔøΩÔøΩÔøΩ âÔøΩÔøΩH
                 }
             }
         }

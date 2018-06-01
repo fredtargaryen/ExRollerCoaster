@@ -3,7 +3,9 @@ package erc.gui;
 import java.util.HashMap;
 import java.util.Map;
 
-import cpw.mods.fml.client.config.GuiButtonExt;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 import erc._core.ERC_CONST;
 import erc.gui.container.DefContainer;
 import erc.manager.ERC_CoasterAndRailManager;
@@ -14,6 +16,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUIRail extends GuiContainer {
 	
@@ -47,7 +50,7 @@ public class GUIRail extends GuiContainer {
     	ySize = 230;
     }
  
-    // GUI‚ğŠJ‚­‚½‚ÑŒÄ‚Î‚ê‚é‰Šú‰»ŠÖ”
+    // GUIï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÑŒÄ‚Î‚ï¿½é‰ï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½
 	@Override
 	public void initGui()
     {
@@ -55,7 +58,7 @@ public class GUIRail extends GuiContainer {
 		GUINameMap.clear();
 		this.guiLeft = this.width*7/8 - xSize/2;
 		buttonid = buttonidoffset; // 0
-		// ƒ{ƒ^ƒ““o˜^
+		// ï¿½{ï¿½^ï¿½ï¿½ï¿½oï¿½^
 		offsetx = this.guiLeft + 20;
 		offsety = this.guiTop;
 //		int offset = 4;
@@ -122,7 +125,7 @@ public class GUIRail extends GuiContainer {
 	@Override
     public void drawWorldBackground(int p_146270_1_)
     {
-        if (this.mc.theWorld != null)
+        if (this.mc.world != null)
         {
             this.drawGradientRect(this.width*3/4, 0, this.width, this.height, -1072689136, -804253680);
         }
@@ -132,7 +135,7 @@ public class GUIRail extends GuiContainer {
         }
     }
     
-	/*GUI‚Ì•¶š“™‚Ì•`‰æˆ—*/
+	/*GUIï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì•`ï¿½æˆï¿½ï¿½*/
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseZ)
     {
@@ -148,15 +151,15 @@ public class GUIRail extends GuiContainer {
 //        
         for(GUIName g :  GUINameMap.values())
         {
-        	this.fontRendererObj.drawString(g.name,g.x,g.y,0x404040);
+        	this.fontRenderer.drawString(g.name,g.x,g.y,0x404040);
         }
         
-        drawString(this.fontRendererObj, ""+ERC_CoasterAndRailManager.clickedTileForGUI.GetPosNum(), 43, 29, 0xffffff);
-        drawString(this.fontRendererObj, String.format("% 2.1f",ERC_CoasterAndRailManager.clickedTileForGUI.BaseRail.Power), 37, 56, 0xffffff);
-        drawString(this.fontRendererObj, ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIDrawString(), 42, 172, 0xffffff);
+        drawString(this.fontRenderer, ""+ERC_CoasterAndRailManager.clickedTileForGUI.GetPosNum(), 43, 29, 0xffffff);
+        drawString(this.fontRenderer, String.format("% 2.1f",ERC_CoasterAndRailManager.clickedTileForGUI.BaseRail.Power), 37, 56, 0xffffff);
+        drawString(this.fontRenderer, ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIDrawString(), 42, 172, 0xffffff);
     }
  
-    /*GUI‚Ì”wŒi‚Ì•`‰æˆ—*/
+    /*GUIï¿½Ì”wï¿½iï¿½Ì•`ï¿½æˆï¿½ï¿½*/
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseZ)
     {
@@ -168,16 +171,16 @@ public class GUIRail extends GuiContainer {
     {
         float f = 1f/(float)width;
         float f1 = 1f/(float)height;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + height), (double)this.zLevel, (double)((float)(z + 0) * f), (double)((float)(v + height) * f1));
-        tessellator.addVertexWithUV((double)(x + width), (double)(y + height), (double)this.zLevel, (double)((float)(z + width) * f), (double)((float)(v + height) * f1));
-        tessellator.addVertexWithUV((double)(x + width), (double)(y + 0), (double)this.zLevel, (double)((float)(z + width) * f), (double)((float)(v + 0) * f1));
-        tessellator.addVertexWithUV((double)(x + 0), (double)(y + 0), (double)this.zLevel, (double)((float)(z + 0) * f), (double)((float)(v + 0) * f1));
-        tessellator.draw();
+        BufferBuilder wr = Tessellator.getInstance().getBuffer();
+        wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        wr.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex((double)((float)(z + 0) * f), (double)((float)(v + height) * f1));
+        wr.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(((double)((float)(z + width) * f)), (double)((float)(v + height) * f1));
+        wr.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex((double)((float)(z + width) * f), (double)((float)(v + 0) * f1));
+        wr.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex((double)((float)(z + 0) * f), (double)((float)(v + 0) * f1));
+        Tessellator.getInstance().draw();
     }
  
-    /*GUI‚ªŠJ‚¢‚Ä‚¢‚é‚ÉƒQ[ƒ€‚Ìˆ—‚ğ~‚ß‚é‚©‚Ç‚¤‚©B*/
+    /*GUIï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½Ä‚ï¿½ï¿½éï¿½ÉƒQï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~ï¿½ß‚é‚©ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½B*/
     @Override
     public boolean doesGuiPauseGame()
     {
@@ -190,7 +193,7 @@ public class GUIRail extends GuiContainer {
 
 		GUIName obj = GUINameMap.get(button.id);
 		int data = (button.id - obj.baseID);
-		ERC_MessageRailGUICtS packet = new ERC_MessageRailGUICtS((int)entity.xCoord,(int)entity.yCoord,(int)entity.zCoord,
+		ERC_MessageRailGUICtS packet = new ERC_MessageRailGUICtS((int)entity.getXcoord(),(int)entity.getYcoord(),(int)entity.getZcoord(),
 				obj.flag, data);
 	    ERC_PacketHandler.INSTANCE.sendToServer(packet);
 	}

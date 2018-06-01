@@ -16,9 +16,9 @@ public class itemSUSHI extends Item{
     	{
     		Entity e = new entitySUSHI(world,x+0.5,y+0.8,z+0.5);
 //    		Entity e = new entityPartsTestBase(world,x+0.5,y+1.5,z+0.5);
-    		world.spawnEntityInWorld(e);
+    		world.spawnEntity(e);
     	}
-    	--itemStack.stackSize;
+    	itemStack.grow(-1);
     	return true;
     }
 }

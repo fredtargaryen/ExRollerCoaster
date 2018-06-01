@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "F",
+    "M"
+  ],
+  "key":
+  {
+    "F":
+    {
+      "item": "minecraft:fish",
+      "data": 0
+    },
+    "M":
+    {
+      "item": "minecraft:wheat",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:sushi",
+    "count": 1
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "R R",
+    "R R",
+    "R R"
+  ],
+  "key":
+  {
+    "R":
+    {
+      "item": "minecraft:rail",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:railnormal",
+    "count": 10
+  }
+}

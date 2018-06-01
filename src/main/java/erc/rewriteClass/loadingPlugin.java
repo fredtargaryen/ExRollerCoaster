@@ -3,8 +3,8 @@ package erc.rewriteClass;
 import java.io.File;
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 //@TransformerExclusions({"erc.rewriteClass"})
 @MCVersion("1.7.10")
@@ -29,14 +29,14 @@ public class loadingPlugin implements IFMLLoadingPlugin {
     	return null;
     }
     
-    // IFMLLoadingPlugin ‚Ìƒƒ\ƒbƒh‚Å‚·B(IFMLCallHook ‚É‚à“¯‚¶ƒVƒOƒlƒ`ƒƒ[‚Ìƒƒ\ƒbƒh‚ª‚ ‚è‚Ü‚·‚ªAˆá‚¢‚Ü‚·)
-    // ¡‰ñ‚Í coremod ©g‚Ì jar ƒtƒ@ƒCƒ‹ƒpƒX‚ğæ“¾‚µ‚Ä‚¢‚Ü‚·B‚±‚ê‚ÍŒãq‚Ìƒgƒ‰ƒ“ƒXƒtƒH[ƒ}[ƒNƒ‰ƒX‚ÅA
-    // jar‚©‚ç’uŠ·—pƒNƒ‰ƒX‚ğæ“¾‚µ‚Ä‚¢‚é‚½‚ß‚ÅA‚»‚Ì‚æ‚¤‚Èˆ—‚ğs‚í‚È‚¢‚Ì‚Å‚ ‚ê‚Î‰½‚àÀ‘•‚µ‚È‚­‚Ä‚à\‚¢‚Ü‚¹‚ñB
+    // IFMLLoadingPlugin ï¿½Ìƒï¿½ï¿½\ï¿½bï¿½hï¿½Å‚ï¿½ï¿½B(IFMLCallHook ï¿½É‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Vï¿½Oï¿½lï¿½`ï¿½ï¿½ï¿½[ï¿½Ìƒï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½Aï¿½á‚¢ï¿½Ü‚ï¿½)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ coremod ï¿½ï¿½ï¿½gï¿½ï¿½ jar ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½pï¿½Xï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ÍŒï¿½qï¿½Ìƒgï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½tï¿½Hï¿½[ï¿½}ï¿½[ï¿½Nï¿½ï¿½ï¿½Xï¿½ÅA
+    // jarï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½pï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚½ï¿½ß‚ÅAï¿½ï¿½ï¿½Ì‚æ‚¤ï¿½Èï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½È‚ï¿½ï¿½Ì‚Å‚ï¿½ï¿½ï¿½Î‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½Ä‚ï¿½ï¿½\ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½B
     // 
-    // ‚È‚¨AIFMLLoadingPlugin ‚Ìƒƒ\ƒbƒh‚Æ‚µ‚ÄŒÄ‚Î‚ê‚½Û‚ÍA"mcLocation"A"coremodList"A"coremodLocation" ‚Ì3‚ÂA
-    // IFMLCallHook ‚Ìƒƒ\ƒbƒh‚Æ‚µ‚ÄŒÄ‚Î‚ê‚½Û‚ÍA"classLoader" ‚ªƒ}ƒbƒv‚Éİ’è‚³‚ê‚Ä‚¢‚Ü‚·B(FML#511Œ»İ)
+    // ï¿½È‚ï¿½ï¿½AIFMLLoadingPlugin ï¿½Ìƒï¿½ï¿½\ï¿½bï¿½hï¿½Æ‚ï¿½ï¿½ÄŒÄ‚Î‚ê‚½ï¿½Û‚ÍA"mcLocation"ï¿½A"coremodList"ï¿½A"coremodLocation" ï¿½ï¿½3ï¿½ÂA
+    // IFMLCallHook ï¿½Ìƒï¿½ï¿½\ï¿½bï¿½hï¿½Æ‚ï¿½ï¿½ÄŒÄ‚Î‚ê‚½ï¿½Û‚ÍA"classLoader" ï¿½ï¿½ï¿½}ï¿½bï¿½vï¿½Éİ’è‚³ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½B(FML#511ï¿½ï¿½ï¿½ï¿½)
     // 
-    // “n‚³‚ê‚éƒ}ƒbƒv‚Ì’†g‚ÍAcpw.mods.fml.relauncher.RelaunchLibraryManager ‚ÌÀ‘•‚©‚ç‚àŠm”F‚·‚é–‚ªo—ˆ‚Ü‚·B	TODO
+    // ï¿½nï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½bï¿½vï¿½Ì’ï¿½ï¿½gï¿½ÍAnet.minecraftforge.fml.relauncher.RelaunchLibraryManager ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mï¿½Fï¿½ï¿½ï¿½é–ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½Ü‚ï¿½ï¿½B	TODO
     @Override
     public void injectData(Map<String, Object> data) {
     	 if (data.containsKey("coremodLocation"))

@@ -1,8 +1,8 @@
 package erc.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc._core.ERC_Core;
 import erc.item.ERC_ItemWrench;
 import io.netty.buffer.ByteBuf;
@@ -53,15 +53,15 @@ public class ERC_MessageItemWrenchSync implements IMessage, IMessageHandler<ERC_
 	{
 //		((ERC_ItemWrench)ERC_Core.ItemWrench).receivePacket(message.mode);
 		
-		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		EntityPlayerMP player = ctx.getServerHandler().player;
 		switch(message.mode)
 		{
-		case 0 : break;// connect ‚È‚É‚à‚È‚¢
+		case 0 : break;// connect ï¿½È‚É‚ï¿½ï¿½È‚ï¿½
 		case 1 : //gui
-			player.openGui(ERC_Core.INSTANCE, ERC_Core.GUIID_RailBase, player.worldObj, message.x, message.y, message.z);
+			player.openGui(ERC_Core.INSTANCE, ERC_Core.GUIID_RailBase, player.world, message.x, message.y, message.z);
 			break;
 		case 2 : 
-			((ERC_ItemWrench)ERC_Core.ItemWrench).placeBlockAt(new ItemStack(ERC_Core.ItemWrench), player, player.worldObj, message.x, message.y, message.z, Blocks.dirt);
+			((ERC_ItemWrench)ERC_Core.ItemWrench).placeBlockAt(new ItemStack(ERC_Core.ItemWrench), player, player.world, message.x, message.y, message.z, Blocks.DIRT);
 			break;
 		}
 	    return null;

@@ -3,20 +3,21 @@ package erc.message;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc._core.ERC_Logger;
 import erc.tileEntity.DataTileEntityRail;
 import erc.tileEntity.Wrap_TileEntityRail;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public class ERC_MessageRailStC implements IMessage, IMessageHandler<ERC_MessageRailStC, IMessage>{
 
-	// GUI‚©‚ç‘—‚è‚½‚¢î•ñ
+	// GUIï¿½ï¿½ï¿½ç‘—ï¿½è‚½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int x, y, z;
 	int railnum;
 	public int posnum;
@@ -38,15 +39,15 @@ public class ERC_MessageRailStC implements IMessage, IMessageHandler<ERC_Message
 		raillist.add(rail);
 	}
 	
-	private Vec3 readVec(ByteBuf buf)
+	private Vec3d readVec(ByteBuf buf)
 	{
-		 return Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
+		 return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
-	private void writeVec(ByteBuf buf, Vec3 vec)
+	private void writeVec(ByteBuf buf, Vec3d vec)
 	{
-		buf.writeDouble(vec.xCoord);
-	 	buf.writeDouble(vec.yCoord);
-	    buf.writeDouble(vec.zCoord);
+		buf.writeDouble(vec.x);
+	 	buf.writeDouble(vec.y);
+	    buf.writeDouble(vec.z);
 	}
 	
 	@Override
@@ -98,11 +99,11 @@ public class ERC_MessageRailStC implements IMessage, IMessageHandler<ERC_Message
     public IMessage onMessage(ERC_MessageRailStC message, MessageContext ctx)
     {
 //    	TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
-    	TileEntity te = FMLClientHandler.instance().getClient().theWorld.getTileEntity(message.x, message.y, message.z);
+    	TileEntity te = FMLClientHandler.instance().getClient().world.getTileEntity(new BlockPos(message.x, message.y, message.z));
         if (!(te instanceof Wrap_TileEntityRail))
         {
         	ERC_Logger.info("MessageRailStC::onMessage, tileentity is not tilerail. pos:"+message.x+"."+message.y+"."+message.z);
-        	if(te==null)ERC_Logger.info("EEETileEntity is null.");
+        	if(te==null)ERC_Logger.info("ï¿½Eï¿½Eï¿½ETileEntity is null.");
         	return null;
         }
               

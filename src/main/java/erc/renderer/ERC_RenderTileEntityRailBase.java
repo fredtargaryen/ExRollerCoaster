@@ -1,68 +1,70 @@
 package erc.renderer;
 
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erc._core.ERC_CONST;
 import erc.manager.ERC_CoasterAndRailManager;
 import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 @SideOnly(Side.CLIENT)
-public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer{
+public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap_TileEntityRail>{
 	
 //	private static final ResourceLocation TEXTURE  ;
 	private static final ResourceLocation TEXTUREguiarraw = new ResourceLocation(ERC_CONST.DOMAIN,"textures/gui/ringarraw.png");
 	//new ResourceLocation(", "textures/blocks/pink.png");
 	
-	public void renderTileEntityAt(Wrap_TileEntityRail t, double x, double y, double z, float f)
+	public void renderTileEntityAt(Wrap_TileEntityRail t, double x, double y, double z)
 	{
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 		this.bindTexture(t.getDrawTexture());
-		GL11.glDisable(GL11.GL_CULL_FACE); // ƒJƒŠƒ“ƒOOFF
+		GL11.glDisable(GL11.GL_CULL_FACE); // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½OOFF
 		GL11.glPushMatrix();
 		GL11.glTranslated(x+0.5, y+0.5, z+0.5);
-		tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+		tessellator.getBuffer().color(1.0F, 1.0F, 1.0F, 1.0F);
 
 		t.render(tessellator);
 		
 		
-		//GL11.glTranslated(t.xCoord, t.yCoord, t.zCoord);
-		//GL11.glTranslated(0.5, y-t.yCoord, z-t.zCoord);
+		//GL11.glTranslated(t.x, t.y, t.z);
+		//GL11.glTranslated(0.5, y-t.y, z-t.z);
     	
     	if(t == ERC_CoasterAndRailManager.clickedTileForGUI){
     		DrawRotaArrow(tessellator, t);
     	}
     	//DrawArrow(tessellator, t.vecUp);
     	
-      	GL11.glEnable(GL11.GL_CULL_FACE); // ƒJƒŠƒ“ƒOON
+      	GL11.glEnable(GL11.GL_CULL_FACE); // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½OON
       	GL11.glPopMatrix();
 	}
 	
 	public void p_bindTexture(ResourceLocation texture){ this.bindTexture(texture);}
 	
 	@SuppressWarnings("unused")
-	private void DrawArrow(Tessellator tess, Vec3 vec)
+	private void DrawArrow(Tessellator tess, Vec3d vec)
 	{
-      	tess.startDrawing(GL11.GL_TRIANGLES);
-      	tess.addVertexWithUV(0.2d, 0d, 0.2d, 0.0d, 0.0d);
-      	tess.addVertexWithUV(vec.xCoord*3d, vec.yCoord*3d, vec.zCoord*3d, 0.0d, 0.0d);
-      	tess.addVertexWithUV(-0.2d, 0d, -0.2d, 0.0d, 0.0d);
+		BufferBuilder bb = tess.getBuffer();
+      	bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
+      	bb.pos(0.2d, 0d, 0.2d).tex(0.0d, 0.0d);
+      	bb.pos(vec.x*3d, vec.y*3d, vec.z*3d).tex(0.0d, 0.0d);
+      	bb.pos(-0.2d, 0d, -0.2d).tex(0.0d, 0.0d);
       	tess.draw();
 	}
 	
-	// GUI•\Ž¦’†‚Ì‰ñ“]–îˆó•`‰æ—p
+	// GUIï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰ï¿½]ï¿½ï¿½ï¿½`ï¿½ï¿½p
 	public void DrawRotaArrow(Tessellator tess, Wrap_TileEntityRail tile)
 	{
 		this.bindTexture(TEXTUREguiarraw);
-      	Vec3 d = tile.getRail().BaseRail.vecDir;
-		Vec3 u = tile.getRail().BaseRail.vecUp;
-      	Vec3 p = d.crossProduct(u);
+      	Vec3d d = tile.getRail().BaseRail.vecDir;
+		Vec3d u = tile.getRail().BaseRail.vecUp;
+      	Vec3d p = d.crossProduct(u);
       	
       	d = d.normalize();
       	u = u.normalize();
@@ -72,35 +74,36 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer{
       	
       	// yaw axis
       	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
-		tess.startDrawing(GL11.GL_TRIANGLE_STRIP);
-	    tess.addVertexWithUV(( d.xCoord+p.xCoord)*s, ( d.yCoord+p.yCoord)*s, ( d.zCoord+p.zCoord)*s, 0.0d, 0.0d);
-		tess.addVertexWithUV(( d.xCoord-p.xCoord)*s, ( d.yCoord-p.yCoord)*s, ( d.zCoord-p.zCoord)*s, 1.0d, 0.0d);
-		tess.addVertexWithUV((-d.xCoord+p.xCoord)*s, (-d.yCoord+p.yCoord)*s, (-d.zCoord+p.zCoord)*s, 0.0d, 1.0d);
-		tess.addVertexWithUV((-d.xCoord-p.xCoord)*s, (-d.yCoord-p.yCoord)*s, (-d.zCoord-p.zCoord)*s, 1.0d, 1.0d);
+      	BufferBuilder bb = tess.getBuffer();
+      	bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
+	    bb.pos(( d.x+p.x)*s, ( d.y+p.y)*s, ( d.z+p.z)*s).tex(0.0d, 0.0d);
+		bb.pos(( d.x-p.x)*s, ( d.y-p.y)*s, ( d.z-p.z)*s).tex(1.0d, 0.0d);
+		bb.pos((-d.x+p.x)*s, (-d.y+p.y)*s, (-d.z+p.z)*s).tex(0.0d, 1.0d);
+		bb.pos((-d.x-p.x)*s, (-d.y-p.y)*s, (-d.z-p.z)*s).tex(1.0d, 1.0d);
 		tess.draw();
 		// pitch axis
 		s = 1.5f;
-		GL11.glColor4f(0.0F, 1.0F, 0.0F, 1.0F);  
-		tess.startDrawing(GL11.GL_TRIANGLE_STRIP);
-	    tess.addVertexWithUV(( u.xCoord+d.xCoord)*s, ( u.yCoord+d.yCoord)*s, ( u.zCoord+d.zCoord)*s, 0.0d, 0.0d);
-		tess.addVertexWithUV(( u.xCoord-d.xCoord)*s, ( u.yCoord-d.yCoord)*s, ( u.zCoord-d.zCoord)*s, 1.0d, 0.0d);
-		tess.addVertexWithUV((-u.xCoord+d.xCoord)*s, (-u.yCoord+d.yCoord)*s, (-u.zCoord+d.zCoord)*s, 0.0d, 1.0d);
-		tess.addVertexWithUV((-u.xCoord-d.xCoord)*s, (-u.yCoord-d.yCoord)*s, (-u.zCoord-d.zCoord)*s, 1.0d, 1.0d);
+		GL11.glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
+		bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
+	    bb.pos(( u.x+d.x)*s, ( u.y+d.y)*s, ( u.z+d.z)*s).tex(0.0d, 0.0d);
+		bb.pos(( u.x-d.x)*s, ( u.y-d.y)*s, ( u.z-d.z)*s).tex(1.0d, 0.0d);
+		bb.pos((-u.x+d.x)*s, (-u.y+d.y)*s, (-u.z+d.z)*s).tex(0.0d, 1.0d);
+		bb.pos((-u.x-d.x)*s, (-u.y-d.y)*s, (-u.z-d.z)*s).tex(1.0d, 1.0d);
 		tess.draw();
 		// roll axis
 		s = 1.0f;
-		GL11.glColor4f(0.0F, 0.0F, 1.0F, 1.0F);                       
-		tess.startDrawing(GL11.GL_TRIANGLE_STRIP);              
-	    tess.addVertexWithUV(( u.xCoord+p.xCoord)*s, ( u.yCoord+p.yCoord)*s, ( u.zCoord+p.zCoord)*s, 0.0d, 0.0d);
-		tess.addVertexWithUV(( u.xCoord-p.xCoord)*s, ( u.yCoord-p.yCoord)*s, ( u.zCoord-p.zCoord)*s, 1.0d, 0.0d);
-		tess.addVertexWithUV((-u.xCoord+p.xCoord)*s, (-u.yCoord+p.yCoord)*s, (-u.zCoord+p.zCoord)*s, 0.0d, 1.0d);
-		tess.addVertexWithUV((-u.xCoord-p.xCoord)*s, (-u.yCoord-p.yCoord)*s, (-u.zCoord-p.zCoord)*s, 1.0d, 1.0d);
+		GL11.glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
+		bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
+	    bb.pos(( u.x+p.x)*s, ( u.y+p.y)*s, ( u.z+p.z)*s).tex(0.0d, 0.0d);
+		bb.pos(( u.x-p.x)*s, ( u.y-p.y)*s, ( u.z-p.z)*s).tex(1.0d, 0.0d);
+		bb.pos((-u.x+p.x)*s, (-u.y+p.y)*s, (-u.z+p.z)*s).tex(0.0d, 1.0d);
+		bb.pos((-u.x-p.x)*s, (-u.y-p.y)*s, (-u.z-p.z)*s).tex(1.0d, 1.0d);
 		tess.draw();                            
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity t, double x, double y, double z, float f)
+	public void render(Wrap_TileEntityRail te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
 	{
-		renderTileEntityAt((Wrap_TileEntityRail)t,x,y,z,f);
+		renderTileEntityAt(te,x,y,z);
 	}
 }

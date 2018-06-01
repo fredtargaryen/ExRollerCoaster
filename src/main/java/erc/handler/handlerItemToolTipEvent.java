@@ -1,6 +1,6 @@
 package erc.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 public class handlerItemToolTipEvent {
@@ -8,6 +8,6 @@ public class handlerItemToolTipEvent {
 	@SubscribeEvent
 	public void onRenderItemText(ItemTooltipEvent event)
 	{
-			event.toolTip.add(event.itemStack.getItem().getUnlocalizedName());
+			event.getToolTip().add(event.getItemStack().getItem().getUnlocalizedName());
 	}
 }

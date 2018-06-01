@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "C",
+    "R"
+  ],
+  "key":
+  {
+    "C":
+    {
+      "item": "erc:Coaster",
+      "data": 0
+    },
+    "R":
+    {
+      "item": "minecraft:redstone",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:CoasterMono",
+    "count": 1
+  }
+}

@@ -10,13 +10,13 @@ import org.objectweb.asm.Opcodes;
 
 import com.sun.org.apache.bcel.internal.generic.ALOAD;
 
-import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
+import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 public class classTransformer implements IClassTransformer {
 
-	// ‰ü•Ï‘ÎÛ‚ÌƒNƒ‰ƒX‚ÌŠ®‘SCü–¼‚Å‚·B
-    // Œãq‚ÅMinecraft.jar“à‚Ì“ï“Ç‰»‚³‚ê‚éƒtƒ@ƒCƒ‹‚ğ‘ÎÛ‚Æ‚·‚éê‡‚ÌŠÈˆÕ‚Èæ“¾•û–@‚ğĞ‰î‚µ‚Ü‚·B
+	// ï¿½ï¿½ï¿½Ï‘ÎÛ‚ÌƒNï¿½ï¿½ï¿½Xï¿½ÌŠï¿½ï¿½Sï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½B
+    // ï¿½ï¿½qï¿½ï¿½Minecraft.jarï¿½ï¿½ï¿½Ì“ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ÎÛ‚Æ‚ï¿½ï¿½ï¿½ê‡ï¿½ÌŠÈˆÕ‚Èæ“¾ï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½Ğ‰î‚µï¿½Ü‚ï¿½ï¿½B
     private static final String TARGET_CLASS_NAME = "net.minecraft.client.renderer.EntityRenderer";
      static int counter = 0;
  	@Override
@@ -27,19 +27,19 @@ public class classTransformer implements IClassTransformer {
  		
  		if (TARGET_CLASS_NAME.equals(transformedName))
  		{
- 			ClassReader cr = new ClassReader(bytes); 	// byte”z—ñ‚ğ“Ç‚İ‚İA—˜—p‚µ‚â‚·‚¢Œ`‚É‚·‚éB
-	 		ClassWriter cw = new ClassWriter(cr, 1); 	// ‚±‚ê‚Ìvisit‚ğŒÄ‚Ô‚±‚Æ‚É‚æ‚Á‚Äî•ñ‚ª—­‚Ü‚Á‚Ä‚¢‚­B
-	 		ClassVisitor cv = new ClassAdapter(cw); 	// Adapter‚ğ’Ê‚µ‚Ä‘‚«Š·‚¦o—ˆ‚é‚æ‚¤‚É‚·‚éB
-	 		cr.accept(cv, 0); 							// Œ³‚ÌƒNƒ‰ƒX‚Æ“¯—l‚Ì‡”Ô‚Åvisitƒƒ\ƒbƒh‚ğŒÄ‚ñ‚Å‚­‚ê‚é
-	 		return cw.toByteArray(); 					// Writer“à‚Ìî•ñ‚ğbyte”z—ñ‚É‚µ‚Ä•Ô‚·B
+ 			ClassReader cr = new ClassReader(bytes); 	// byteï¿½zï¿½ï¿½ï¿½Ç‚İï¿½ï¿½İAï¿½ï¿½ï¿½pï¿½ï¿½ï¿½â‚·ï¿½ï¿½ï¿½`ï¿½É‚ï¿½ï¿½ï¿½B
+	 		ClassWriter cw = new ClassWriter(cr, 1); 	// ï¿½ï¿½ï¿½ï¿½ï¿½visitï¿½ï¿½ï¿½Ä‚Ô‚ï¿½ï¿½Æ‚É‚ï¿½ï¿½ï¿½Äï¿½ñ‚ª—ï¿½ï¿½Ü‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½B
+	 		ClassVisitor cv = new ClassAdapter(cw); 	// Adapterï¿½ï¿½Ê‚ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½B
+	 		cr.accept(cv, 0); 							// ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½Xï¿½Æ“ï¿½ï¿½lï¿½Ìï¿½ï¿½Ô‚ï¿½visitï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½ï¿½Ä‚ï¿½Å‚ï¿½ï¿½ï¿½ï¿½
+	 		return cw.toByteArray(); 					// Writerï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½byteï¿½zï¿½ï¿½É‚ï¿½ï¿½Ä•Ô‚ï¿½ï¿½B
  		}
  		else if ("net.minecraft.entity.player.EntityPlayer".equals(transformedName))
  		{
- 			ClassReader cr = new ClassReader(bytes); 	// byte”z—ñ‚ğ“Ç‚İ‚İA—˜—p‚µ‚â‚·‚¢Œ`‚É‚·‚éB
-	 		ClassWriter cw = new ClassWriter(cr, 1); 	// ‚±‚ê‚Ìvisit‚ğŒÄ‚Ô‚±‚Æ‚É‚æ‚Á‚Äî•ñ‚ª—­‚Ü‚Á‚Ä‚¢‚­B
-	 		ClassVisitor cv = new ClassAdapter_GetOff(cw); 	// Adapter‚ğ’Ê‚µ‚Ä‘‚«Š·‚¦o—ˆ‚é‚æ‚¤‚É‚·‚éB
-	 		cr.accept(cv, 0); 							// Œ³‚ÌƒNƒ‰ƒX‚Æ“¯—l‚Ì‡”Ô‚Åvisitƒƒ\ƒbƒh‚ğŒÄ‚ñ‚Å‚­‚ê‚é
-	 		return cw.toByteArray(); 					// Writer“à‚Ìî•ñ‚ğbyte”z—ñ‚É‚µ‚Ä•Ô‚·B
+ 			ClassReader cr = new ClassReader(bytes); 	// byteï¿½zï¿½ï¿½ï¿½Ç‚İï¿½ï¿½İAï¿½ï¿½ï¿½pï¿½ï¿½ï¿½â‚·ï¿½ï¿½ï¿½`ï¿½É‚ï¿½ï¿½ï¿½B
+	 		ClassWriter cw = new ClassWriter(cr, 1); 	// ï¿½ï¿½ï¿½ï¿½ï¿½visitï¿½ï¿½ï¿½Ä‚Ô‚ï¿½ï¿½Æ‚É‚ï¿½ï¿½ï¿½Äï¿½ñ‚ª—ï¿½ï¿½Ü‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½B
+	 		ClassVisitor cv = new ClassAdapter_GetOff(cw); 	// Adapterï¿½ï¿½Ê‚ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚ï¿½ï¿½ï¿½B
+	 		cr.accept(cv, 0); 							// ï¿½ï¿½ï¿½ÌƒNï¿½ï¿½ï¿½Xï¿½Æ“ï¿½ï¿½lï¿½Ìï¿½ï¿½Ô‚ï¿½visitï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½ï¿½Ä‚ï¿½Å‚ï¿½ï¿½ï¿½ï¿½
+	 		return cw.toByteArray(); 					// Writerï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½byteï¿½zï¿½ï¿½É‚ï¿½ï¿½Ä•Ô‚ï¿½ï¿½B
  		}
  		else
  			return bytes;
@@ -54,14 +54,14 @@ public class classTransformer implements IClassTransformer {
 		}
 
 		/**
-		 * ƒƒ\ƒbƒh‚É‚Â‚¢‚ÄŒÄ‚Î‚ê‚éB
+		 * ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½É‚Â‚ï¿½ï¿½ÄŒÄ‚Î‚ï¿½ï¿½B
 		 * 
-		 * @param access  {@link Opcodes}‚ÉÚ‚Á‚Ä‚é‚â‚ÂBpublic‚Æ‚©static‚Æ‚©‚Ìó‘Ô‚ª‚í‚©‚éB
-		 * @param name	ƒƒ\ƒbƒh‚Ì–¼‘OB
-		 * @param desc ƒƒ\ƒbƒh‚Ì(ˆø”‚Æ•Ô‚è’l‚ğ‡‚í‚¹‚½)Œ^B
-		 * @param signature   ƒWƒFƒlƒŠƒbƒN•”•ª‚ğŠÜ‚Şƒƒ\ƒbƒh‚Ì(ˆø”‚Æ•Ô‚è’l‚ğ‡‚í‚¹‚½)Œ^BƒWƒFƒlƒŠƒbƒN•t‚«‚Å‚È‚¯‚ê‚Î‚¨‚»‚ç‚­nullB
-		 * @param exceptions  throws‹å‚É‚©‚©‚ê‚Ä‚¢‚éƒNƒ‰ƒX‚ª—ñ‹“‚³‚ê‚éBL‚Æ;‚ÅˆÍ‚í‚ê‚Ä‚¢‚È‚¢‚Ì‚Å  {@link String#replace(char, char)}‚Å'/'‚Æ'.'‚ğ’uŠ·‚µ‚Ä‚â‚ê‚ÎOKB
-		 * @return ‚±‚±‚Å•Ô‚µ‚½MethodVisitor‚Ìƒƒ\ƒbƒhŒQ‚ª“K‰‚³‚ê‚éB  ClassWriter‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚ê‚ÎMethodWriter‚ªsuper‚©‚ç~‚è‚Ä‚­‚éB
+		 * @param access  {@link Opcodes}ï¿½ÉÚ‚ï¿½ï¿½Ä‚ï¿½ï¿½ÂBpublicï¿½Æ‚ï¿½staticï¿½Æ‚ï¿½ï¿½Ìï¿½Ô‚ï¿½ï¿½í‚©ï¿½ï¿½B
+		 * @param name	ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Ì–ï¿½ï¿½Oï¿½B
+		 * @param desc ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½Æ•Ô‚ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½í‚¹ï¿½ï¿½)ï¿½^ï¿½B
+		 * @param signature   ï¿½Wï¿½Fï¿½lï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Şƒï¿½ï¿½\ï¿½bï¿½hï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½Æ•Ô‚ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½í‚¹ï¿½ï¿½)ï¿½^ï¿½Bï¿½Wï¿½Fï¿½lï¿½ï¿½ï¿½bï¿½Nï¿½tï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½ï¿½Î‚ï¿½ï¿½ï¿½ï¿½ç‚­nullï¿½B
+		 * @param exceptions  throwsï¿½ï¿½É‚ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ñ‹“‚ï¿½ï¿½ï¿½ï¿½BLï¿½ï¿½;ï¿½ÅˆÍ‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Ì‚ï¿½  {@link String#replace(char, char)}ï¿½ï¿½'/'ï¿½ï¿½'.'ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½OKï¿½B
+		 * @return ï¿½ï¿½ï¿½ï¿½ï¿½Å•Ô‚ï¿½ï¿½ï¿½MethodVisitorï¿½Ìƒï¿½ï¿½\ï¿½bï¿½hï¿½Qï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B  ClassWriterï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½MethodWriterï¿½ï¿½superï¿½ï¿½ï¿½ï¿½~ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½B
 		 */
 		private static final String TARGET_TRANSFORMED_NAME = "func_78467_g";
 		private static final String TARGET_Original_NAME = "orientCamera";
@@ -87,10 +87,10 @@ public class classTransformer implements IClassTransformer {
 		}
 
 		/**
-		 * intŒ^•Ï”“™‚Ì‘€ì‚ÉŒÄ‚Î‚ê‚éB
+		 * intï¿½^ï¿½Ïï¿½ï¿½ï¿½ï¿½Ì‘ï¿½ï¿½ìï¿½ÉŒÄ‚Î‚ï¿½ï¿½B
 		 * 
-		 * @param opcode   byte‚Ì”ÍˆÍ‚Åˆµ‚¦‚é‚È‚çBIPUSHAshort‚Ì”ÍˆÍ‚Åˆµ‚¦‚é‚È‚çSIPUSH‚ª“ü‚Á‚Ä‚¢‚éB
-		 * @param operand    short‚Ì”ÍˆÍ‚Éû‚Ü‚é’l‚ª“ü‚Á‚Ä‚¢‚éB
+		 * @param opcode   byteï¿½Ì”ÍˆÍ‚Åˆï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½BIPUSHï¿½Ashortï¿½Ì”ÍˆÍ‚Åˆï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½SIPUSHï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½B
+		 * @param operand    shortï¿½Ì”ÍˆÍ‚Éï¿½ï¿½Ü‚ï¿½lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½B
 		 */
 		public static int MethodCount = 0;
 //		private static final String TARGET_CLASS_NAME = "net/minecraft/client/enderer/RenderGlobal";
@@ -160,14 +160,14 @@ public class classTransformer implements IClassTransformer {
 	}
  	
 	/**
-	 * ƒƒ\ƒbƒh‚Ì–¼‘O‚ğˆÕ“Ç‰»(deobfuscation)‚·‚éB
+	 * ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Ì–ï¿½ï¿½Oï¿½ï¿½ï¿½Õ“Ç‰ï¿½(deobfuscation)ï¿½ï¿½ï¿½ï¿½B
 	 */
 	public static String mapMethodName(String owner, String methodName, String desc) {
 		return FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(unmapClassName(owner), methodName, desc);
 	}
 	
 	/**
-	 * ƒNƒ‰ƒX‚Ì–¼‘O‚ğ“ï“Ç‰»(obfuscation)‚·‚éB
+	 * ï¿½Nï¿½ï¿½ï¿½Xï¿½Ì–ï¿½ï¿½Oï¿½ï¿½ï¿½Ç‰ï¿½(obfuscation)ï¿½ï¿½ï¿½ï¿½B
 	 */
 	public static String unmapClassName(String name) {
 		return FMLDeobfuscatingRemapper.INSTANCE.unmap(name.replace('.', '/')).replace('/', '.');

@@ -1,112 +1,112 @@
-package erc.renderer;
-
-import org.lwjgl.opengl.GL11;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import erc._core.ERC_Core;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.world.IBlockAccess;
-
-
-@SideOnly(Side.CLIENT)
-public class renderBlockRail implements ISimpleBlockRenderingHandler
-{
-	//ƒCƒ“ƒxƒ“ƒgƒŠŒü‚¯
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
-	{
-		if (modelId == this.getRenderId())
-		{
-			Tessellator tessellator = Tessellator.instance;
-
-			//ƒRƒR‚ğ‚¢‚¶‚é‚ÆƒuƒƒbƒN‚Ì‘å‚«‚³‚ª•Ï‚í‚é
-			renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
-			//•`‰æˆÊ’u‚Ì’²®BƒRƒR‚ğ‚¢‚¶‚é‚ÆA’†S‚ÉƒŒƒ“ƒ_[‚Á‚Ä‚«‚½‚èA—V‚×‚é
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			//‚­ƒR:œc AƒRƒsƒy™@RenderBlocks‚İ‚Ä‚Ë
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, -1.0F, 0.0F);
-			renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 1.0F, 0.0F);
-			renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 0.0F, -1.0F);
-			renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 2, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(0.0F, 0.0F, 1.0F);
-			renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 3, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-			renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 4, metadata));
-			tessellator.draw();
-			tessellator.startDrawingQuads();
-			tessellator.setNormal(1.0F, 0.0F, 0.0F);
-			renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, metadata));
-			tessellator.draw();
-			//•`‰æˆÊ’u‚Ì’²®B—V‚ñ‚¾Œã‚Í‚¨•Ğ‚Ã‚¯
-			//ã‚Ìƒ„ƒc¨GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		}
-	}
-	
-	//ƒ[ƒ‹ƒh‚Å‚ÌƒŒƒ“ƒ_[
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-	{
-		if (modelId == this.getRenderId())
-		{
-			//ƒRƒR‚ğ‚¢‚¶‚ê‚ÎƒuƒƒbƒN‚Ì‘å‚«‚³‚ª•Ï‚í‚éB
-			//renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
-			int meta = world.getBlockMetadata(x, y, z);
-			switch(meta&7){
-			case 0: // ã
-				renderer.setRenderBounds(0.2F, 0.7F, 0.2F, 0.8F, 1.0F, 0.8F);
-	            break;                                                       
-			case 1: // ‰º                                                     
-				renderer.setRenderBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.3F, 0.8F);
-	            break;                                                       
-			case 2: // “ì                                                     
-				renderer.setRenderBounds(0.2F, 0.2F, 0.7F, 0.8F, 0.8F, 1.0F);
-	            break;                                                       
-			case 3: // –k                                                     
-				renderer.setRenderBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.3F);
-	            break;                                                       
-			case 4: // “Œ                                                     
-				renderer.setRenderBounds(0.7F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-	            break;                                                       
-			case 5: // ¼                                                     
-				renderer.setRenderBounds(0.0F, 0.2F, 0.2F, 0.3F, 0.8F, 0.8F);
-	            break;                                                       
-	        default:                                                         
-	        	renderer.setRenderBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
-	            break;
-			}
-			renderer.renderStandardBlock(block, x, y, z);
-			return true;
-		}
-		return false;
-	}
-	
-	//ƒCƒ“ƒxƒ“ƒgƒŠ‚ÌƒŒƒ“ƒ_[‚ª–Ê“|‚­‚³‚¢‚È‚çAƒRƒR‚ğfalse‚ÉBƒeƒNƒXƒ`ƒƒ‚¾‚¯•\¦‚³‚ê‚é‚æ‚¤‚É‚È‚é
-	@Override
-	public boolean shouldRender3DInInventory(int modelId)
-	{
-		return true;
-	}
-
-	//ƒŒƒ“ƒ_[ID‚ğ•Ô‚·
-	@Override
-	public int getRenderId()
-	{
-		return ERC_Core.blockRailRenderId;
-	}
-
-}
+//package erc.renderer;
+//
+//import org.lwjgl.opengl.GL11;
+//import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
+//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.relauncher.SideOnly;
+//import erc._core.ERC_Core;
+//import net.minecraft.block.Block;
+//import net.minecraft.client.renderer.RenderBlocks;
+//import net.minecraft.client.renderer.Tessellator;
+//import net.minecraft.world.IBlockAccess;
+//
+//
+//@SideOnly(Side.CLIENT)
+//public class renderBlockRail implements ISimpleBlockRenderingHandler
+//{
+//	//ï¿½Cï¿½ï¿½ï¿½xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	@Override
+//	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer)
+//	{
+//		if (modelId == this.getRenderId())
+//		{
+//			Tessellator tessellator = Tessellator.instance;
+//
+//			//ï¿½Rï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æƒuï¿½ï¿½ï¿½bï¿½Nï¿½Ì‘å‚«ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½
+//			renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
+//			//ï¿½`ï¿½ï¿½Ê’uï¿½Ì’ï¿½ï¿½ï¿½ï¿½Bï¿½Rï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆAï¿½ï¿½ï¿½Sï¿½Éƒï¿½ï¿½ï¿½ï¿½_ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Vï¿½×‚ï¿½
+//			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+//			//ï¿½ï¿½ï¿½R:ï¿½c ï¿½Aï¿½Rï¿½sï¿½yï¿½ï¿½ï¿½@RenderBlocksï¿½İ‚Ä‚ï¿½
+//			tessellator.startDrawingQuads();
+//			tessellator.setNormal(0.0F, -1.0F, 0.0F);
+//			renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, metadata));
+//			tessellator.draw();
+//			tessellator.startDrawingQuads();
+//			tessellator.setNormal(0.0F, 1.0F, 0.0F);
+//			renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, metadata));
+//			tessellator.draw();
+//			tessellator.startDrawingQuads();
+//			tessellator.setNormal(0.0F, 0.0F, -1.0F);
+//			renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 2, metadata));
+//			tessellator.draw();
+//			tessellator.startDrawingQuads();
+//			tessellator.setNormal(0.0F, 0.0F, 1.0F);
+//			renderer.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 3, metadata));
+//			tessellator.draw();
+//			tessellator.startDrawingQuads();
+//			tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+//			renderer.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 4, metadata));
+//			tessellator.draw();
+//			tessellator.startDrawingQuads();
+//			tessellator.setNormal(1.0F, 0.0F, 0.0F);
+//			renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, metadata));
+//			tessellator.draw();
+//			//ï¿½`ï¿½ï¿½Ê’uï¿½Ì’ï¿½ï¿½ï¿½ï¿½Bï¿½Vï¿½ñ‚¾Œï¿½Í‚ï¿½ï¿½Ğ‚Ã‚ï¿½
+//			//ï¿½ï¿½Ìƒï¿½ï¿½cï¿½ï¿½GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+//			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+//		}
+//	}
+//
+//	//ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½Å‚Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½[
+//	@Override
+//	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+//	{
+//		if (modelId == this.getRenderId())
+//		{
+//			//ï¿½Rï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îƒuï¿½ï¿½ï¿½bï¿½Nï¿½Ì‘å‚«ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½B
+//			//renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
+//			int meta = world.getBlockMetadata(x, y, z);
+//			switch(meta&7){
+//			case 0: // ï¿½ï¿½
+//				renderer.setRenderBounds(0.2F, 0.7F, 0.2F, 0.8F, 1.0F, 0.8F);
+//	            break;
+//			case 1: // ï¿½ï¿½
+//				renderer.setRenderBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.3F, 0.8F);
+//	            break;
+//			case 2: // ï¿½ï¿½
+//				renderer.setRenderBounds(0.2F, 0.2F, 0.7F, 0.8F, 0.8F, 1.0F);
+//	            break;
+//			case 3: // ï¿½k
+//				renderer.setRenderBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.3F);
+//	            break;
+//			case 4: // ï¿½ï¿½
+//				renderer.setRenderBounds(0.7F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+//	            break;
+//			case 5: // ï¿½ï¿½
+//				renderer.setRenderBounds(0.0F, 0.2F, 0.2F, 0.3F, 0.8F, 0.8F);
+//	            break;
+//	        default:
+//	        	renderer.setRenderBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
+//	            break;
+//			}
+//			renderer.renderStandardBlock(block, x, y, z);
+//			return true;
+//		}
+//		return false;
+//	}
+//
+//	//ï¿½Cï¿½ï¿½ï¿½xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ìƒï¿½ï¿½ï¿½ï¿½_ï¿½[ï¿½ï¿½ï¿½Ê“|ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½Aï¿½Rï¿½Rï¿½ï¿½falseï¿½ÉBï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‚¤ï¿½É‚È‚ï¿½
+//	@Override
+//	public boolean shouldRender3DInInventory(int modelId)
+//	{
+//		return true;
+//	}
+//
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½[IDï¿½ï¿½Ô‚ï¿½
+//	@Override
+//	public int getRenderId()
+//	{
+//		return ERC_Core.blockRailRenderId;
+//	}
+//
+//}

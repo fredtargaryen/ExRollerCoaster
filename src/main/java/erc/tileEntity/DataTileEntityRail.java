@@ -1,29 +1,30 @@
 package erc.tileEntity;
 
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class DataTileEntityRail {
-	public Vec3 vecPos;
-	public Vec3 vecDir;
-	public Vec3 vecUp;
+	public Vec3d vecPos;
+	public Vec3d vecDir;
+	public Vec3d vecUp;
 	public float fUp;
 	public float fDirTwist;
-	public float Power;	// 	Power‚Ì‚ÝBase‚ÆNext‚ÌŠÔ‚Å‹¤’Ê
-	public int cx, cy, cz; // connection rail ŽŸ‚â‘O‚ª‚Ç‚±‚ÉŒq‚ª‚Á‚Ä‚¢‚é‚©
+	public float Power;	// 	Powerï¿½Ì‚ï¿½Baseï¿½ï¿½Nextï¿½ÌŠÔ‚Å‹ï¿½ï¿½ï¿½
+	public int cx, cy, cz; // connection rail ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ÉŒqï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©
 	
 	public DataTileEntityRail()
 	{
-		vecPos = Vec3.createVectorHelper(0, 0, 0);
-		vecDir = Vec3.createVectorHelper(0, 0, 0);
-		vecUp = Vec3.createVectorHelper(0, 0, 0);
+		vecPos = new Vec3d(0, 0, 0);
+		vecDir = new Vec3d(0, 0, 0);
+		vecUp = new Vec3d(0, 0, 0);
 		fUp = 0;
 		fDirTwist = 0;
 		Power = 25f;
 		cx = cy = cz = -1;
 	}
 	
-	public void SetData(Vec3 pos, Vec3 dir, Vec3 up, float fup, float fdir, float pow, int x, int y, int z)
+	public void SetData(Vec3d pos, Vec3d dir, Vec3d up, float fup, float fdir, float pow, int x, int y, int z)
 	{
 		vecPos = pos;                      
 		vecDir = dir;                    
@@ -70,25 +71,25 @@ public class DataTileEntityRail {
 		fDirTwist = 0;
 	}
 	
-	public Vec3 CalcVec3DIRxPOW(float pow)
+	public Vec3d CalcVec3DIRxPOW(float pow)
 	{
-		return Vec3.createVectorHelper(
-				(vecDir.xCoord+vecUp.xCoord*fUp)*pow, 
-				(vecDir.yCoord+vecUp.yCoord*fUp)*pow, 
-				(vecDir.zCoord+vecUp.zCoord*fUp)*pow);
+		return new Vec3d(
+				(vecDir.x+vecUp.x*fUp)*pow,
+				(vecDir.y+vecUp.y*fUp)*pow,
+				(vecDir.z+vecUp.z*fUp)*pow);
 	}
-	public Vec3 CalcVec3UpTwist()
+	public Vec3d CalcVec3UpTwist()
 	{
-		Vec3 vecpitch1 = vecUp.crossProduct(vecDir).normalize();
-		return Vec3.createVectorHelper(
-				vecUp.xCoord+vecpitch1.xCoord*fDirTwist,
-				vecUp.yCoord+vecpitch1.yCoord*fDirTwist,
-				vecUp.zCoord+vecpitch1.zCoord*fDirTwist).normalize();
+		Vec3d vecpitch1 = vecUp.crossProduct(vecDir).normalize();
+		return new Vec3d(
+				vecUp.x+vecpitch1.x*fDirTwist,
+				vecUp.y+vecpitch1.y*fDirTwist,
+				vecUp.z+vecpitch1.z*fDirTwist).normalize();
 	}
 	
 	public Wrap_TileEntityRail getConnectionTileRail(World world)
 	{
-		return (Wrap_TileEntityRail) world.getTileEntity(cx, cy, cz);
+		return (Wrap_TileEntityRail) world.getTileEntity(new BlockPos(cx, cy, cz));
 	}
 	
 }

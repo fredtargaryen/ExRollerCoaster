@@ -1,6 +1,6 @@
 package erc.math;
 
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public class ERC_MathHelper {
 	
@@ -11,19 +11,19 @@ public class ERC_MathHelper {
 		public Vec4(double x,double y,double z,double w){this.x = (float) x; this.y = (float) y; this.z = (float) z; this.w = (float) w;}
 	}
 	
-	public static Vec3 Spline(float t, Vec3 base, Vec3 next, Vec3 dir1, Vec3 dir2)
+	public static Vec3d Spline(float t, Vec3d base, Vec3d next, Vec3d dir1, Vec3d dir2)
 	{
-		// ”}‰î•Ï”ƒxƒNƒgƒ‹¶¬
+		// ï¿½}ï¿½ï¿½Ïï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		Vec4 vec_t = new Vec4(t,t*t,t*t*t,1.0f);
 		
-//		// ƒXƒvƒ‰ƒCƒ“’è”s—ñ¶¬
+//		// ï¿½Xï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½è”ï¿½sï¿½ñ¶ï¿½
 //		Matrix4f spline_c = new Matrix4f();
 //		spline_c.m00 = 2f; spline_c.m01 = -2f; spline_c.m02 = 1f; spline_c.m03 = 1f;
 //		spline_c.m10 = -3f; spline_c.m11 = 3f; spline_c.m12 = -2f; spline_c.m13 = -1f;
 //		spline_c.m20 = 0f; spline_c.m21 = 0f; spline_c.m22 = 1f; spline_c.m23 = 0f;
 //		spline_c.m30 = 1f; spline_c.m31 = 0f; spline_c.m32 = 0f; spline_c.m33 = 0f;
 //		
-//		// §Œä“_À•W•ûŒüƒxƒNƒgƒ‹‡¬s—ñ¶¬
+//		// ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ñ¶ï¿½
 //		Matrix4f spline_V = new Matrix4f();
 //		spline_V.m00 = (float) base.xCoord; spline_V.m01 = (float)base.yCoord; spline_V.m02 = (float)base.zCoord; spline_V.m03 = 1f;
 //		spline_V.m10 = (float) next.xCoord; spline_V.m11 = (float)next.yCoord; spline_V.m12 = (float)next.zCoord; spline_V.m13 = 1f;
@@ -57,18 +57,18 @@ public class ERC_MathHelper {
 		Vec4 vt = new Vec4(2f*t3-3f*t2+1f, -2f*t3+3f*t2, t3-2f*t2+t, t3-t2);
 				
 		Vec4 ans = new Vec4(
-			(float)base.xCoord*vt.x+
-			(float)next.xCoord*vt.y+
-			(float)dir1.xCoord*vt.z+
-			(float)dir2.xCoord*vt.w,
-			(float)base.yCoord*vt.x+
-			(float)next.yCoord*vt.y+
-			(float)dir1.yCoord*vt.z+
-			(float)dir2.yCoord*vt.w,
-			(float)base.zCoord*vt.x+
-			(float)next.zCoord*vt.y+
-			(float)dir1.zCoord*vt.z+
-			(float)dir2.zCoord*vt.w,
+			(float)base.x*vt.x+
+			(float)next.x*vt.y+
+			(float)dir1.x*vt.z+
+			(float)dir2.x*vt.w,
+			(float)base.y*vt.x+
+			(float)next.y*vt.y+
+			(float)dir1.y*vt.z+
+			(float)dir2.y*vt.w,
+			(float)base.z*vt.x+
+			(float)next.z*vt.y+
+			(float)dir1.z*vt.z+
+			(float)dir2.z*vt.w,
 			1f*vt.x+
 			1f*vt.y);
 //		vec_t = Matrix4f.transform(spline_c, vec_t, vec_t);
@@ -76,19 +76,19 @@ public class ERC_MathHelper {
 //		spline_V.mul(spline_c);
 //		spline_V.transform(vec_t);
 		
-		return Vec3.createVectorHelper(ans.x, ans.y, ans.z);
+		return new Vec3d(ans.x, ans.y, ans.z);
 	}
 	
-	public static Vec3 Lerp(float t, Vec3 base, Vec3 next)
+	public static Vec3d Lerp(float t, Vec3d base, Vec3d next)
 	{
-		return Vec3.createVectorHelper(
-				base.xCoord*(1-t)+next.xCoord*t, 
-				base.yCoord*(1-t)+next.yCoord*t, 
-				base.zCoord*(1-t)+next.zCoord*t
+		return new Vec3d(
+				base.x*(1-t)+next.x*t,
+				base.y*(1-t)+next.y*t,
+				base.z*(1-t)+next.z*t
 				);
 	}
 	
-	public static float CalcSmoothRailPower(Vec3 dirBase, Vec3 dirNext, Vec3 vecBase, Vec3 vecNext)
+	public static float CalcSmoothRailPower(Vec3d dirBase, Vec3d dirNext, Vec3d vecBase, Vec3d vecNext)
 	{
 		double dot = dirBase.dotProduct(dirNext);
     	double len = vecBase.distanceTo(vecNext);
@@ -115,7 +115,7 @@ public class ERC_MathHelper {
 ////		out.rotmat.flip();
 //	}
 	
-	public static double angleTwoVec3(Vec3 a, Vec3 b)
+	public static double angleTwoVec3(Vec3d a, Vec3d b)
 	{
 //		@SuppressWarnings("unused")
 //		double temp = a.normalize().dotProduct(b.normalize());
@@ -139,15 +139,15 @@ public class ERC_MathHelper {
 		return a1*(1-t) + a2*t;
 	}
 	
-	public static Vec3 rotateAroundVector(Vec3 rotpos, Vec3 axis, double radian)
+	public static Vec3d rotateAroundVector(Vec3d rotpos, Vec3d axis, double radian)
 	{
 		radian *= 0.5;
-		Vec4 Qsrc = new Vec4(0,rotpos.xCoord,rotpos.yCoord,rotpos.zCoord);
-		Vec4 Q1 = new Vec4(Math.cos(radian), axis.xCoord*Math.sin(radian), axis.yCoord*Math.sin(radian), axis.zCoord*Math.sin(radian));
-		Vec4 Q2 = new Vec4(Math.cos(radian),-axis.xCoord*Math.sin(radian),-axis.yCoord*Math.sin(radian),-axis.zCoord*Math.sin(radian));
+		Vec4 Qsrc = new Vec4(0,rotpos.x,rotpos.y,rotpos.z);
+		Vec4 Q1 = new Vec4(Math.cos(radian), axis.x*Math.sin(radian), axis.y*Math.sin(radian), axis.z*Math.sin(radian));
+		Vec4 Q2 = new Vec4(Math.cos(radian),-axis.x*Math.sin(radian),-axis.y*Math.sin(radian),-axis.z*Math.sin(radian));
 	
 		Vec4 ans = MulQuaternion(MulQuaternion(Q2, Qsrc), Q1);
-		return Vec3.createVectorHelper(ans.y, ans.z, ans.w);
+		return new Vec3d(ans.y, ans.z, ans.w);
 	}
 	private static Vec4 MulQuaternion(Vec4 q1, Vec4 q2)
 	{
@@ -159,18 +159,18 @@ public class ERC_MathHelper {
 				);
 	}
 	
-	// ‹…–ÊüŒ`•âŠÔ
-	public static Vec3 Slerp(float t, Vec3 Base, Vec3 Goal)
+	// ï¿½ï¿½ï¿½Êï¿½ï¿½`ï¿½ï¿½ï¿½
+	public static Vec3d Slerp(float t, Vec3d Base, Vec3d Goal)
 	{
 		double theta = Math.acos(clamp(Base.dotProduct(Goal)));
 		if(theta == 0 || theta == 1d)return Base;
 		double sinTh = Math.sin(theta);
 		double Pb = Math.sin(theta*(1-t));
 		double Pg = Math.sin(theta*t);
-		return Vec3.createVectorHelper(
-				(Base.xCoord*Pb + Goal.xCoord*Pg)/sinTh, 
-				(Base.yCoord*Pb + Goal.yCoord*Pg)/sinTh, 
-				(Base.zCoord*Pb + Goal.zCoord*Pg)/sinTh);
+		return new Vec3d(
+				(Base.x*Pb + Goal.x*Pg)/sinTh,
+				(Base.y*Pb + Goal.y*Pg)/sinTh,
+				(Base.z*Pb + Goal.z*Pg)/sinTh);
 	}
 	
 	public static float fixrot(float rot, float prevrot)

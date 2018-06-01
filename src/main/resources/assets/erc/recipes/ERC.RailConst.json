@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "R",
+    "O"
+  ],
+  "key":
+  {
+    "R":
+    {
+      "item": "erc:railnormal",
+      "data": 0
+    },
+    "O":
+    {
+      "item": "minecraft:obsidian",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:ERC.RailConst",
+    "count": 1
+  }
+}

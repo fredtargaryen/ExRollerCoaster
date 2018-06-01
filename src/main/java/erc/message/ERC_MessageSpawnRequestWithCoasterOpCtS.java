@@ -1,8 +1,9 @@
 package erc.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc._core.ERC_Core;
 import erc.entity.ERC_EntityCoaster;
 import erc.entity.ERC_EntityCoasterConnector;
@@ -68,11 +69,11 @@ public class ERC_MessageSpawnRequestWithCoasterOpCtS implements IMessage, IMessa
     public IMessage onMessage(ERC_MessageSpawnRequestWithCoasterOpCtS m, MessageContext ctx)
     {
 		// spawn!
-		World world = ctx.getServerHandler().playerEntity.worldObj;
-		Wrap_TileEntityRail tile = (Wrap_TileEntityRail)world.getTileEntity(m.x, m.y, m.z);
+		World world = ctx.getServerHandler().player.world;
+		Wrap_TileEntityRail tile = (Wrap_TileEntityRail)world.getTileEntity(new BlockPos(m.x, m.y, m.z));
 		Wrap_ItemCoaster item = (Wrap_ItemCoaster) (m.itemID==1?ERC_Core.ItemCoaster:(m.itemID==2?ERC_Core.ItemCoasterConnector:ERC_Core.ItemCoasterMono));
 		ERC_EntityCoaster entitycoaster = item.getItemInstance(world, tile, (double)((float)m.x + 0.5F), (double)((float)m.y + 0.6F), (double)((float)m.z + 0.5F));
-		entitycoaster.setModelOptions(m.modelID, m.ops); // ‹­§“I‚ÉOP‚ðÝ’è‚³‚¹‚é‚½‚ß‚Ì-1
+		entitycoaster.setModelOptions(m.modelID, m.ops); // ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½OPï¿½ï¿½Ý’è‚³ï¿½ï¿½ï¿½é‚½ï¿½ß‚ï¿½-1
 		
 		if(m.parentID > -1)
 		{
@@ -81,7 +82,7 @@ public class ERC_MessageSpawnRequestWithCoasterOpCtS implements IMessage, IMessa
 			((ERC_EntityCoasterConnector)entitycoaster).setParent(parent);
 		}
 		
-		world.spawnEntityInWorld(entitycoaster);
+		world.spawnEntity(entitycoaster);
 
 		return null;
     }

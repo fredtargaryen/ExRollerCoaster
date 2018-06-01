@@ -22,18 +22,17 @@ import erc.tileEntity.Wrap_TileEntityRail;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
-import net.minecraftforge.client.model.ModelFormatException;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.client.model.obj.OBJModel;
 
 public class ERC_ModelLoadManager {
 	
 	public static class ModelPack{
-		public IModelCustom Model;
+		public OBJModel Model;
 		public ResourceLocation Tex;
 		public String IconStr;
 		public ModelOptions op;
-		public ModelPack(IModelCustom m, ResourceLocation t, String ic, ModelOptions op)
+		public ModelPack(OBJModel m, ResourceLocation t, String ic, ModelOptions op)
 		{
 			Model = m; 
 			Tex = t; 
@@ -69,13 +68,13 @@ public class ERC_ModelLoadManager {
 //	}
 	
 	public static class ModelOptions{	
-		// ‘¬“x§Œä
+		// ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½
 		public float Weight = 1.0f;
-		// Ô—¼‚ÌƒTƒCƒY
+		// ï¿½Ô—ï¿½ï¿½ÌƒTï¿½Cï¿½Y
 		public float Width = 2.0f;
 		public float Height = 2.0f;
-		public float Length = 1.5f;	//Ú‘±’·
-		// ÀÈî•ñ
+		public float Length = 1.5f;	//ï¿½Ú‘ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½Èï¿½ï¿½
 		public boolean canRide = true;
 		public int SeatNum = 0;
 		public float[] offsetX;
@@ -172,10 +171,10 @@ public class ERC_ModelLoadManager {
 	}
 
 	public static class RailPack{
-		public IModelCustom[] RailModels;
+		public OBJModel[] RailModels;
 		public ResourceLocation[] RailTexs;
 		public String IconStr;
-		public RailPack(IModelCustom[] Models, ResourceLocation[] texs, String ic)
+		public RailPack(OBJModel[] Models, ResourceLocation[] texs, String ic)
 		{
 			RailModels = Models; RailTexs = texs; IconStr = ic;
 		}
@@ -187,7 +186,7 @@ public class ERC_ModelLoadManager {
 		}
 	}
 	
-	private static Map<String, IModelCustom> MapModel = new HashMap<String, IModelCustom>();
+	private static Map<String, OBJModel> MapModel = new HashMap<String, OBJModel>();
 	private static Map<String, ResourceLocation> MapTex = new HashMap<String, ResourceLocation>();
 //	private static List<ModelPack2> ModelPackList = new ArrayList<ModelPack2>();
 	private static List<ModelPack> ModelPackList_Main = new ArrayList<ModelPack>();
@@ -196,15 +195,15 @@ public class ERC_ModelLoadManager {
 	private static List<RailPack> RailPackList = new ArrayList<RailPack>();	
 	
 	private static final String AddModelAdd = "./mods/ERC_AddModels/assets/"+ERC_CONST.D_AM+"/";
-//	private static final String ExternalFileAdd = "../../../"; // ƒfƒoƒbƒO—p		TODO
-//	private static final String ExternalFileAdd = "../../../../"; // ƒpƒbƒP[ƒW‰»—p
+//	private static final String ExternalFileAdd = "../../../"; // ï¿½fï¿½oï¿½bï¿½Oï¿½ï¿½ï¿½p		TODO
+//	private static final String ExternalFileAdd = "../../../../"; // ï¿½pï¿½bï¿½Pï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½p
 	
 	public static void init()
 	{	
 //    	addObj("../../../../model.obj");
 //    	ERC_Logger.info("file.obj ... OK");
     	
-    	// ƒR[ƒXƒ^[ƒfƒtƒH“o˜^
+    	// ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½fï¿½tï¿½Hï¿½oï¿½^
 //		ERC_Logger.info("LoadManager Init");
 //		addObj(defaultModel);
 //		addObj(defaultModel_c);
@@ -213,17 +212,17 @@ public class ERC_ModelLoadManager {
 //		readOptionsFromFileName(mp, "file.sn1", 0);
 //		readOptionsFromFileName(mp, "file.sn1", 1);
 		
-		//ƒfƒBƒŒƒNƒgƒŠì¬
+		//ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ì¬
 		File ercfirCoaster = new File(AddModelAdd+"Coaster/");
 //		ercfirCoaster.mkdirs();
 		File ercfirRail = new File(AddModelAdd+"Rail/");
 //		ercfirRail.mkdirs();
 		
-		//’†‚Ìƒtƒ@ƒCƒ‹‘–¸
+		//ï¿½ï¿½ï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		String[] modeldirsC = ercfirCoaster.list();
 		String[] modeldirsR = ercfirRail.list();
 		
-		// ’†gŒ©‚Ä“o˜^
+		// ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ä“oï¿½^
 		if(modeldirsC==null)return;
 		for(String strDirName : modeldirsC)
 		{
@@ -257,14 +256,14 @@ public class ERC_ModelLoadManager {
 		String OptionFileNameConnect = "";
 		String OptionFileNameMono = "";
 		
-		//obj,tex“Ç‚İ‚İ
+		//obj,texï¿½Ç‚İï¿½ï¿½ï¿½
 		String[] fileNames = dir.list();
 		for( String fname : fileNames)
 		{
 			ERC_Logger.info("file open:"+str+"/"+fname);
 //			File file = new File(str+"/"+fname);
 			
-			//////// model_c.obj ˜AŒ‹ƒR[ƒXƒ^[‚Ìƒ‚ƒfƒ‹
+			//////// model_c.obj ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìƒï¿½ï¿½fï¿½ï¿½
 	        if (fname.matches(".*model_c\\..*.obj$"))
         	{
 	        	cObjName=ERC_CONST.D_AM+":"+str+"/"+fname;
@@ -272,7 +271,7 @@ public class ERC_ModelLoadManager {
 	        	addObj(cObjName);
 	        	modelFlags |= 2;
         	}
-        	//////// model_m.obj ’PÀƒR[ƒXƒ^[‚Ìƒ‚ƒfƒ‹
+        	//////// model_m.obj ï¿½Pï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìƒï¿½ï¿½fï¿½ï¿½
 	        if (fname.matches(".*model_m\\..*.obj$"))
         	{
 	        	mObjName=ERC_CONST.D_AM+":"+str+"/"+fname;
@@ -280,7 +279,7 @@ public class ERC_ModelLoadManager {
 	        	addObj(mObjName);
 	        	modelFlags |= 4;
         	}   
-	        //////// model.obj ƒƒCƒ“ƒR[ƒXƒ^[‚Ìƒ‚ƒfƒ‹
+	        //////// model.obj ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìƒï¿½ï¿½fï¿½ï¿½
 	        if (fname.matches(".*model\\..*obj$"))
         	{
 	        	ObjName=ERC_CONST.D_AM+":"+str+"/"+fname;
@@ -289,38 +288,38 @@ public class ERC_ModelLoadManager {
 	        	modelFlags |= 1;
         	}
 
-	        //////// tex.png ƒƒCƒ“ƒR[ƒXƒ^[‚ÌƒeƒNƒXƒ`ƒƒ
+	        //////// tex.png ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½
 	        if (fname.matches(".*tex\\.*png$"))
         	{
 	        	TexName=ERC_CONST.D_AM+":"+str+"/"+fname;
 	        	addTexture(TexName);
         	}
-	        //////// tex_c.png ˜AŒ‹ƒR[ƒXƒ^[‚ÌƒeƒNƒXƒ`ƒƒ
+	        //////// tex_c.png ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½
 	        if (fname.matches(".*tex_c\\.*png$"))
         	{
 	        	cTexName=ERC_CONST.D_AM+":"+str+"/"+fname;
 	        	addTexture(cTexName);
         	}
-	        //////// tex_m.png ’PÀƒR[ƒXƒ^[‚ÌƒeƒNƒXƒ`ƒƒ
+	        //////// tex_m.png ï¿½Pï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½
 	        if (fname.matches(".*tex_m\\.*png$"))
         	{
 	        	mTexName=ERC_CONST.D_AM+":"+str+"/"+fname;
 	        	addTexture(mTexName);
         	}
 	        
-	        //////// icon.png ƒƒCƒ“ƒR[ƒXƒ^[‚ÌƒAƒCƒRƒ“
+	        //////// icon.png ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½ÌƒAï¿½Cï¿½Rï¿½ï¿½
 	        if (fname.matches(".*icon\\.*png$"))
         	{
 	        	IconName=removeExtention(ERC_CONST.D_AM+":"+"../../"+str+"/"+fname);
 //	        	addTexture(IconName);
         	}
-        	//////// icon.png ˜AŒ‹ƒR[ƒXƒ^[‚ÌƒAƒCƒRƒ“
+        	//////// icon.png ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½ÌƒAï¿½Cï¿½Rï¿½ï¿½
 	        if (fname.matches(".*icon_c\\.*png$"))
         	{
 	        	cIconName=removeExtention(ERC_CONST.D_AM+":"+"../../"+str+"/"+fname);
 //	        	addTexture(cIconName);
         	}
-	        //////// icon.png ˜AŒ‹ƒR[ƒXƒ^[‚ÌƒAƒCƒRƒ“
+	        //////// icon.png ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½ÌƒAï¿½Cï¿½Rï¿½ï¿½
 	        if (fname.matches(".*icon_m\\.*png$"))
         	{
 	        	mIconName=removeExtention(ERC_CONST.D_AM+":"+"../../"+str+"/"+fname);
@@ -364,7 +363,7 @@ public class ERC_ModelLoadManager {
 //		String OptionFileNameMain = "";
 //		String OptionFileNameConnect = "";
 		
-		//obj,tex“Ç‚İ‚İ
+		//obj,texï¿½Ç‚İï¿½ï¿½ï¿½
 		String[] objfile = dir.list();
 		for( String fname : objfile)
 		{
@@ -394,10 +393,10 @@ public class ERC_ModelLoadManager {
 			}
 		}
 
-		// “Ç‚İ‚ß‚È‚©‚Á‚½ƒ‚ƒfƒ‹‚Í’ÊíƒŒ[ƒ‹‚Å•`‰æ‚·‚é
+		// ï¿½Ç‚İï¿½ï¿½ß‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Í’ÊíƒŒï¿½[ï¿½ï¿½ï¿½Å•`ï¿½æ‚·ï¿½ï¿½
 		for(int i=0;i<ObjNames.length;++i)if(ObjNames[i].matches("^null$"))ObjNames[i] = ObjNames[0];
 		for(int i=0;i<TexNames.length;++i)if(TexNames[i].matches("^null$"))TexNames[i] = TexNames[0];
-		// ’ÊíƒŒ[ƒ‹‚ª“Ç‚İ‚ß‚Ä‚È‚©‚Á‚½‚ç“o˜^‚µ‚È‚¢
+		// ï¿½ÊíƒŒï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ß‚Ä‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½^ï¿½ï¿½ï¿½È‚ï¿½
 		if(ObjNames[0].matches("^null$"))return;
 		
 		addRailModelPack(ObjNames, TexNames, IconName);
@@ -406,18 +405,18 @@ public class ERC_ModelLoadManager {
 	public static void readOptionsFromFileName(ModelOptions Options, String filename)
 	{
 		String op;
-		filename = removeExtention(filename);//Šg’£qæ‚èœ‚«
+		filename = removeExtention(filename);//ï¿½gï¿½ï¿½ï¿½qï¿½ï¿½èœï¿½ï¿½
 		while( (op = getExtention(filename)) != null )
 		{
 			if(!op.matches("^[a-zA-Z]+[0-9]+_*-*[0-9]*$")){filename = removeExtention(filename); continue;}
 			char flag = op.charAt(0);
 			switch(flag)
 			{
-			case 'L'/*’·‚³*/: Options.Length = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
-			case 'g'/*d‚³*/: Options.Weight = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
-			case 'w'/*•@*/: Options.Width = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
-			case 'h'/*‚‚³*/: Options.Height = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
-			case 's'/*ÀÈ*/: subOpstions(Options, op.charAt(1), op.substring(2, op.length()));		break;
+			case 'L'/*ï¿½ï¿½ï¿½ï¿½*/: Options.Length = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
+			case 'g'/*ï¿½dï¿½ï¿½*/: Options.Weight = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
+			case 'w'/*ï¿½ï¿½ï¿½@*/: Options.Width = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
+			case 'h'/*ï¿½ï¿½ï¿½ï¿½*/: Options.Height = Float.parseFloat(op.substring(1,op.length())) * 0.01f;	break;
+			case 's'/*ï¿½ï¿½ï¿½ï¿½*/: subOpstions(Options, op.charAt(1), op.substring(2, op.length()));		break;
 			}
 			filename = removeExtention(filename);
 		}
@@ -446,18 +445,24 @@ public class ERC_ModelLoadManager {
 		}
 		switch(flag)
 		{
-		case 'n' /*op:s ÀÈ‚Ì”*/ : op.setSeatNum(Integer.parseInt(opstr));					break;
-		case 'x' /*op:s ÀÈ‚Ì‰¡*/ : op.offsetX[num] = Integer.parseInt(opstr) * 0.01f;		break;
-		case 'y' /*op:s ÀÈ‚Ì‚‚³*/: op.offsetY[num] = Float.parseFloat(opstr) * 0.01f;		break;
-		case 'z' /*op:s ÀÈ‚Ì‰œ*/ : op.offsetZ[num] = Float.parseFloat(opstr) * 0.01f;		break;
-		case 'r' /*op:s ÀÈ‚Ì‰ñ“]*/: op.rotZ[num] = Float.parseFloat(opstr) * 0.01f;			break;
+		case 'n' /*op:s ï¿½ï¿½ï¿½È‚Ìï¿½*/ : op.setSeatNum(Integer.parseInt(opstr));					break;
+		case 'x' /*op:s ï¿½ï¿½ï¿½È‚Ì‰ï¿½*/ : op.offsetX[num] = Integer.parseInt(opstr) * 0.01f;		break;
+		case 'y' /*op:s ï¿½ï¿½ï¿½È‚Ìï¿½ï¿½ï¿½*/: op.offsetY[num] = Float.parseFloat(opstr) * 0.01f;		break;
+		case 'z' /*op:s ï¿½ï¿½ï¿½È‚Ì‰ï¿½*/ : op.offsetZ[num] = Float.parseFloat(opstr) * 0.01f;		break;
+		case 'r' /*op:s ï¿½ï¿½ï¿½È‚Ì‰ï¿½]*/: op.rotZ[num] = Float.parseFloat(opstr) * 0.01f;			break;
 		}	
 	}
 	
 	public static void addObj(String filename)
 	{
-		if(MapModel.containsKey(filename))return;	
-		MapModel.put(filename, AdvancedModelLoader.loadModel(new ResourceLocation(filename)));
+		if(MapModel.containsKey(filename))return;
+		try {
+			MapModel.put(filename, (OBJModel)OBJLoader.INSTANCE.loadModel(new ResourceLocation(filename)));
+		}
+		catch(Exception e)
+		{
+			System.out.println("Failed to load OBJ model "+filename);
+		}
 	}
 //	public static void addObjCustom(String filename)
 //	{
@@ -471,7 +476,7 @@ public class ERC_ModelLoadManager {
  		MapTex.put(filename, new ResourceLocation(filename));
 	}
 	
-	public static IModelCustom getObj(String filename)
+	public static OBJModel getObj(String filename)
 	{
 		return MapModel.get(filename);
 	}
@@ -491,7 +496,7 @@ public class ERC_ModelLoadManager {
 	public static void addRailModelPack(String[] ObjNames, String[] TexNames, String iconName)
 	{
 		if(ObjNames.length != TexNames.length)return;
-		IModelCustom[] models = new IModelCustom[ObjNames.length];
+		OBJModel[] models = new OBJModel[ObjNames.length];
 		ResourceLocation[] texs = new ResourceLocation[TexNames.length];
 		for(int i=0;i<ObjNames.length;++i)models[i] = getObj(ObjNames[i]);
 		for(int i=0;i<TexNames.length;++i)texs[i] = getTex(TexNames[i]);
@@ -607,7 +612,7 @@ public class ERC_ModelLoadManager {
 		return RailPackList.size();
 	}
 	
-	// Šg’£qØ‚èæ‚è‚Æ‚©ƒIƒvƒVƒ‡ƒ“Ø‚èæ‚è‚Æ‚©‚É
+	// ï¿½gï¿½ï¿½ï¿½qï¿½Ø‚ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ø‚ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½
 	private static String removeExtention(String fileName)
 	{
 	    if (fileName == null)
@@ -618,7 +623,7 @@ public class ERC_ModelLoadManager {
 	    } 
 	    return fileName;
 	}
-	// ƒIƒvƒVƒ‡ƒ“‚Ì”²‚«o‚µ
+	// ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ì”ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½
 	private static String getExtention(String fileName)
 	{
 	    if (fileName == null)
@@ -627,7 +632,7 @@ public class ERC_ModelLoadManager {
 	    if (point != -1) {
 	        return fileName.substring(point+1, fileName.length());
 	    } 
-	    return null; //ƒIƒvƒVƒ‡ƒ“‚ª‚à‚¤‚È‚©‚Á‚½‚ç‚±‚±
+	    return null; //ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚±ï¿½ï¿½
 	}
 	
 	
@@ -638,7 +643,7 @@ public class ERC_ModelLoadManager {
 		{
 			addObj(mp.getModelName());
 		}
-		catch (ModelFormatException e)
+		catch (Exception e)
 		{			
 			ERC_Logger.warn("can't load model '"+mp.getModelName()+"'");
 			ERC_Logger.warn(e.getMessage());

@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "D  ",
+    " P ",
+    "  I"
+  ],
+  "key":
+  {
+    "D":
+    {
+      "item": "minecraft:dirt",
+      "data": 0
+    },
+    "P":
+    {
+      "item": "erc:railpipe",
+      "data": 0
+    },
+    "I":
+    {
+      "item": "minecraft:stick",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:ItemWrenchPlaceBlock",
+    "count": 1
+  }
+}

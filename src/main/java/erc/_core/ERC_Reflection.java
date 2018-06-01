@@ -2,7 +2,7 @@ package erc._core;
 
 import org.lwjgl.input.Mouse;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class ERC_Reflection {
 

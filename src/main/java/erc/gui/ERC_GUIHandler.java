@@ -1,7 +1,7 @@
 
 package erc.gui;
 
-import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 import erc._core.ERC_Core;
 import erc.gui.container.DefContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class ERC_GUIHandler implements IGuiHandler {
 	
-	/*ƒT[ƒo[‘¤‚Ìˆ—*/
+	/*ï¿½Tï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½*/
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         switch(ID)
@@ -21,7 +21,7 @@ public class ERC_GUIHandler implements IGuiHandler {
         return null;
     }
     
-    /*ƒNƒ‰ƒCƒAƒ“ƒg‘¤‚Ìˆ—*/
+    /*ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½*/
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
         switch(ID)

@@ -2,21 +2,21 @@ package erc.rewriteClass;
 
 import java.util.Arrays;
 
-import cpw.mods.fml.common.DummyModContainer;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.ModMetadata;
+import net.minecraftforge.fml.common.DummyModContainer;
+import net.minecraftforge.fml.common.LoadController;
+import net.minecraftforge.fml.common.ModMetadata;
 
 public class modContainer extends DummyModContainer {
 	
 	public modContainer() {
 		super(new ModMetadata());
 	 
-		// @Mod‚Ì‚æ‚¤‚É‹Lq‚µ‚Ü‚·(mcmod.info‚Íg‚¦‚È‚¢)B
+		// @Modï¿½Ì‚æ‚¤ï¿½É‹Lï¿½qï¿½ï¿½ï¿½Ü‚ï¿½(mcmod.infoï¿½Ígï¿½ï¿½ï¿½È‚ï¿½)ï¿½B
 		ModMetadata meta = super.getMetadata();
 		meta.modId = "ercclasstransform";
 		meta.name = "ERCClassTransform";
 		meta.version = "1.0";
-		// ˆÈ‰º‚ÍÈ—ª‰Â
+		// ï¿½È‰ï¿½ï¿½ÍÈ—ï¿½ï¿½ï¿½
 		meta.authorList = Arrays.asList(new String[] { "MOTTY" });
 		this.setEnabledState(true);
 	}

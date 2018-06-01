@@ -1,8 +1,11 @@
 package erc.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import erc._core.ERC_CONST;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import erc.block.blockRailBase;
 import erc.manager.ERC_CoasterAndRailManager;
 import erc.message.ERC_MessageConnectRailCtS;
@@ -10,24 +13,21 @@ import erc.message.ERC_MessageItemWrenchSync;
 import erc.message.ERC_PacketHandler;
 import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class ERC_ItemWrench extends Item {
 
 	/**
-	 * ƒAƒCƒeƒ€@ƒŒƒ“ƒ`
-	 * ‹@”\
-	 * EƒŒ[ƒ‹ŠÔ‚ÌÚ‘±
-	 * EƒŒ[ƒ‹‚ÌŠp“x‚È‚Ç’²ß
-	 * ƒXƒj[ƒN{‰EƒNƒŠƒbƒN‚Å‹@”\Ø‚è‘Ö‚¦
-	 * ’Êí‰EƒNƒŠƒbƒN‚Å‹@”\”­“®
+	 * ï¿½Aï¿½Cï¿½eï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½`
+	 * ï¿½@ï¿½\
+	 * ï¿½Eï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ô‚ÌÚ‘ï¿½
+	 * ï¿½Eï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ÌŠpï¿½xï¿½È‚Ç’ï¿½ï¿½ï¿½
+	 * ï¿½Xï¿½jï¿½[ï¿½Nï¿½{ï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½Å‹@ï¿½\ï¿½Ø‚ï¿½Ö‚ï¿½
+	 * ï¿½Êï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½Å‹@ï¿½\ï¿½ï¿½ï¿½ï¿½
 	 */
 	
 	int mode = 0;
@@ -39,66 +39,62 @@ public class ERC_ItemWrench extends Item {
 								"wrench_e1",
 								"wrench_e2"};
 	
-	protected IIcon itemIcons[] = new IIcon[texStr.length];
-	protected IIcon temIcon = itemIcons[0];
-	
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn)
 	{
 		if(player.isSneaking())
 		{
 			if(world.isRemote) 
 			{	//client
-				// ƒ‚[ƒh•ÏX‚ÍƒNƒ‰‚Å
+				// ï¿½ï¿½ï¿½[ï¿½hï¿½ÏXï¿½ÍƒNï¿½ï¿½ï¿½ï¿½
 				mode = (++mode)%modenum;
-				ERC_CoasterAndRailManager.ResetData(); // ƒ‚[ƒhƒ`ƒFƒ“ƒW‚Å‹L‰¯Á‹
-				player.addChatComponentMessage(new ChatComponentText(ModeStr[mode]));
+				ERC_CoasterAndRailManager.ResetData(); // ï¿½ï¿½ï¿½[ï¿½hï¿½`ï¿½Fï¿½ï¿½ï¿½Wï¿½Å‹Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				player.sendStatusMessage(new TextComponentString(ModeStr[mode]), false);
 			}
-			return itemstack;
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(handIn));
 		}
-		return super.onItemRightClick(itemstack, world, player);
+		return super.onItemRightClick(world, player, handIn);
 	}
 	
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, Block block)
     {
-		Block convblock = world.getBlock(x, y, z);
-		if( (convblock != Blocks.air) && (convblock != Blocks.water) && (convblock != Blocks.flowing_water) )return false;
+    	BlockPos pos = new BlockPos(x, y, z);
+		Block convblock = world.getBlockState(pos).getBlock();
+		if( (convblock != Blocks.AIR) && (convblock != Blocks.WATER) && (convblock != Blocks.FLOWING_WATER) )return false;
 		
-    	if (!world.setBlock(x, y, z, block, 0, 3))
+    	if (!world.setBlockState(pos, block.getDefaultState(), 3))
     	{
     		return false;
     	}
 //    	ERC_Logger.info("place block");
-    	if (world.getBlock(x, y, z) == block)
+    	if (world.getBlockState(pos).getBlock() == block)
     	{
-    		block.onBlockPlacedBy(world, x, y, z, player, stack);
-    		block.onPostBlockPlaced(world, x, y, z, 0);
-    		world.markBlockForUpdate(x, y, z);
+    		block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, stack);
+    		world.scheduleBlockUpdate(pos, block,0, 0);
     	}
     	return true;
     }
 	
 	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-			float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
 	{
-		if(player.isSneaking()) return false;
+		if(player.isSneaking()) return EnumActionResult.FAIL;
 		
-		// func_150051...ŠÖ”‚Ö‚Ì“ü—Í‚ÌŒ^‚ªBlockRailTest‚È‚çtrue
-    	if (blockRailBase.isBlockRail(world.getBlock(x, y, z)))
+		// func_150051...ï¿½Öï¿½ï¿½Ö‚Ì“ï¿½ï¿½Í‚ÌŒ^ï¿½ï¿½BlockRailTestï¿½È‚ï¿½true
+    	if (blockRailBase.isBlockRail(world.getBlockState(pos).getBlock()))
     	{
-    		if(world.isRemote) // ƒNƒ‰ƒCƒAƒ“ƒg
+    		if(world.isRemote) // ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½g
     		{
     			switch(mode)
         		{
         		case 0 : 
-        			//ƒNƒ‰ƒCƒAƒ“ƒg‚ÍƒŒ[ƒ‹‚ª–³‚¯‚ê‚Î“o˜^A‚ ‚ê‚ÎƒT[ƒo[‚ÉÚ‘±—pƒpƒPƒbƒg‘—M
-        			if(!ERC_CoasterAndRailManager.isPlacedPrevRail())ERC_CoasterAndRailManager.SetPrevData(x, y, z);
+        			//ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½Íƒï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î“oï¿½^ï¿½Aï¿½ï¿½ï¿½ï¿½ÎƒTï¿½[ï¿½oï¿½[ï¿½ÉÚ‘ï¿½ï¿½pï¿½pï¿½Pï¿½bï¿½gï¿½ï¿½ï¿½M
+        			if(!ERC_CoasterAndRailManager.isPlacedPrevRail())ERC_CoasterAndRailManager.SetPrevData(pos.getX(), pos.getY(), pos.getZ());
         			else{
         				ERC_MessageConnectRailCtS packet 
         					= new ERC_MessageConnectRailCtS(
         							ERC_CoasterAndRailManager.prevX, ERC_CoasterAndRailManager.prevY, ERC_CoasterAndRailManager.prevZ, 
-        							x, y, z
+        							pos.getX(), pos.getY(), pos.getZ()
 							);
         				ERC_PacketHandler.INSTANCE.sendToServer(packet);
 //        				ERC_Logger.info("connection : "+"."+ERC_CoasterAndRailManager.prevX+"."+ERC_CoasterAndRailManager.prevY+"."+ERC_CoasterAndRailManager.prevZ
@@ -107,68 +103,68 @@ public class ERC_ItemWrench extends Item {
         			}
         			break;
         		case 1 : 
-        			Wrap_TileEntityRail tile =  (Wrap_TileEntityRail)world.getTileEntity(x, y, z);
+        			Wrap_TileEntityRail tile =  (Wrap_TileEntityRail)world.getTileEntity(pos);
         			ERC_CoasterAndRailManager.OpenRailGUI(tile.getRail());
 //        			ERC_Logger.warn("save rail to manager : "+tile.getRail().getClass().getName());
         			break;
         		}
     			
-			    ERC_PacketHandler.INSTANCE.sendToServer(new ERC_MessageItemWrenchSync(mode,x,y,z));
-        		return false;
+			    ERC_PacketHandler.INSTANCE.sendToServer(new ERC_MessageItemWrenchSync(mode,pos.getX(), pos.getY(), pos.getZ()));
+        		return EnumActionResult.FAIL;
     		}
     		
-    		return true;
+    		return EnumActionResult.SUCCESS;
     	}
-        return false;
+        return EnumActionResult.FAIL;
 	}
 
 	
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-			float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if (blockRailBase.isBlockRail(world.getBlock(x, y, z)))
-			return true;
-		return false;
+		if (blockRailBase.isBlockRail(worldIn.getBlockState(pos).getBlock())) {
+			return EnumActionResult.SUCCESS;
+		}
+		return EnumActionResult.FAIL;
 	}
-	
-	@SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister p_94581_1_)
-    {
-    	for(int i=0;i<texStr.length;++i)
-    	{
-    		this.itemIcons[i] = p_94581_1_.registerIcon(ERC_CONST.DOMAIN+":"+texStr[i]);
-    	}
-    	temIcon = itemIcons[0];
-    }
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int p_77617_1_) 
-	{
-		return ERCwrench_getIcon();
-	}
-
-	@Override
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) 
-	{
-		return ERCwrench_getIcon();
-	}
-
-	@Override
-	public IIcon getIcon(ItemStack stack, int pass) 
-	{
-		return ERCwrench_getIcon();
-	}
-    
-    private IIcon ERCwrench_getIcon()
-    {
-    	int iconid=0;
-    	switch(mode)
-    	{
-    	case 0:/*connect*/ 	iconid = ERC_CoasterAndRailManager.isPlacedRail() ? 1 : 0; break;
-    	case 1:/*adjust*/	iconid = ERC_CoasterAndRailManager.isPlacedRail() ? 3 : 2; break;
-    	}
-    	
-		return this.itemIcons[iconid];
-    }
+	//Keep for when doing textures - FT
+//	@SideOnly(Side.CLIENT)
+//    public void registerIcons(IIconRegister p_94581_1_)
+//    {
+//    	for(int i=0;i<texStr.length;++i)
+//    	{
+//    		this.itemIcons[i] = p_94581_1_.registerIcon(ERC_CONST.DOMAIN+":"+texStr[i]);
+//    	}
+//    	temIcon = itemIcons[0];
+//    }
+//
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getIconFromDamage(int p_77617_1_)
+//	{
+//		return ERCwrench_getIcon();
+//	}
+//
+//	@Override
+//	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+//	{
+//		return ERCwrench_getIcon();
+//	}
+//
+//	@Override
+//	public IIcon getIcon(ItemStack stack, int pass)
+//	{
+//		return ERCwrench_getIcon();
+//	}
+//
+//    private IIcon ERCwrench_getIcon()
+//    {
+//    	int iconid=0;
+//    	switch(mode)
+//    	{
+//    	case 0:/*connect*/ 	iconid = ERC_CoasterAndRailManager.isPlacedRail() ? 1 : 0; break;
+//    	case 1:/*adjust*/	iconid = ERC_CoasterAndRailManager.isPlacedRail() ? 3 : 2; break;
+//    	}
+//
+//		return this.itemIcons[iconid];
+//    }
 }

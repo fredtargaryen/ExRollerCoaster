@@ -1,8 +1,9 @@
 package erc.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc.gui.GUIRail;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.Wrap_TileEntityRail;
@@ -11,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ERC_MessageRailGUICtS implements IMessage, IMessageHandler<ERC_MessageRailGUICtS, IMessage>{
 
-	// GUI‚©‚ç‘—‚è‚½‚¢î•ñ
+	// GUIï¿½ï¿½ï¿½ç‘—ï¿½è‚½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int x, y, z;
 	public int FLAG;
 	public int MiscInt;
@@ -75,7 +76,7 @@ public class ERC_MessageRailGUICtS implements IMessage, IMessageHandler<ERC_Mess
 	@Override
     public IMessage onMessage(ERC_MessageRailGUICtS message, MessageContext ctx)
     {
-    	TileEntity Wte = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+    	TileEntity Wte = ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
         if ((Wte instanceof Wrap_TileEntityRail))
         {
         	Wrap_TileEntityRail te = ((Wrap_TileEntityRail) Wte);
@@ -105,7 +106,7 @@ public class ERC_MessageRailGUICtS implements IMessage, IMessageHandler<ERC_Mess
         	case SPECIAL:
         		te.SpecialGUISetData(message.MiscInt); break;
         		
-        	case RailModelIndex: // modelIndex send to server ŠÔØ‚è‚µ‚Ä‚Ü‚·
+        	case RailModelIndex: // modelIndex send to server ï¿½ÔØ‚è‚µï¿½Ä‚Ü‚ï¿½
         		te.changeRailModelRenderer(message.MiscInt);
         		return null;
         	}

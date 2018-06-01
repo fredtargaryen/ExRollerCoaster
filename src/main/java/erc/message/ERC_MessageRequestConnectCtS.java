@@ -1,8 +1,8 @@
 package erc.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc.entity.ERC_EntityCoasterConnector;
 import io.netty.buffer.ByteBuf;
 
@@ -36,7 +36,7 @@ public class ERC_MessageRequestConnectCtS implements IMessage, IMessageHandler<E
 	@Override
     public IMessage onMessage(ERC_MessageRequestConnectCtS message, MessageContext ctx)
     {
-		ERC_EntityCoasterConnector coaster = (ERC_EntityCoasterConnector) ctx.getServerHandler().playerEntity.worldObj.getEntityByID(message.CoasterID);
+		ERC_EntityCoasterConnector coaster = (ERC_EntityCoasterConnector) ctx.getServerHandler().player.world.getEntityByID(message.CoasterID);
 		coaster.receiveConnectionRequestFromClient(message.playerEntityID);
 		return null;
     }

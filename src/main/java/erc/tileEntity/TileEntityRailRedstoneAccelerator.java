@@ -1,5 +1,6 @@
 package erc.tileEntity;
 
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import erc.entity.ERC_EntityCoaster;
@@ -48,12 +49,12 @@ public class TileEntityRailRedstoneAccelerator extends TileEntityRailBase{
 	
 	public void SpecialRailProcessing(ERC_EntityCoaster coaster)
 	{
-		// ‰Á‘¬
+		// ï¿½ï¿½ï¿½ï¿½
 		if(toggleflag)
 		{
 			coaster.Speed += accelParam;
 		}
-		// Œ¸‘¬
+		// ï¿½ï¿½ï¿½ï¿½
 		else
 		{
 			coaster.Speed *= 0.8;
@@ -74,6 +75,11 @@ public class TileEntityRailRedstoneAccelerator extends TileEntityRailBase{
 	}
 
 	@Override
+	public World getWorldObj() {
+		return this.world;
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) 
 	{
 		super.readFromNBT(nbt);
@@ -82,11 +88,12 @@ public class TileEntityRailRedstoneAccelerator extends TileEntityRailBase{
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) 
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
 		nbt.setBoolean("red:toggleflag", toggleflag);
 		nbt.setFloat("red:accelparam", accelParam);
+		return nbt;
 	}
 	
     // GUI

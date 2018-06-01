@@ -13,7 +13,6 @@ public class ERC_EntityCoasterDoubleSeat extends ERC_EntityCoaster{
 	{
 		super(world);
 		this.setSize(1.4f, 0.6f);
-		this.yOffset = (this.height / 2.0F) - 0.3F;
 	}
 	
 	public ERC_EntityCoasterDoubleSeat(World world, TileEntityRailBase tile, double x, double y, double z) {
@@ -23,36 +22,36 @@ public class ERC_EntityCoasterDoubleSeat extends ERC_EntityCoaster{
 	@Override
 	public boolean canBeRidden()
     {
-        return true; // true : æ‚ê‚é
+        return true; // true : ï¿½ï¿½ï¿½ï¿½
     }
 	
-	// ‰EƒNƒŠƒbƒN‚Åæ‚éˆ—‚Á‚Û‚¢
+	// ï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½Åï¿½éˆï¿½ï¿½ï¿½ï¿½ï¿½Û‚ï¿½
     public boolean interactFirst(EntityPlayer player)
     {
     	if(!canBeRidden())return false;
     	Entity THIS = this;
-    	Entity riddenbyentity = this.riddenByEntity;
+    	Entity riddenbyentity = this.getControllingPassenger();
     	if(riddenbyentity != null)
     	{
     		THIS = secondseat;
-    		riddenbyentity = secondseat.riddenByEntity;
+    		riddenbyentity = secondseat.getControllingPassenger();
     	}
     	
-    	//@º°½À°‚É‰½‚©æ‚Á‚Ä‚é@@@@@@@@@@@@@@@@@@ƒvƒŒƒCƒ„[‚Ì’N‚©‚ªæ‚Á‚Ä‚¢‚é@@@@@@@@@@@@@@@@@@@@æ‚è•¨‚ğ‚½‚½‚¢‚½‚Ì‚Íæ‚Á‚Ä‚¢‚él‚¶‚á‚È‚¢
+    	//ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ì’Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½@ï¿½ï¿½è•¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚Íï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½È‚ï¿½
         if (riddenbyentity != null && riddenbyentity instanceof EntityPlayer && riddenbyentity != player)
         {
             return true; 
         }
-        //‚»‚ê‚Å‚È‚­‚Ä‚à	‰½‚©æ‚Á‚Ä‚Ä				’@‚¢‚½ƒvƒŒƒCƒ„[‚¶‚á‚È‚¢‚È‚É‚©‚ªæ‚Á‚Ä‚¢‚½‚ç
+        //ï¿½ï¿½ï¿½ï¿½Å‚È‚ï¿½ï¿½Ä‚ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½				ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½È‚É‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½
         else if (riddenbyentity != null && riddenbyentity != player)
         {
             return false; 
         }
         else
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
-                player.mountEntity(THIS); // æ‚¹‚é
+                player.startRiding(THIS); // ï¿½æ‚¹ï¿½ï¿½
             }
 
             return true;
@@ -67,11 +66,13 @@ public class ERC_EntityCoasterDoubleSeat extends ERC_EntityCoaster{
 
 	@Override
 	public Entity[] getParts() {
-		// ‚±‚±‚©‚ç•Ô‚·Entity‚à‘S‚Ä“o˜^‚³‚ê‚é@ƒZƒJƒ“ƒhƒV[ƒg“o˜^‚àƒAƒŠ‚©H
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½Entityï¿½ï¿½ï¿½Sï¿½Ä“oï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½Zï¿½Jï¿½ï¿½ï¿½hï¿½Vï¿½[ï¿½gï¿½oï¿½^ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½H
 		Entity[] ret = new Entity[1];
-		ret[0] = secondseat = new ERC_EntityCoasterSeat(worldObj);
+		ret[0] = secondseat = new ERC_EntityCoasterSeat(this.world);
 		return ret;
 	}
-    
-    
+
+	public double getYOffset() {
+		return (this.height / 2.0F) - 0.3F;
+	}
 }

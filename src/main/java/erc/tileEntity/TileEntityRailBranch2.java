@@ -2,6 +2,8 @@ package erc.tileEntity;
 
 import java.util.Iterator;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import erc._core.ERC_Logger;
@@ -17,10 +19,10 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEntityRail{
@@ -39,9 +41,9 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 		rails[0] = new TileEntityRailNormal();
 		rails[1] = new TileEntityRailNormal();
 		
-		//branch‚Ìƒf[ƒ^‚ğRails‚É”½‰f‚³‚¹‚é‚â‚Â
-		rails[0].setWorldObj(this.worldObj);
-		rails[1].setWorldObj(this.worldObj);
+		//branchï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½Railsï¿½É”ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		rails[0].setWorld(this.world);
+		rails[1].setWorld(this.world);
 	}
 
 	public boolean getToggleFlag()
@@ -73,22 +75,20 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 		return branchflag;
 	}
 
-	public World getWorldObj(){return worldObj;}
-	public int getXcoord(){return this.xCoord;}
-	public int getYcoord(){return this.yCoord;}
-	public int getZcoord(){return this.zCoord;}
+	public World getWorldObj(){return world;}
+	public int getXcoord(){return this.pos.getX();}
+	public int getYcoord(){return this.pos.getY();}
+	public int getZcoord(){return this.pos.getZ();}
 	public TileEntityRailBase getRail(){
-		rails[branchflag].setWorldObj(this.worldObj);
-		rails[branchflag].xCoord = xCoord;
-		rails[branchflag].yCoord = yCoord;
-		rails[branchflag].zCoord = zCoord;
+		rails[branchflag].setWorld(this.world);
+		rails[branchflag].setPos(this.pos);
 		return rails[branchflag];
 	}
 	public Wrap_TileEntityRail getPrevRailTileEntity() {
-		return (Wrap_TileEntityRail) worldObj.getTileEntity(rails[branchflag].BaseRail.cx, rails[branchflag].BaseRail.cy, rails[branchflag].BaseRail.cz);
+		return (Wrap_TileEntityRail) world.getTileEntity(new BlockPos(rails[branchflag].BaseRail.cx, rails[branchflag].BaseRail.cy, rails[branchflag].BaseRail.cz));
 	}
 	public Wrap_TileEntityRail getNextRailTileEntity() {
-		return ((Wrap_TileEntityRail)worldObj.getTileEntity(rails[branchflag].NextRail.cx, rails[branchflag].NextRail.cy, rails[branchflag].NextRail.cz));
+		return ((Wrap_TileEntityRail)world.getTileEntity(new BlockPos(rails[branchflag].NextRail.cx, rails[branchflag].NextRail.cy, rails[branchflag].NextRail.cz)));
 	}
 	
 	@Override
@@ -126,17 +126,17 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 		return rails[branchflag].GetPosNum();
 	}
 
-	// •ªŠòƒŒ[ƒ‹‚ÌŒã‚ëƒŒ[ƒ‹‚ÌˆÊ’uİ’è‚ÍRails‚Q‚Â‚Éİ’è‚·‚é‚¾‚¯‚Å‚¨‚‹
+	// ï¿½ï¿½ï¿½òƒŒ[ï¿½ï¿½ï¿½ÌŒï¿½ëƒŒï¿½[ï¿½ï¿½ï¿½ÌˆÊ’uï¿½İ’ï¿½ï¿½Railsï¿½Qï¿½Â‚Éİ’è‚·ï¿½é‚¾ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½
 	public void SetPrevRailPosition(int x, int y, int z) {
 		rails[0].BaseRail.SetPos(x, y, z);
 		rails[1].BaseRail.SetPos(x, y, z);
 	}
-	public void SetBaseRailPosition(int x, int y, int z, Vec3 BaseDir, Vec3 up, float power) {
+	public void SetBaseRailPosition(int x, int y, int z, Vec3d BaseDir, Vec3d up, float power) {
 		rails[0].SetBaseRailPosition(x, y, z, BaseDir, up, power);
 		rails[1].SetBaseRailPosition(x, y, z, BaseDir, up, power);
 	}
 
-	// GUIƒŒ[ƒ‹‘€ì—pŠÖ”ƒ‰ƒbƒv
+	// GUIï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Öï¿½ï¿½ï¿½ï¿½bï¿½v
 	public void AddControlPoint(int pointnum)
 	{
 		rails[0].AddControlPoint(pointnum);
@@ -144,8 +144,8 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 	}
 	public void Smoothing()
 	{
-		rails[0].setWorldObj(worldObj);
-		rails[1].setWorldObj(worldObj);
+		rails[0].setWorld(world);
+		rails[1].setWorld(world);
 		rails[0].Smoothing();
 		rails[1].Smoothing();
 	}
@@ -156,7 +156,7 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 	}
 	public void UpdateDirection(editFlag flag, int idx)
 	{
-		rails[branchflag].setWorldObj(worldObj);
+		rails[branchflag].setWorld(world);
 		rails[branchflag].UpdateDirection(flag, idx);
 		rails[branchflag==0?1:0].BaseRail.SetData(rails[branchflag].BaseRail);
 	}
@@ -166,14 +166,14 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 		rails[1].ResetRot();
 	}
 
-	public void SetNextRailVectors(Vec3 vecNext, Vec3 vecDir, Vec3 vecUp, float fUp, float fDirTwist, float Power,
-			int cx, int cy, int cz) {
+	public void SetNextRailVectors(Vec3d vecNext, Vec3d vecDir, Vec3d vecUp, float fUp, float fDirTwist, float Power,
+								   int cx, int cy, int cz) {
 		rails[branchflag].SetNextRailVectors(vecNext, vecDir, vecUp, fUp, fDirTwist, Power, cx, cy, cz);
 	}
 
 
 	public double CalcRailPosition2(float t, ERC_ReturnCoasterRot ret, float viewyaw, float viewpitch, boolean riddenflag) {
-		// ’¼Ú•ªŠòƒŒ[ƒ‹‚ÉƒR[ƒXƒ^[’u‚¢‚½‚Æ‚«‚¾‚¯ŒÄ‚Î‚ê‚é
+		// ï¿½ï¿½ï¿½Ú•ï¿½ï¿½òƒŒ[ï¿½ï¿½ï¿½ÉƒRï¿½[ï¿½Xï¿½^ï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚Î‚ï¿½ï¿½
 		return rails[branchflag].CalcRailPosition2(t, ret, viewyaw, viewpitch, riddenflag);
 	}
 
@@ -216,7 +216,7 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 	////////////////////////////////////////////////////////////////////////////
 	public void SetRailDataFromMessage(ERC_MessageRailStC msg)
 	{
-		//branch2‚Ìƒf[ƒ^“¯Šú
+		//branch2ï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½
 		/////\\\\\
 		Iterator<DataTileEntityRail> it = msg.raillist.iterator();
 		// 0Base
@@ -237,9 +237,9 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 		e = it.next();
 		rails[1].SetNextRailVectors(e.vecPos, e.vecDir, e.vecUp, e.fUp, e.fDirTwist, e.Power, e.cx, e.cy, e.cz);
 		/////\\\\\
-		rails[0].xCoord = rails[1].xCoord = xCoord = msg.x;
-		rails[0].yCoord = rails[1].yCoord = yCoord = msg.y;
-		rails[0].zCoord = rails[1].zCoord = zCoord = msg.z;
+		this.setPos(new BlockPos(msg.x, msg.y, msg.z));
+		rails[1].setPos(this.pos);
+		rails[0].setPos(this.pos);
 //		rails[0].CreateNewRailVertexFromControlPoint();
 //		rails[1].CreateNewRailVertexFromControlPoint();
 		rails[0].CalcRailPosition();
@@ -265,23 +265,24 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 		setPosToRails(1);
 	}
 
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		rails[0].saveToNBT(nbt, "b0");
 		rails[1].saveToNBT(nbt, "b1");
 		nbt.setInteger("branch2flag", branchflag);
+		return nbt;
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
+	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound nbtTagCompound = new NBTTagCompound();
 		this.writeToNBT(nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
+        return new SPacketUpdateTileEntity(this.pos, 1, nbtTagCompound);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.func_148857_g());
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		readFromNBT(pkt.getNbtCompound());
 		setPosToRails(0);
 		setPosToRails(1);
 	}
@@ -301,7 +302,7 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 //		ERC_MessageRailStC packet = new ERC_MessageRailStC(xCoord, yCoord, zCoord, 0);
 //		ERC_PacketHandler.INSTANCE.sendToAll(packet);
 		
-		ERC_MessageRailStC packet = new ERC_MessageRailStC(xCoord, yCoord, zCoord, rails[0].PosNum, rails[0].modelrailindex);
+		ERC_MessageRailStC packet = new ERC_MessageRailStC(this.getXcoord(), this.getYcoord(), this.getZcoord(), rails[0].PosNum, rails[0].modelrailindex);
     	packet.addRail(rails[branchflag].BaseRail);
     	packet.addRail(rails[0].NextRail);
     	packet.addRail(rails[1].NextRail);
@@ -310,13 +311,13 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 	
 	public void connectionFromBack(int x, int y, int z)
 	{
-		// Rails‚Q‚Â‚Æ‚à‚ÉŒã‚ë‚ÌƒŒ[ƒ‹‚ğİ’è‚·‚é‚¾‚¯
+		// Railsï¿½Qï¿½Â‚Æ‚ï¿½ï¿½ÉŒï¿½ï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½İ’è‚·ï¿½é‚¾ï¿½ï¿½
 		this.SetPrevRailPosition(x, y, z);
     	this.syncData();
 	}
 	public void connectionToNext(DataTileEntityRail next, int x, int y, int z)
 	{
-		// branchflag‚Ìæ‚ÌƒŒ[ƒ‹‚Éƒf[ƒ^ƒZƒbƒg‚µ‚Ä‚Â‚È‚°‚é
+		// branchflagï¿½Ìï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½Éƒfï¿½[ï¿½^ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½Ä‚Â‚È‚ï¿½ï¿½ï¿½
     	float power = ERC_MathHelper.CalcSmoothRailPower(rails[branchflag].BaseRail.vecDir,next.vecDir,rails[branchflag].BaseRail.vecPos, next.vecPos);
     	rails[branchflag].BaseRail.Power = power; 
     	rails[branchflag].SetNextRailVectors(next,x,y,z);
@@ -324,7 +325,7 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
     	rails[branchflag].CalcRailLength();
     	this.syncData();
     	
-    	/////////////////////////rails[branchflag].syncData(); EEEBranch2‚Ì“à•ïRailNormal‚ÍŒÂ•ÊsyncData‚µ‚Ä‚Í‚¢‚¯‚È‚¢
+    	/////////////////////////rails[branchflag].syncData(); ï¿½Eï¿½Eï¿½EBranch2ï¿½Ì“ï¿½ï¿½ï¿½RailNormalï¿½ÍŒÂ•ï¿½syncDataï¿½ï¿½ï¿½Ä‚Í‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 	}
 
 //	public void onTileSetToWorld_Init()
@@ -338,17 +339,15 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 	private void setPosToRails(){ setPosToRails(branchflag);}
 	private void setPosToRails(int flag)
 	{
-		rails[flag].xCoord = this.xCoord;
-		rails[flag].yCoord = this.yCoord;
-		rails[flag].zCoord = this.zCoord;
-		rails[flag].setWorldObj(this.worldObj);
+		rails[flag].setPos(this.pos);
+		rails[flag].setWorld(this.world);
 	}
 
 	@Override
 	public void changeRailModelRenderer(int index)
 	{
-		rails[0].setWorldObj(this.worldObj);
-		rails[1].setWorldObj(this.worldObj);
+		rails[0].setWorld(this.world);
+		rails[1].setWorld(this.world);
 		rails[0].changeRailModelRenderer(index);
 		rails[1].changeRailModelRenderer(index);	
 	}

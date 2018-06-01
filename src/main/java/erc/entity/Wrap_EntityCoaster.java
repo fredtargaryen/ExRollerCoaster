@@ -1,7 +1,8 @@
 package erc.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
@@ -14,12 +15,11 @@ public abstract class Wrap_EntityCoaster extends Entity{
     
 	public Wrap_EntityCoaster(World world) {
 		super(world);
-		yOffset = 0;
 	}
 
 	public boolean canBeRidden()
     {
-        return true; // true : èÊÇÍÇÈ
+        return true; // true : ÔøΩÔøΩÔøΩÔøΩ
     }
 	
     public void setPosition(double x, double y, double z)
@@ -29,7 +29,7 @@ public abstract class Wrap_EntityCoaster extends Entity{
         this.posZ = z;
         double f = this.width / 2.0F;
         double f1 = this.height / 2.0F;
-        this.boundingBox.setBounds(x - f, y - f1, z - f, x + f, y + f1, z + f);
+        this.setEntityBoundingBox(new AxisAlignedBB(x - f, y - f1, z - f, x + f, y + f1, z + f));
     }
     
     @SideOnly(Side.CLIENT)

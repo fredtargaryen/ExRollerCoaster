@@ -1,14 +1,14 @@
 package erc.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc.manager.ERC_CoasterAndRailManager;
 import io.netty.buffer.ByteBuf;
 
 public class ERC_MessageSaveBreakRailStC implements IMessage, IMessageHandler<ERC_MessageSaveBreakRailStC, IMessage>{
 
-	// ‰ó‚µ‚½ƒŒ[ƒ‹ƒuƒƒbƒN‚ÌÚ‘±æî•ñ
+	// ï¿½ó‚µ‚ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ÌÚ‘ï¿½ï¿½ï¿½ï¿½ï¿½
 	public int bx, by, bz;
 	public int nx, ny, nz;
 	

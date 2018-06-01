@@ -1,8 +1,13 @@
 package erc.proxy;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
+import erc.renderer.*;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import erc._core.ERC_CONST;
 import erc._core.ERC_Core;
 import erc.entity.ERC_EntityCoaster;
@@ -17,29 +22,21 @@ import erc.handler.ERC_RenderEventHandler;
 import erc.handler.ERC_TickEventHandler;
 import erc.manager.ERC_ModelLoadManager;
 import erc.manager.ERC_ModelLoadPlan;
-import erc.renderer.ERC_RenderEntityCoaster;
-import erc.renderer.ERC_RenderTileEntityRailBase;
-import erc.renderer.renderBlockRail;
-import erc.renderer.renderEntityCoasterSeat;
-import erc.renderer.renderEntitySUSIHI;
 import erc.tileEntity.*;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
+import static erc._core.ERC_Core.*;
+
 public class ERC_ClientProxy implements IProxy{
-	
-	@Override
-	public int getNewRenderType()
-	{
-		return RenderingRegistry.getNextAvailableRenderId();
-	}
-	
 
 	@Override
 	public void preInit()
 	{
 //		FMLClientHandler.instance().addModAsResource( (new customResourceLoader() ).get());
-		
+
+		OBJLoader.INSTANCE.addDomain(ERC_CONST.DOMAIN);
+
 		// �f�t�H�R�[�X�^�[�o�^
 		String defaultModel = ERC_CONST.DOMAIN+":models/coaster.obj";
 		String defaultModel_c = ERC_CONST.DOMAIN+":models/coaster_connect.obj";
@@ -104,17 +101,14 @@ public class ERC_ClientProxy implements IProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNonGravityRail.class, tileRenderer);
 
 		// Entity�`��o�^
-		ERC_RenderEntityCoaster renderer = new ERC_RenderEntityCoaster();
+		ERC_RenderEntityCoasterFactory renderer = new ERC_RenderEntityCoasterFactory();
 		RenderingRegistry.registerEntityRenderingHandler(ERC_EntityCoaster.class, renderer);
 		RenderingRegistry.registerEntityRenderingHandler(ERC_EntityCoasterMonodentate.class, renderer);
 		RenderingRegistry.registerEntityRenderingHandler(ERC_EntityCoasterDoubleSeat.class, renderer);
 		RenderingRegistry.registerEntityRenderingHandler(ERC_EntityCoasterConnector.class, renderer);
-		RenderingRegistry.registerEntityRenderingHandler(ERC_EntityCoasterSeat.class, new renderEntityCoasterSeat());
+		RenderingRegistry.registerEntityRenderingHandler(ERC_EntityCoasterSeat.class, new renderEntityCoasterSeatFactory());
 		
-		RenderingRegistry.registerEntityRenderingHandler(entitySUSHI.class, new renderEntitySUSIHI());
-		
-		// �u���b�N�J�X�^�������_�[�̓o�^
-		RenderingRegistry.registerBlockHandler(new renderBlockRail());
+		RenderingRegistry.registerEntityRenderingHandler(entitySUSHI.class, new renderEntitySUSIHIFactory());
 		
 		// Handler�̓o�^
 		Minecraft mc = Minecraft.getMinecraft();
@@ -139,5 +133,21 @@ public class ERC_ClientProxy implements IProxy{
 	{
 		// �������ǉ����f���̃��[�h
 		ERC_ModelLoadManager.init();
+	}
+
+	@Override
+	public void registerModels()
+	{
+		//Specify item models
+		ModelLoader.setCustomModelResourceLocation(ItemBasePipe, 0, new ModelResourceLocation(ERC_Core.MODID+":railpipe", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemWrench, 0, new ModelResourceLocation(ERC_Core.MODID+":wrench_c1", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemStick, 0, new ModelResourceLocation(ERC_Core.MODID+":wrench_p", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemCoaster, 0, new ModelResourceLocation(ERC_Core.MODID+":coaster", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemCoasterConnector, 0, new ModelResourceLocation(ERC_Core.MODID+":coasterconnector", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemCoasterMono, 0, new ModelResourceLocation(ERC_Core.MODID+":coastermono", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemSwitchRail, 0, new ModelResourceLocation(ERC_Core.MODID+":switchrailmodel", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemSUSHI, 0, new ModelResourceLocation(ERC_Core.MODID+":sushi", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemSwitchRail, 0, new ModelResourceLocation(ERC_Core.MODID+":itemsmoothall", "inventory"));
+
 	}
 }

@@ -1,8 +1,12 @@
 package erc.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import erc._core.ERC_Core;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erc.manager.ERC_CoasterAndRailManager;
 import erc.message.ERC_MessageConnectRailCtS;
 import erc.message.ERC_PacketHandler;
@@ -11,46 +15,47 @@ import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class blockRailBase extends BlockContainer{
+public abstract class blockRailBase extends BlockContainer
+{
+	public static final PropertyInteger META = PropertyInteger.create("meta", 0, 15);
+	private static final AxisAlignedBB[] boxes = new AxisAlignedBB[]
+			{
+					new AxisAlignedBB(0.2F, 0.7F, 0.2F, 0.8F, 1.0F, 0.8F),
+					new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.3F, 0.8F),
+					new AxisAlignedBB(0.2F, 0.2F, 0.7F, 0.8F, 0.8F, 1.0F),
+					new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.3F),
+					new AxisAlignedBB(0.7F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F),
+					new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.3F, 0.8F, 0.8F),
+					new AxisAlignedBB(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F),
+					new AxisAlignedBB(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F)
+			};
 	
 	public blockRailBase()
 	{
-		super(Material.ground);
+		super(Material.GROUND);
 		this.setHardness(0.3F);
 		this.setResistance(2000.0F);
 		this.setLightOpacity(0);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 		this.setLightLevel(0.6F);//0.6
 	}
  
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2)
-	{
-		return super.getIcon(par1,par2);
-	}
- 
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister){}
+//	@Override
+//	public int getRenderType()
+//	{
+//		return ERC_Core.blockRailRenderId; // RenderBlockRailï¿½p
+//	}
  
 	@Override
-	public int getRenderType()
-	{
-		return ERC_Core.blockRailRenderId; // RenderBlockRail—p
-	}
- 
-	@Override
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
@@ -60,23 +65,15 @@ public abstract class blockRailBase extends BlockContainer{
 		return false;
 	}
 	
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         return false;
     }
 	
-	// Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
-	@Override
-	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
-	{
-		meta = side;
-		return side;
-		//return super.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, meta);
-	}
-	
 	public abstract Wrap_TileEntityRail getTileEntityInstance();
 
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack p_149689_6_)
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
 //		Wrap_TileEntityRail WPrevTile = ERC_BlockRailManager.GetPrevTileEntity(world);
 //		Wrap_TileEntityRail WNextTile = ERC_BlockRailManager.GetNextTileEntity(world);
@@ -84,13 +81,16 @@ public abstract class blockRailBase extends BlockContainer{
 //		ERC_TileEntityRailTest tlRailTest = (ERC_TileEntityRailTest)world.getTileEntity(x, y, z);
 		
 		/**
-		 * ////////////// ƒNƒ‰ƒCƒAƒ“ƒg‚ÍManager‚Éİ’è‚ÆƒpƒPƒbƒg‘—M
+		 * ////////////// ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½Managerï¿½Éİ’ï¿½Æƒpï¿½Pï¿½bï¿½gï¿½ï¿½ï¿½M
 		*/
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 		if(world.isRemote) 
 		{
 			if(ERC_CoasterAndRailManager.isPlacedPrevRail())
 			{
-				// ‘O‰ñ’u‚¢‚½ƒŒ[ƒ‹‚ª‚ ‚ê‚ÎƒT[ƒo[‚É•ñE˜AŒ‹—v¿
+				// ï¿½Oï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎƒTï¿½[ï¿½oï¿½[ï¿½É•ñEï¿½Aï¿½ï¿½ï¿½vï¿½ï¿½
 				ERC_MessageConnectRailCtS packet 
 					= new ERC_MessageConnectRailCtS(
 							ERC_CoasterAndRailManager.prevX, ERC_CoasterAndRailManager.prevY, ERC_CoasterAndRailManager.prevZ,
@@ -99,12 +99,12 @@ public abstract class blockRailBase extends BlockContainer{
 				ERC_PacketHandler.INSTANCE.sendToServer(packet);
 			}
 			
-			// ¡’u‚¢‚½ƒŒ[ƒ‹‚ğ‹L˜^
+			// ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½^
 			ERC_CoasterAndRailManager.SetPrevData(x, y, z);
 
 			if(ERC_CoasterAndRailManager.isPlacedNextRail())
 			{
-				// ‘O‰ñíœ‚µ‚½ƒŒ[ƒ‹‚Ìæ‚ÉŸ‚ÌƒŒ[ƒ‹‚ªŒq‚ª‚Á‚Ä‚¢‚ê‚ÎƒT[ƒo[‚É•ñE˜AŒ‹—v¿
+				// ï¿½Oï¿½ï¿½íœï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½Éï¿½ï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ÎƒTï¿½[ï¿½oï¿½[ï¿½É•ñEï¿½Aï¿½ï¿½ï¿½vï¿½ï¿½
 				ERC_MessageConnectRailCtS packet 
 					= new ERC_MessageConnectRailCtS(
 							x, y, z,
@@ -112,7 +112,7 @@ public abstract class blockRailBase extends BlockContainer{
 							);
 				ERC_PacketHandler.INSTANCE.sendToServer(packet);
 
-				// ‚³‚ç‚Éæ‚ÉƒŒ[ƒ‹‚ª‚à‚¤‚ ‚é‚Ì‚ÅA•Û‘¶ƒŒ[ƒ‹î•ñ‚Ííœ
+				// ï¿½ï¿½ï¿½ï¿½Éï¿½Éƒï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ÅAï¿½Û‘ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Ííœ
 				ERC_CoasterAndRailManager.ResetData();
 		 	}
 			
@@ -120,41 +120,41 @@ public abstract class blockRailBase extends BlockContainer{
 		}
 		
 		/**
-		 * ////////////// ƒT[ƒo[‚ÍƒŒ[ƒ‹İ’èŒvZ
+		 * ////////////// ï¿½Tï¿½[ï¿½oï¿½[ï¿½Íƒï¿½ï¿½[ï¿½ï¿½ï¿½İ’ï¿½vï¿½Z
 		*/
-		super.onBlockPlacedBy(world, x, y, z, player, p_149689_6_); 
+		super.onBlockPlacedBy(world, pos, state, placer, stack); 
 		//tlRailTest.myisInvalid(); // ?
 
-		onTileEntityInitFirst(world, player, tlRailTest, x, y, z);
+		onTileEntityInitFirst(world, placer, tlRailTest, x, y, z);
 		
-		world.setTileEntity(x, y, z, tlRailTest);
+		world.setTileEntity(pos, tlRailTest);
 //		tlRailTest.onTileSetToWorld_Init();
 		tlRailTest.syncData();
 		
-//		// ‘OƒŒ[ƒ‹‚ªİ’u‚³‚ê‚Ä‚¢‚½‚çA‚»‚Ìî•ñ‚ğŒ³‚É‘O‰ñİ’u‚µ‚½ƒŒ[ƒ‹‚ÌTileEntity‚ÌÀ•Wİ’è ... 8/11:ƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç‚ÌƒpƒPƒbƒg‚ª’…‚½‚ç‚â‚é•û®
-		// ƒR[ƒh‚ÍERC_MessageRailConnectRailCtS‚Ö
+//		// ï¿½Oï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½İ’uï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É‘Oï¿½ï¿½İ’uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½TileEntityï¿½Ìï¿½ï¿½Wï¿½İ’ï¿½ ... 8/11:ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½Ìƒpï¿½Pï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½Rï¿½[ï¿½hï¿½ï¿½ERC_MessageRailConnectRailCtSï¿½ï¿½
 
-		// ƒŒ[ƒ‹‚ğİ’u‚µ‚½‚çBlockRailManager‚É“o˜^
+		// ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½İ’uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½BlockRailManagerï¿½É“oï¿½^
 //		ERC_BlockRailManager.SetPrevData(x, y, z);
 	}
 	
 	protected void onTileEntityInitFirst(World world, EntityLivingBase player, Wrap_TileEntityRail Wrail, int x, int y, int z)
 	{
 		TileEntityRailBase rail = Wrail.getRail();
-		// ƒuƒƒbƒNİ’u‚ÌƒvƒŒƒCƒ„[‚ÌŒü‚«
+		// ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½İ’uï¿½ï¿½ï¿½Ìƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌŒï¿½ï¿½ï¿½
 		double yaw = Math.toRadians(player.rotationYaw);
 		double pit = -Math.toRadians(player.rotationPitch);
-		Vec3 metadir = ConvertVec3FromMeta(world.getBlockMetadata(x, y, z));
-		Vec3 vecDir = Vec3.createVectorHelper(
-				-Math.sin(yaw) * (metadir.xCoord!=0?0:1), 
-				Math.sin(pit) * (metadir.yCoord!=0?0:1), 
-				Math.cos(yaw) * (metadir.zCoord!=0?0:1) );
+		Vec3d metadir = ConvertVec3FromMeta(world.getBlockState(new BlockPos(x, y, z)).getValue(META));
+		Vec3d vecDir = new Vec3d(
+				-Math.sin(yaw) * (metadir.x !=0?0:1), 
+				Math.sin(pit) * (metadir.y !=0?0:1), 
+				Math.cos(yaw) * (metadir.z !=0?0:1) );
 		
-		// V‹Kİ’u‚ÌƒŒ[ƒ‹‚É‘Î‚µ‚ÄÀ•Wİ’èB@Œü‚«‚ÍƒvƒŒƒCƒ„[‚ÌŒü‚¢‚Ä‚¢‚é•ûŒü‚Ö
+		// ï¿½Vï¿½Kï¿½İ’uï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½É‘Î‚ï¿½ï¿½Äï¿½ï¿½Wï¿½İ’ï¿½Bï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½Íƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌŒï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		rail.SetBaseRailPosition(x, y, z, vecDir, metadir, 15f);
 //		rail.SetNextRailPosition(x+(int)(vecDir.xCoord*10), y+(int)(vecDir.yCoord*10), z+(int)(vecDir.zCoord*10));
 		rail.SetNextRailVectors(
-				Vec3.createVectorHelper(x+(int)(vecDir.xCoord*10)+0.5, y+(int)(vecDir.yCoord*10)+0.5, z+(int)(vecDir.zCoord*10)+0.5), 
+				new Vec3d(x+(int)(vecDir.x*10)+0.5, y+(int)(vecDir.y*10)+0.5, z+(int)(vecDir.z*10)+0.5),
 				vecDir, 
 				rail.getRail().BaseRail.vecUp, 
 				0f, 0f,
@@ -164,11 +164,11 @@ public abstract class blockRailBase extends BlockContainer{
 		rail.Init();
 	}
 
-	// ƒT[ƒo[‚Ì‚İ@Manager‚Ì“o˜^î•ñ•ÏX onBlockDestroyByPlayer‚æ‚èæ‚ÉŒÄ‚Î‚ê‚éB@‚±‚Ìsuper‚ÅTileEntity‚ğíœ‚µ‚Ä‚¢‚é‚½‚ßA‚»‚ê‚æ‚èæ‚ÉTileEntity‚©‚ç‘OƒŒ[ƒ‹‚Ìî•ñæ“¾AManager‚Ì“o˜^î•ñ•ÏX
+	// ï¿½Tï¿½[ï¿½oï¿½[ï¿½Ì‚İ@Managerï¿½Ì“oï¿½^ï¿½ï¿½ï¿½ÏX onBlockDestroyByPlayerï¿½ï¿½ï¿½ï¿½ÉŒÄ‚Î‚ï¿½ï¿½Bï¿½@ï¿½ï¿½ï¿½ï¿½superï¿½ï¿½TileEntityï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚½ï¿½ßAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½TileEntityï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½æ“¾ï¿½AManagerï¿½Ì“oï¿½^ï¿½ï¿½ï¿½ÏX
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TileEntityRailBase thistl = ((Wrap_TileEntityRail)(world.getTileEntity(x, y, z))).getRail();
+		TileEntityRailBase thistl = ((Wrap_TileEntityRail)(world.getTileEntity(pos))).getRail();
 		if(thistl!=null)
 		{
 			thistl.setBreak(true);
@@ -177,7 +177,7 @@ public abstract class blockRailBase extends BlockContainer{
 			Wrap_TileEntityRail next = thistl.getNextRailTileEntity();
 			if(next!=null)next.getRail().BaseRail.SetPos(-1, -1, -1);
 		}
-		super.breakBlock(world, x, y, z, block, p_149749_6_);
+		super.breakBlock(world, pos, state);
 	}
 
 //	@Override
@@ -191,35 +191,24 @@ public abstract class blockRailBase extends BlockContainer{
 //		super.harvestBlock(world, player, x, y, z, p_149636_6_);
 //	}
 
-	//	// ƒuƒƒbƒN‚ª”j‰ó‚³‚ê‚½‚çŒÄ‚Î‚ê‚é@
+	//	// ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½jï¿½ó‚³‚ê‚½ï¿½ï¿½Ä‚Î‚ï¿½ï¿½@
 	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int i)
 	{	
 //		if(!Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
 //			this.dropBlockAsItem(world, x, y, z, new ItemStack(this));
 	}
 
-	//ƒŒƒ“ƒ_[‚Åg‚Á‚½‚èg‚í‚È‚©‚Á‚½‚è
+	//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½[ï¿½Ågï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void setBlockBoundsForItemRender()
 	{
 		//this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);
 	}
  
-	//ŠK’i‚âƒn[ƒtƒuƒƒbƒN‚İ‚é‚Æ‚¢‚¢‚©‚à
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z)
+	//ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Bï¿½Tï¿½{ï¿½eï¿½ï¿½ï¿½ï¿½\ï¿½Eï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Qï¿½lï¿½É‚ï¿½ï¿½ï¿½Æ—Ç‚ï¿½ï¿½Bï¿½Rï¿½Rï¿½Ìİ’ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆAonEntityCollidedWithBlockï¿½ï¿½ï¿½Ä‚Î‚ï¿½ï¿½æ‚¤ï¿½É‚È‚ï¿½
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		//super.setBlockBoundsBasedOnState(par1IBlockAccess, par2, par3, par4);
-		//this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-		SetBlockBoundsUsingMeta(meta);
-	}
- 
-	//“–‚½‚è”»’èBƒTƒ{ƒeƒ“‚âƒ\ƒEƒ‹ƒTƒ“ƒh‚ğQl‚É‚·‚é‚Æ—Ç‚¢BƒRƒR‚Ìİ’è‚ğ‚·‚é‚ÆAonEntityCollidedWithBlock‚ªŒÄ‚Î‚ê‚é‚æ‚¤‚É‚È‚é
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z)
-	{
-		return AxisAlignedBB.getBoundingBox(
-				((double)x)+this.minX,((double)y)+this.minY,((double)z)+this.minZ,
-				((double)x)+this.maxX,((double)y)+this.maxY,((double)z)+this.maxZ
-				);
+		return boxes[state.getValue(META) & 7];
 	}
 //	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity)
 //    {
@@ -234,14 +223,11 @@ public abstract class blockRailBase extends BlockContainer{
 //        this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
 //    }
  
-	//ƒuƒƒbƒN‚É‹“_‚ğ‡‚í‚¹‚½‚Éo‚Ä‚­‚é•‚¢ü‚ÌƒAƒŒ
+	//ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Éï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½í‚¹ï¿½ï¿½ï¿½ï¿½ï¿½Éoï¿½Ä‚ï¿½ï¿½é•ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒAï¿½ï¿½
 	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int x, int y, int z)
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 	{
-		return AxisAlignedBB.getBoundingBox(
-				((double)x)+this.minX,((double)y)+this.minY,((double)z)+this.minZ,
-				((double)x)+this.maxX,((double)y)+this.maxY,((double)z)+this.maxZ
-				);
+		return boxes[state.getValue(META) & 7];
 	}
 
 	@Override
@@ -250,49 +236,21 @@ public abstract class blockRailBase extends BlockContainer{
 		return getTileEntityInstance();
 	}
 	
-	public static boolean isBlockRail(Block block)
-	{
-		 return block instanceof blockRailBase;
+	public static boolean isBlockRail(Block block) {
+		return block instanceof blockRailBase;
 	}
     
-    private void SetBlockBoundsUsingMeta(int meta)
+    protected Vec3d ConvertVec3FromMeta(int meta)
     {
     	switch(meta&7){
-		case 0: // ã
-			this.setBlockBounds(0.2F, 0.7F, 0.2F, 0.8F, 1.0F, 0.8F);
-            break;
-		case 1: // ‰º
-			this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.3F, 0.8F);
-            break;
-		case 2: // “ì
-			this.setBlockBounds(0.2F, 0.2F, 0.7F, 0.8F, 0.8F, 1.0F);
-            break;
-		case 3: // –k
-			this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.3F);
-            break;
-		case 4: // “Œ
-			this.setBlockBounds(0.7F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-            break;
-		case 5: // ¼
-			this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.3F, 0.8F, 0.8F);
-            break;
-        default:
-        	this.setBlockBounds(0.4F, 0.4F, 0.4F, 0.6F, 0.6F, 0.6F);
-            break;
-		}
-    }
-    
-    protected Vec3 ConvertVec3FromMeta(int meta)
-    {
-    	switch(meta&7){
-    	case 0:return Vec3.createVectorHelper(0, -1, 0);
-    	case 1:return Vec3.createVectorHelper(0, 1, 0);
-    	case 2:return Vec3.createVectorHelper(0, 0, -1);
-    	case 3:return Vec3.createVectorHelper(0, 0, 1);
-    	case 4:return Vec3.createVectorHelper(-1, 0, 0);
-    	case 5:return Vec3.createVectorHelper(1, 0, 0);
+    	case 0:return new Vec3d(0, -1, 0);
+    	case 1:return new Vec3d(0, 1, 0);
+    	case 2:return new Vec3d(0, 0, -1);
+    	case 3:return new Vec3d(0, 0, 1);
+    	case 4:return new Vec3d(-1, 0, 0);
+    	case 5:return new Vec3d(1, 0, 0);
     	}
-		return Vec3.createVectorHelper(0, 0, 0);
+		return new Vec3d(0, 0, 0);
     }
     
     

@@ -1,10 +1,10 @@
 package erc._core;
 
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public class ERC_ReturnCoasterRot {
-	// ƒR[ƒXƒ^[‚Ì§Œä
-	public Vec3 Pos;
+	// ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½Ìï¿½ï¿½ï¿½
+	public Vec3d Pos;
 	public float roll;
 	public float yaw;
 	public float pitch;
@@ -12,20 +12,20 @@ public class ERC_ReturnCoasterRot {
 	public float prevYaw;
 	public float prevPitch;
 //	public DoubleBuffer rotmat;
-	// ƒvƒŒƒCƒ„[‚Ì§Œä
+	// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½
 	public float viewRoll;
 	public float viewYaw;
 	public float viewPitch;
-	public Vec3 offsetX;
-	public Vec3 offsetY;
-	public Vec3 offsetZ;
-	// ÀÈ‚ÌƒIƒtƒZƒbƒg—p
-	public Vec3 Dir;
-	public Vec3 Pitch;
+	public Vec3d offsetX;
+	public Vec3d offsetY;
+	public Vec3d offsetZ;
+	// ï¿½ï¿½ï¿½È‚ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½p
+	public Vec3d Dir;
+	public Vec3d Pitch;
 	
 	public ERC_ReturnCoasterRot()
 	{
-		Pos = Vec3.createVectorHelper(0, 0, 0);
+		Pos = new Vec3d(0, 0, 0);
  		
  		roll = 0;
  		yaw = 0;
@@ -34,9 +34,9 @@ public class ERC_ReturnCoasterRot {
  		viewYaw = 0; 
  		viewPitch = 0;
  		
- 		offsetX = Vec3.createVectorHelper(1, 0, 0);
- 		offsetY = Vec3.createVectorHelper(0, 1, 0);
- 		offsetZ = Vec3.createVectorHelper(0, 0, 1);
+ 		offsetX = new Vec3d(1, 0, 0);
+ 		offsetY = new Vec3d(0, 1, 0);
+ 		offsetZ = new Vec3d(0, 0, 1);
 	}
 	
 	public float getFixedRoll(float partialTicks)

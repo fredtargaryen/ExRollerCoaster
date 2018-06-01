@@ -1,10 +1,14 @@
 package erc.entity;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erc._core.ERC_Logger;
 import erc.item.itemSUSHI;
 import erc.manager.ERC_CoasterAndRailManager;
@@ -22,19 +26,26 @@ import net.minecraft.item.ItemLead;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 
+	private static final DataParameter<Integer> SEAT_INDEX = EntityDataManager.<Integer>createKey(ERC_EntityCoasterSeat.class, DataSerializers.VARINT);
+	private static final DataParameter<Float> OFFSET_X = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> OFFSET_Y = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> OFFSET_Z = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> ROT_X = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> ROT_Y = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
+	private static final DataParameter<Float> ROT_Z = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
 	public ERC_EntityCoaster parent;
 	private int UpdatePacketCounter = 4;
 	boolean canRide = true;
 	public boolean updateFlag = false;
 	public boolean waitUpdateRiderFlag = false;
-	//part of Options -> datawatcher
+	//part of Options -> this.dataManager
 //	int seatIndex = -1;
 //	public float offsetX;
 //	public float offsetY;
@@ -64,7 +75,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		if(op.offsetX==null)return;
 		if(op.offsetX.length <= idx)return;
 		setSize(op.size[idx], op.size[idx]);
-		if(worldObj.isRemote)return;
+		if(world.isRemote)return;
 		setOffsetX(op.offsetX[idx]);
 		setOffsetY(op.offsetY[idx]);
 		setOffsetZ(op.offsetZ[idx]);  
@@ -77,13 +88,14 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 	@Override
 	protected void entityInit()
 	{
-		dataWatcher.addObject(21, new Integer(-1));	// seatIndex
-		dataWatcher.addObject(22, new Float(0f));	// offsetX
-		dataWatcher.addObject(23, new Float(0f));	// offsetY
-		dataWatcher.addObject(24, new Float(0f));	// offsetZ
-		dataWatcher.addObject(25, new Float(0f));	// rotX
-		dataWatcher.addObject(26, new Float(0f));	// rotY
-		dataWatcher.addObject(27, new Float(0f));	// rotZ
+		
+		this.dataManager.register(SEAT_INDEX, -1);
+		this.dataManager.register(OFFSET_X, 0f);
+		this.dataManager.register(OFFSET_Y, 0f);
+		this.dataManager.register(OFFSET_Z, 0f);
+		this.dataManager.register(ROT_X, 0f);
+		this.dataManager.register(ROT_Y, 0f);
+		this.dataManager.register(ROT_Z, 0f);
 	}
 	
     protected void setSize(float w, float h)
@@ -93,23 +105,16 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
         {
             this.width = w;// + 40f;
             this.height = h;
-    		this.boundingBox.minX = -w/2 + this.posX;
-    		this.boundingBox.minY = +h/2 + this.posY;
-    		this.boundingBox.minZ = -w/2 + this.posZ;
-    		this.boundingBox.maxX = +w/2 + this.posX; 
-    		this.boundingBox.maxY = +h/2 + this.posY;
-    		this.boundingBox.maxZ = +w/2 + this.posZ;
+            this.setEntityBoundingBox(new AxisAlignedBB(-w/2 + this.posX, +h/2 + this.posY, -w/2 + this.posZ,
+														+w/2 + this.posX, +h/2 + this.posY, +w/2 + this.posZ));
         }
-        this.myEntitySize = Entity.EnumEntitySize.SIZE_2;
+        //What was SIZE_2 - FT
+        //this.myEntitySize = Entity.EnumEntitySize.SIZE_2;
     }
     
 	public boolean canBeCollidedWith()
     {
         return true;
-    }
-	public AxisAlignedBB getBoundingBox()
-    {
-        return boundingBox;
     }
 	
     public boolean attackEntityFrom(DamageSource ds, float p_70097_2_)
@@ -123,11 +128,11 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
     
 	public boolean canBeRidden()
     {
-		if(worldObj.isRemote)return false;
-        return canRide; // true : æ‚ê‚é
+		if(world.isRemote)return false;
+        return canRide; // true : ï¿½ï¿½ï¿½ï¿½
     }
 	
-    // ‰EƒNƒŠƒbƒN‚³‚ê‚½‚ç‚­‚é
+    // ï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ê‚½ï¿½ç‚­ï¿½ï¿½
     public boolean interactFirst(EntityPlayer player)
     {
     	if(parent==null)return true;
@@ -136,30 +141,30 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
     	if(requestRidingMob(player))return true;
     	if(!canBeRidden())return true;
     	
-    	//‰½‚©æ‚Á‚Ä‚é@{@ƒvƒŒƒCƒ„[‚ªÀ‚Á‚Ä‚é@{@‰EƒNƒŠƒbƒN‚µ‚½ƒvƒŒƒCƒ„[‚Æˆá‚¤ƒvƒŒƒCƒ„[‚ªÀ‚Á‚Ä‚é
-        if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != player)
+    	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½@ï¿½{ï¿½@ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½@ï¿½{ï¿½@ï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Æˆá‚¤ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½
+        Entity passenger = this.getControllingPassenger();
+		if (passenger != null && passenger instanceof EntityPlayer && passenger != player)
         {
             return true;
         }
-        //‰½‚©‚ªæ‚Á‚Ä‚é@{@‰EƒNƒŠƒbƒN‚µ‚½ƒvƒŒƒCƒ„[ˆÈŠO‚Ì‰½‚©‚ªæ‚Á‚Ä‚é
-        else if (this.riddenByEntity != null && this.riddenByEntity != player)
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½@ï¿½{ï¿½@ï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÈŠOï¿½Ì‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½
+        else if (passenger != null && passenger != player)
         {
-        	//‚¨‚ë‚·
-        	riddenByEntity.mountEntity((Entity)null);
-        	riddenByEntity = null;
+        	//ï¿½ï¿½ï¿½ë‚·
+        	passenger.dismountRidingEntity();
             return true;
         }
-        //‰½‚©‚ªæ‚Á‚Ä‚é@©•ª‚©‚à‚µ‚ê‚È‚¢
-        else if (this.riddenByEntity != null)
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+        else if (passenger != null)
         {
         	return true;
         }
         else
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
             	ERC_CoasterAndRailManager.resetViewAngles();
-                player.mountEntity(this);
+                player.startRiding(this);
             }
             return true;
         }
@@ -167,17 +172,18 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		
     protected boolean isRiddenSUSHI(EntityPlayer player)
 	{
-		if(player.getHeldItem()==null)return false;
-		if(player.getHeldItem().getItem() instanceof itemSUSHI)
+		if(player.getHeldItemMainhand()==null)return false;
+		if(player.getHeldItemMainhand().getItem() instanceof itemSUSHI)
 		{
-			if(!worldObj.isRemote)
+			if(!world.isRemote)
 			{
-				entitySUSHI e = new entitySUSHI(worldObj,posX,posY,posZ);
-				worldObj.spawnEntityInWorld(e);	
-				e.mountEntity(this);
-				if(!player.capabilities.isCreativeMode)--player.getHeldItem().stackSize;
+				entitySUSHI e = new entitySUSHI(world,posX,posY,posZ);
+				world.spawnEntity(e);	
+				e.startRiding(this);
+				if(!player.capabilities.isCreativeMode)player.getHeldItemMainhand().grow(-1);
 			}
-			player.swingItem();
+			//Needed? - FT
+			//player.swingItem();
 			return true;
 		}
 		return false;
@@ -185,22 +191,23 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 	
 	protected boolean requestRidingMob(EntityPlayer player)
 	{
-		if(worldObj.isRemote)return false;
-		ItemStack is = player.getHeldItem();
+		if(world.isRemote)return false;
+		ItemStack is = player.getHeldItemMainhand();
 		if(is==null)return false;
 		if(is.getItem() instanceof ItemMonsterPlacer)
 		{
-			Entity entity = ItemMonsterPlacer.spawnCreature(worldObj, is.getItemDamage(), posX, posY, posZ);
-			entity.mountEntity(this);
-			if (!player.capabilities.isCreativeMode)--is.stackSize;
-			player.swingItem();
+			Entity entity = ItemMonsterPlacer.spawnCreature(world, ItemMonsterPlacer.getNamedIdFrom(is), posX, posY, posZ);
+			entity.startRiding(this);
+			if (!player.capabilities.isCreativeMode)is.grow(-1);
+			//Needed? - FT
+			//player.swingItem();
 			return true;
 		}
 		if(is.getItem() instanceof ItemLead)
 		{
 	        double d0 = 7.0D;
 			@SuppressWarnings("unchecked")
-			List<EntityLiving> list = worldObj.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(posX-d0, posY-d0, posZ-d0, posX+d0, posY+d0, posZ+d0));
+			List<EntityLiving> list = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(posX-d0, posY-d0, posZ-d0, posX+d0, posY+d0, posZ+d0));
 	        if (list != null)
 	        {
 	            Iterator<EntityLiving> iterator = list.iterator();
@@ -210,9 +217,10 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 
 	                if (entityliving.getLeashed() && entityliving.getLeashedToEntity() == player)
 	                {
-	                	entityliving.mountEntity(this);
+	                	entityliving.startRiding(this);
 	                    entityliving.clearLeashed(true, !player.capabilities.isCreativeMode);
-	                    player.swingItem();
+	                    //Needed? - FT
+						// player.swingItem();
 	                    return true;
 	                }
 	            }
@@ -236,11 +244,11 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		if(updateFlag==parent.updateFlag)
 		{
 //			ERC_Logger.debugInfo("seat stay");
-		} 	// ‚QD‘Ò‹@
+		} 	// ï¿½Qï¿½Dï¿½Ò‹@
 		else
 		{
 //			ERC_Logger.debugInfo("seat update");
-			_onUpdate();						// ‚UDe‚æ‚èŒã‚¾‚©‚çXV‚·‚é
+			_onUpdate();						// ï¿½Uï¿½Dï¿½eï¿½ï¿½ï¿½ã‚¾ï¿½ï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
 		}
 		
 		updateFlag = !updateFlag;
@@ -256,11 +264,11 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		double oy = getOffsetY();
 		double oz = getOffsetZ();
 		this.setPosition(
-				parent.posX + parent.ERCPosMat.offsetX.xCoord*ox + parent.ERCPosMat.offsetY.xCoord*oy + parent.ERCPosMat.offsetZ.xCoord*oz, 
-				parent.posY + parent.ERCPosMat.offsetX.yCoord*ox + parent.ERCPosMat.offsetY.yCoord*oy + parent.ERCPosMat.offsetZ.yCoord*oz, 
-				parent.posZ + parent.ERCPosMat.offsetX.zCoord*ox + parent.ERCPosMat.offsetY.zCoord*oy + parent.ERCPosMat.offsetZ.zCoord*oz);
+				parent.posX + parent.ERCPosMat.offsetX.x*ox + parent.ERCPosMat.offsetY.x*oy + parent.ERCPosMat.offsetZ.x*oz, 
+				parent.posY + parent.ERCPosMat.offsetX.y*ox + parent.ERCPosMat.offsetY.y*oy + parent.ERCPosMat.offsetZ.y*oz, 
+				parent.posZ + parent.ERCPosMat.offsetX.z*ox + parent.ERCPosMat.offsetY.z*oy + parent.ERCPosMat.offsetZ.z*oz);
 
-		if(waitUpdateRiderFlag)updateRiderPosition2();
+		if(waitUpdateRiderFlag)updateRiderPosition2(this.getControllingPassenger());
 	}
 
 	protected void syncToClient()
@@ -268,7 +276,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		if(this.UpdatePacketCounter--<=0)
 		{
 			UpdatePacketCounter = 40;
-			if(!worldObj.isRemote)
+			if(!world.isRemote)
 			{
 				if(parent!=null)
 				{
@@ -294,7 +302,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 	{
 		if(parent==null)
 		{
-			if(!worldObj.isRemote)
+			if(!world.isRemote)
 			{
 //				if(searchParent())return false;
 //				else 
@@ -305,10 +313,10 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		}
 		if(parent.isDead)
 		{
-			if(!worldObj.isRemote)if(!isDead)setDead();
+			if(!world.isRemote)if(!isDead)setDead();
 			return true;
 		}
-		if(!worldObj.isRemote && getSeatIndex() == -1) // ƒŠƒƒO‚È‚Ç‚ÌÄƒXƒ|[ƒ“‚Åe‚ªÄƒXƒ|[ƒ“‚³‚¹‚È‚©‚Á‚½ê‡false(server‚Ì‚İ)
+		if(!world.isRemote && getSeatIndex() == -1) // ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½È‚Ç‚ÌÄƒXï¿½|ï¿½[ï¿½ï¿½ï¿½Åeï¿½ï¿½ï¿½ÄƒXï¿½|ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡false(serverï¿½Ì‚ï¿½)
 		{
 			if(!isDead)setDead();
 			return true;
@@ -354,66 +362,66 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
     }
 	
 	@Override
-	public void updateRiderPosition()
+	public void updatePassenger(Entity passenger)
 	{
 		if(parent == null)return;
 		if(updateFlag!=parent.updateFlag)
 		{
 //			ERC_Logger.debugInfo("seat rider stay");
 			waitUpdateRiderFlag = true;
-		} 	// ‚QD‘Ò‹@
+		} 	// ï¿½Qï¿½Dï¿½Ò‹@
 		else
 		{
 //			ERC_Logger.debugInfo("seat rider update");
-			updateRiderPosition2();					
-			// ‚UDe‚æ‚èŒã‚¾‚©‚çXV‚·‚é
+			updateRiderPosition2(passenger);					
+			// ï¿½Uï¿½Dï¿½eï¿½ï¿½ï¿½ã‚¾ï¿½ï¿½ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
 		}
 	}
-	public void updateRiderPosition2()
+	public void updateRiderPosition2(Entity passenger)
 	{
 //		updateRiderPosFlag = true;
 //		ERC_Logger.info("entityseat::updateRilderPosition");
 		if(parent==null)return;
-    	if (this.riddenByEntity != null)
+    	if (passenger != null)
         {
     		waitUpdateRiderFlag = false;
-    		// Šî€²‰ñ“]
+    		// ï¿½î€ï¿½ï¿½ï¿½ï¿½]
 //    		if(worldObj.isRemote)ERC_Logger.debugInfo("seat updateRiderposition");
-    		Vec3 vx = parent.ERCPosMat.offsetX;
-    		Vec3 vy = parent.ERCPosMat.offsetY;
-    		Vec3 vz = parent.ERCPosMat.offsetZ;
-    		// Z²‰ñ“]
+    		Vec3d vx = parent.ERCPosMat.offsetX;
+    		Vec3d vy = parent.ERCPosMat.offsetY;
+    		Vec3d vz = parent.ERCPosMat.offsetZ;
+    		// Zï¿½ï¿½ï¿½ï¿½]
     		vx = ERC_MathHelper.rotateAroundVector(vx, vz, getRotZ());
     		vy = ERC_MathHelper.rotateAroundVector(vy, vz, getRotZ());
-    		// Y²‰ñ“]
+    		// Yï¿½ï¿½ï¿½ï¿½]
     		vx = ERC_MathHelper.rotateAroundVector(vx, parent.ERCPosMat.offsetY, getRotY());
     		vz = ERC_MathHelper.rotateAroundVector(vz, parent.ERCPosMat.offsetY, getRotY());
-    		// X²‰ñ“]
+    		// Xï¿½ï¿½ï¿½ï¿½]
     		vy = ERC_MathHelper.rotateAroundVector(vy, parent.ERCPosMat.offsetX, getRotX());
     		vz = ERC_MathHelper.rotateAroundVector(vz, parent.ERCPosMat.offsetX, getRotX());
     		{
-    			////////////// ƒvƒŒƒCƒ„[‰ñ“]—ÊŒvZ
-    			// ViewYaw‰ñ“]ƒxƒNƒgƒ‹@dir1->dir_rotView, cross->turnCross
-    			Vec3 dir_rotView = ERC_MathHelper.rotateAroundVector(vz, vy, Math.toRadians(ERC_CoasterAndRailManager.rotationViewYaw));
-    			Vec3 turnCross = ERC_MathHelper.rotateAroundVector(vx, vy, Math.toRadians(ERC_CoasterAndRailManager.rotationViewYaw));
-    			// ViewPitch‰ñ“]ƒxƒNƒgƒ‹ dir1->dir_rotView
-    			Vec3 dir_rotViewPitch = ERC_MathHelper.rotateAroundVector(dir_rotView, turnCross, Math.toRadians(ERC_CoasterAndRailManager.rotationViewPitch));
-    			// pitch—p dir_rotViewPitch‚Ì…•½ƒxƒNƒgƒ‹
-    			Vec3 dir_rotViewPitchHorz = Vec3.createVectorHelper(dir_rotViewPitch.xCoord, 0, dir_rotViewPitch.zCoord);
-    			// roll—pturnCross‚Ì…•½ƒxƒNƒgƒ‹
-    			Vec3 crossHorzFix = Vec3.createVectorHelper(0, 1, 0).crossProduct(dir_rotViewPitch);
-    			if(crossHorzFix.lengthVector()==0.0)crossHorzFix=Vec3.createVectorHelper(1, 0, 0);
+    			////////////// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½]ï¿½ÊŒvï¿½Z
+    			// ViewYawï¿½ï¿½]ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½@dir1->dir_rotView, cross->turnCross
+    			Vec3d dir_rotView = ERC_MathHelper.rotateAroundVector(vz, vy, Math.toRadians(ERC_CoasterAndRailManager.rotationViewYaw));
+    			Vec3d turnCross = ERC_MathHelper.rotateAroundVector(vx, vy, Math.toRadians(ERC_CoasterAndRailManager.rotationViewYaw));
+    			// ViewPitchï¿½ï¿½]ï¿½xï¿½Nï¿½gï¿½ï¿½ dir1->dir_rotView
+    			Vec3d dir_rotViewPitch = ERC_MathHelper.rotateAroundVector(dir_rotView, turnCross, Math.toRadians(ERC_CoasterAndRailManager.rotationViewPitch));
+    			// pitchï¿½p dir_rotViewPitchï¿½Ìï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½
+    			Vec3d dir_rotViewPitchHorz = new Vec3d(dir_rotViewPitch.x, 0, dir_rotViewPitch.z);
+    			// rollï¿½pturnCrossï¿½Ìï¿½ï¿½ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½
+    			Vec3d crossHorzFix = new Vec3d(0, 1, 0).crossProduct(dir_rotViewPitch);
+    			if(crossHorzFix.lengthVector()==0.0)crossHorzFix=new Vec3d(1, 0, 0);
 		
     			// yaw OK
-    			 rotationYaw = (float) -Math.toDegrees( Math.atan2(dir_rotViewPitch.xCoord, dir_rotViewPitch.zCoord) );
+    			 rotationYaw = (float) -Math.toDegrees( Math.atan2(dir_rotViewPitch.x, dir_rotViewPitch.z) );
 
     			// pitch OK
-    			rotationPitch = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(dir_rotViewPitch, dir_rotViewPitchHorz) * (dir_rotViewPitch.yCoord>=0?-1f:1f) );
+    			rotationPitch = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(dir_rotViewPitch, dir_rotViewPitchHorz) * (dir_rotViewPitch.y>=0?-1f:1f) );
     			if(Float.isNaN(rotationPitch))
     				rotationPitch=0;
     			
     			// roll
-    			rotationRoll = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(turnCross, crossHorzFix) * (turnCross.yCoord>=0?1f:-1f) );
+    			rotationRoll = (float) Math.toDegrees( ERC_MathHelper.angleTwoVec3(turnCross, crossHorzFix) * (turnCross.y>=0?1f:-1f) );
     			if(Float.isNaN(rotationRoll))
     				rotationRoll=0;
     		}
@@ -421,15 +429,15 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
     		prevRotationPitch = ERC_MathHelper.fixrot(rotationPitch, prevRotationPitch);
     		prevRotationRoll = ERC_MathHelper.fixrot(rotationRoll, prevRotationRoll);
           
-    		this.riddenByEntity.rotationYaw = this.rotationYaw;
-    		this.riddenByEntity.rotationPitch = this.rotationPitch;
-    		this.riddenByEntity.prevRotationYaw = this.prevRotationYaw;
-    		this.riddenByEntity.prevRotationPitch = this.prevRotationPitch; 
-//    		this.riddenByEntity.rotationYaw = 0;
-//    		this.riddenByEntity.rotationPitch = -ERC_CoasterAndRailManager.rotationViewPitch;
+    		passenger.rotationYaw = this.rotationYaw;
+    		passenger.rotationPitch = this.rotationPitch;
+    		passenger.prevRotationYaw = this.prevRotationYaw;
+    		passenger.prevRotationPitch = this.prevRotationPitch; 
+//    		passenger.rotationYaw = 0;
+//    		passenger.rotationPitch = -ERC_CoasterAndRailManager.rotationViewPitch;
     		
-    		double toffsety = this.riddenByEntity.getYOffset();
-//            this.riddenByEntity.setPosition(
+    		double toffsety = passenger.getYOffset();
+//            passenger.setPosition(
 //            		this.posX + vy.xCoord*toffsety, 
 //            		this.posY + vy.yCoord*toffsety,
 //            		this.posZ + vy.zCoord*toffsety
@@ -437,25 +445,25 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 //    		double ox = getOffsetX();
 //    		double oy = getOffsetY();
 //    		double oz = getOffsetZ();
-//            this.riddenByEntity.setPosition(
+//            passenger.setPosition(
 //    				parent.posX + vy.xCoord*toffsety + parent.ERCPosMat.offsetX.xCoord*ox + parent.ERCPosMat.offsetY.xCoord*oy + parent.ERCPosMat.offsetZ.xCoord*oz, 
 //    				parent.posY + vy.yCoord*toffsety + parent.ERCPosMat.offsetX.yCoord*ox + parent.ERCPosMat.offsetY.yCoord*oy + parent.ERCPosMat.offsetZ.yCoord*oz, 
 //    				parent.posZ + vy.zCoord*toffsety + parent.ERCPosMat.offsetX.zCoord*ox + parent.ERCPosMat.offsetY.zCoord*oy + parent.ERCPosMat.offsetZ.zCoord*oz);
-            this.riddenByEntity.setPosition(
-    				this.posX + vy.xCoord*toffsety, 
-    				this.posY + vy.yCoord*toffsety, 
-    				this.posZ + vy.zCoord*toffsety);
+            passenger.setPosition(
+    				this.posX + vy.x*toffsety,
+    				this.posY + vy.y*toffsety,
+    				this.posZ + vy.z*toffsety);
             
-            this.riddenByEntity.motionX = this.parent.Speed * parent.ERCPosMat.Dir.xCoord * 1;
-            this.riddenByEntity.motionY = this.parent.Speed * parent.ERCPosMat.Dir.yCoord * 1;
-            this.riddenByEntity.motionZ = this.parent.Speed * parent.ERCPosMat.Dir.zCoord * 1;
+            passenger.motionX = this.parent.Speed * parent.ERCPosMat.Dir.x * 1;
+            passenger.motionY = this.parent.Speed * parent.ERCPosMat.Dir.y * 1;
+            passenger.motionZ = this.parent.Speed * parent.ERCPosMat.Dir.z * 1;
 //            ERC_Logger.info("" + riddenByEntity.motionX + riddenByEntity.motionY + riddenByEntity.motionZ );
 			
-            if(worldObj.isRemote && riddenByEntity instanceof EntityLivingBase)
+            if(world.isRemote && passenger instanceof EntityLivingBase)
             {
-            	EntityLivingBase el = (EntityLivingBase) this.riddenByEntity;
+            	EntityLivingBase el = (EntityLivingBase) passenger;
             	el.renderYawOffset = parent.ERCPosMat.yaw; 
-            	if(riddenByEntity == Minecraft.getMinecraft().thePlayer)
+            	if(passenger == Minecraft.getMinecraft().player)
             		el.rotationYawHead = ERC_CoasterAndRailManager.rotationViewYaw + el.renderYawOffset;
 //            	el.head
             }
@@ -470,13 +478,13 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 //    	ERC_CoasterAndRailManager.setAngles(deltax, deltay);
     }
     
-	@Override
-	public void setPositionAndRotation2(double x, double y, double z, float yaw, float pit, int p_70056_9_)
-    {
-    	//d—l‚Æ‚µ‚Ä‰½‚à–³‚µ@ƒT[ƒo[‚©‚ç‚Ì‹K’è‚ÌEntity“¯Šú‚Åg‚í‚ê‚Ä‚¨‚èA“¯Šú‚ğ–³Œø‚É‚·‚é‚½‚ß
+	//@Override
+	//public void setPositionAndRotation2(double x, double y, double z, float yaw, float pit, int p_70056_9_)
+    //{
+    	//ï¿½dï¿½lï¿½Æ‚ï¿½ï¿½Ä‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@ï¿½Tï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½ï¿½Ì‹Kï¿½ï¿½ï¿½Entityï¿½ï¿½ï¿½ï¿½ï¿½Ågï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ğ–³Œï¿½ï¿½É‚ï¿½ï¿½é‚½ï¿½ï¿½
 //		ERC_Logger.debugInfo("catch!");
 //		super.setPositionAndRotation2(x, y, z, yaw, pit, p_70056_9_);
-    }
+    //}
 	
 //	public float getRoll(float partialTicks)
 //	{
@@ -512,9 +520,9 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 	{
 		switch(flag)
 		{
-		case 3 : //CtS \¿
+		case 3 : //CtS ï¿½\ï¿½ï¿½
 			break;
-		case 4 : //StC e‚ğƒNƒ‰‚É‹³‚¦‚é
+		case 4 : //StC ï¿½eï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½É‹ï¿½ï¿½ï¿½ï¿½ï¿½
 			buf.writeInt(parent.getEntityId());
 			break;
 		}
@@ -530,7 +538,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 			break;
 		case 4 :
 			int parentid = buf.readInt();
-			parent = (ERC_EntityCoaster) worldObj.getEntityByID(parentid);
+			parent = (ERC_EntityCoaster) world.getEntityByID(parentid);
 			if(parent==null){
 				ERC_Logger.warn("parent id is Invalid.  id:"+parentid);
 				return;
@@ -541,67 +549,67 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		}
 	}
 	
-	////////////////////////////////////////datawatcher
+	////////////////////////////////////////this.dataManager
 	public int getSeatIndex()
 	{
-		return dataWatcher.getWatchableObjectInt(21);
+		return this.dataManager.get(SEAT_INDEX);
 	}
 	public void setSeatIndex(int idx)
 	{
-		dataWatcher.updateObject(21, Integer.valueOf(idx));
+		this.dataManager.set(SEAT_INDEX, idx);
 	}
 	
 	public float getOffsetX()
 	{
-		return dataWatcher.getWatchableObjectFloat(22);
+		return this.dataManager.get(OFFSET_X);
 	}
 	public void setOffsetX(float offsetx)
 	{
-		dataWatcher.updateObject(22, Float.valueOf(offsetx));
+		this.dataManager.set(OFFSET_X, offsetx);
 	}
 
 	public float getOffsetY()
 	{
-		return dataWatcher.getWatchableObjectFloat(23);
+		return this.dataManager.get(OFFSET_Y);
 	}
 	public void setOffsetY(float offsety)
 	{
-		dataWatcher.updateObject(23, Float.valueOf(offsety));
+		this.dataManager.set(OFFSET_Y, offsety);
 	}
 	
 	public float getOffsetZ()
 	{
-		return dataWatcher.getWatchableObjectFloat(24);
+		return this.dataManager.get(OFFSET_Z);
 	}
 	public void setOffsetZ(float offsetz)
 	{
-		dataWatcher.updateObject(24, Float.valueOf(offsetz));
+		this.dataManager.set(OFFSET_Z, offsetz);
 	}
 	
 	public float getRotX()
 	{
-		return dataWatcher.getWatchableObjectFloat(25);
+		return this.dataManager.get(ROT_X);
 	}
 	public void setRotX(float rot)
 	{
-		dataWatcher.updateObject(25, Float.valueOf(rot));
+		this.dataManager.set(ROT_X, rot);
 	}
 	
 	public float getRotY()
 	{
-		return dataWatcher.getWatchableObjectFloat(26);
+		return this.dataManager.get(ROT_Y);
 	}
 	public void setRotY(float rot)
 	{
-		dataWatcher.updateObject(26, Float.valueOf(rot));
+		this.dataManager.set(ROT_Y, rot);
 	}
 	
 	public float getRotZ()
 	{
-		return dataWatcher.getWatchableObjectFloat(27);
+		return this.dataManager.get(ROT_Z);
 	}
 	public void setRotZ(float rot)
 	{
-		dataWatcher.updateObject(27, Float.valueOf(rot));
+		this.dataManager.set(ROT_Z, rot);
 	}
 }

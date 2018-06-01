@@ -3,11 +3,17 @@ package erc.entity;
 import java.util.Random;
 
 import erc._core.ERC_Logger;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erc._core.ERC_CONST;
 import erc._core.ERC_Core;
 import erc.math.ERC_MathHelper;
@@ -15,45 +21,44 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 public class entitySUSHI extends Entity {
+	private static final DataParameter<Integer> ID = EntityDataManager.<Integer>createKey(entitySUSHI.class, DataSerializers.VARINT);
+	private static final DataParameter<Float> ROT = EntityDataManager.<Float>createKey(entitySUSHI.class, DataSerializers.FLOAT);
 	
 	@SideOnly(Side.CLIENT)
 	public static ResourceLocation tex;
 	@SideOnly(Side.CLIENT)
-	public static IModelCustom model1;
+	public static OBJModel model1;
 	@SideOnly(Side.CLIENT)
-	public static IModelCustom model2;
+	public static OBJModel model2;
 	@SideOnly(Side.CLIENT)
-	public static IModelCustom model3;
+	public static OBJModel model3;
 	@SideOnly(Side.CLIENT)
-	public static IModelCustom model4;
+	public static OBJModel model4;
 	@SideOnly(Side.CLIENT)
-	public static IModelCustom model5;
+	public static OBJModel model5;
 	@SideOnly(Side.CLIENT)
-	public static IModelCustom[] models;
+	public static OBJModel[] models;
 
 	@SideOnly(Side.CLIENT)
 	public static void clientInitSUSHI()
 	{
 		tex = new ResourceLocation(ERC_CONST.DOMAIN,"textures/entities/SUSHI.jpg");
 		try {
-			model1 = AdvancedModelLoader.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_m.obj"));
-			model2 = AdvancedModelLoader.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_t.obj"));
-			model3 = AdvancedModelLoader.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_w.obj"));
-			model4 = AdvancedModelLoader.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_e.obj"));
-			model5 = AdvancedModelLoader.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_g.obj"));
+			model1 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_m.obj"));
+			model2 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_t.obj"));
+			model3 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_w.obj"));
+			model4 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_e.obj"));
+			model5 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_g.obj"));
 		}
 		catch(Exception e){
 			ERC_Logger.warn("Loading SUSHI model is failure");
 		}
-		models = new IModelCustom[5];
+		models = new OBJModel[5];
 		models[0] = model2;
 		models[1] = model3;
 		models[2] = model4;
@@ -81,15 +86,10 @@ public class entitySUSHI extends Entity {
 	{
 		Random r = new Random();
 		
-		dataWatcher.addObject(20, new Float(0f));
-//		dataWatcher.addObject(21, new Integer(1));
-		dataWatcher.addObject(19, new Integer((int) Math.floor(r.nextInt(44)/10d)));
+		this.dataManager.register(ROT, 0f);
+//		this.dataManager.addObject(21, new Integer(1));
+		this.dataManager.register(ID, (int) Math.floor(r.nextInt(44)/10d));
 	}
-	
-	public AxisAlignedBB getBoundingBox()
-    {
-        return boundingBox;
-    }
 	
 	@Override
     public boolean canBeCollidedWith()
@@ -100,20 +100,20 @@ public class entitySUSHI extends Entity {
 	@Override
     public boolean attackEntityFrom(DamageSource ds, float p_70097_2_)
     {
-    	boolean flag = ds.getEntity() instanceof EntityPlayer;
+    	boolean flag = ds.getTrueSource() instanceof EntityPlayer;
 
 	    if (flag)
 	    {
 	        setDead();
-	        boolean flag1 = ((EntityPlayer)ds.getEntity()).capabilities.isCreativeMode;
-	        if(!flag1 && !worldObj.isRemote)entityDropItem(new ItemStack(ERC_Core.ItemSUSHI,1,0), 0f);
+	        boolean flag1 = ((EntityPlayer)ds.getTrueSource()).capabilities.isCreativeMode;
+	        if(!flag1 && !world.isRemote)entityDropItem(new ItemStack(ERC_Core.ItemSUSHI,1,0), 0f);
 	    }
 	    
     	return false;
     }
 	
 	@Override
-	public boolean interactFirst(EntityPlayer player)
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
 	{
 		if(player.isSneaking())
 		{
@@ -125,7 +125,8 @@ public class entitySUSHI extends Entity {
 			else if(getRot()>0)setRot(-3.0f);
 			else if(getRot()<0)setRot(0);
 		}
-		player.swingItem();
+		//Needed? - FT
+		//player.swingItem();
 		return false;
 	}
 	
@@ -152,7 +153,8 @@ public class entitySUSHI extends Entity {
 
 		GL11.glScalef(1.2f, 1.2f, 1.2f);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(tex);
-		if(models[getId()]!=null)models[getId()].renderAll();
+		//How to get this to render? - FT
+		//if(models[getId()]!=null)models[getId()].renderAll();
 		GL11.glPopMatrix();
 	}
 	
@@ -171,19 +173,19 @@ public class entitySUSHI extends Entity {
 
 	public float getRot()
 	{
-		return dataWatcher.getWatchableObjectFloat(20);
+		return this.dataManager.get(ROT);
 	}
 	public void setRot(float rot)
 	{
-		dataWatcher.updateObject(20, Float.valueOf(rot));
+		this.dataManager.set(ROT, rot);
 	}
 	
 	public int getId()
 	{
-		return dataWatcher.getWatchableObjectInt(19);
+		return this.dataManager.get(ID);
 	}
-	public void setId(int rot)
+	public void setId(int id)
 	{
-		dataWatcher.updateObject(19, Integer.valueOf(rot));
+		this.dataManager.set(ID, id);
 	}
 }

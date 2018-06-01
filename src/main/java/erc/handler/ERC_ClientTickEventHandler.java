@@ -1,11 +1,12 @@
 package erc.handler;
 
+import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.Display;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erc.entity.Wrap_EntityCoaster;
 import erc.manager.ERC_CoasterAndRailManager;
 import net.minecraft.client.Minecraft;
@@ -42,14 +43,14 @@ public class ERC_ClientTickEventHandler extends ERC_TickEventHandler{
 		if (Minecraft.getMinecraft().isGamePaused()) {
 			return;
 	    }
-	    EntityPlayer player = this.mc.thePlayer;
+	    EntityPlayer player = this.mc.player;
 	    if (player == null) {
 	    	return;
 	    }
 	    Wrap_EntityCoaster coaster = null;
-	    if (player.ridingEntity instanceof Wrap_EntityCoaster) 
+	    if (player.getRidingEntity() instanceof Wrap_EntityCoaster)
 	    {
-	    	coaster = (Wrap_EntityCoaster)player.ridingEntity;
+	    	coaster = (Wrap_EntityCoaster)player.getRidingEntity();
 	    }
 //
 //	    for (int i = 0; (i < 10) && (prevTick > partialTicks); i++) 
@@ -147,7 +148,7 @@ public class ERC_ClientTickEventHandler extends ERC_TickEventHandler{
 //    				0, 0, 
 //    				0, 0, 
 //    				0, 0);
-//	    	// 2læ‚è‚ÌƒV[ƒg’Ç‰Á‚µ‚½ê‡‚Él‚¦‚é
+//	    	// 2ï¿½lï¿½ï¿½èï¿½ÌƒVï¿½[ï¿½gï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Élï¿½ï¿½ï¿½ï¿½
 //			MCH_EntitySeat seat = (player.field_70154_o instanceof MCH_EntitySeat) ? (MCH_EntitySeat)player.field_70154_o : null;
 //			if ((seat != null) && (seat.getParent() != null))
 //			{
@@ -253,12 +254,12 @@ public class ERC_ClientTickEventHandler extends ERC_TickEventHandler{
 	{
 	    float r = 0;
 	    float pr = 0;
-		EntityPlayer player = this.mc.thePlayer;
+		EntityPlayer player = this.mc.player;
 	    if (player != null) {
 	    	Wrap_EntityCoaster coaster = null;
-	    	if (player.ridingEntity instanceof Wrap_EntityCoaster) 
+	    	if (player.getRidingEntity() instanceof Wrap_EntityCoaster)
 	    	{
-	    		coaster = (Wrap_EntityCoaster)player.ridingEntity;
+	    		coaster = (Wrap_EntityCoaster)player.getRidingEntity();
 	    		r = coaster.rotationRoll;
 	    		pr = coaster.prevRotationRoll;
 	    	}

@@ -1,22 +1,22 @@
 package erc.model;
 
+import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import erc.entity.ERC_EntityCoaster;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModelCustom;
 
 public class ERC_ModelCoaster extends ModelBase {
 	
-	private IModelCustom modelCoaster;
+	private OBJModel modelCoaster;
 	private ResourceLocation TextureResource;
 	
 	@SuppressWarnings("unused")
-	private ERC_ModelCoaster(){} //ƒ[ƒh‚·‚éƒtƒ@ƒCƒ‹–¼–¢w’èƒCƒ“ƒXƒ^ƒ“ƒX¶¬‹‘”Û‚Å‚«‚éH
+	private ERC_ModelCoaster(){} //ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û‚Å‚ï¿½ï¿½ï¿½H
 	
-	public ERC_ModelCoaster(IModelCustom Obj, ResourceLocation Tex)
+	public ERC_ModelCoaster(OBJModel Obj, ResourceLocation Tex)
 	{
 		modelCoaster = Obj;
 		TextureResource = Tex;
@@ -24,7 +24,7 @@ public class ERC_ModelCoaster extends ModelBase {
 	
 	private void render() 
 	{
-		modelCoaster.renderAll();
+		//modelCoaster.renderAll();
 	}
 	
 	public void render(ERC_EntityCoaster coaster, double x, double y, double z, float t) 

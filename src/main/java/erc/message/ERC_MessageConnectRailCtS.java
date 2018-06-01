@@ -1,14 +1,15 @@
 package erc.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc.tileEntity.Wrap_TileEntityRail;
 import io.netty.buffer.ByteBuf;
 
 public class ERC_MessageConnectRailCtS implements IMessage, IMessageHandler<ERC_MessageConnectRailCtS, IMessage>{
 
-	// ƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç—ˆ‚éƒŒ[ƒ‹‚ÌÚ‘±—v¿ƒƒbƒZ[ƒW
+	// ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ç—ˆï¿½éƒŒï¿½[ï¿½ï¿½ï¿½ÌÚ‘ï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W
 	
 	public int bx, by, bz;
 	public int nx, ny, nz;
@@ -50,8 +51,8 @@ public class ERC_MessageConnectRailCtS implements IMessage, IMessageHandler<ERC_
 	@Override
     public IMessage onMessage(ERC_MessageConnectRailCtS message, MessageContext ctx)
     {
-		Wrap_TileEntityRail Wbase = (Wrap_TileEntityRail)ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.bx, message.by, message.bz);
-		Wrap_TileEntityRail Wnext = (Wrap_TileEntityRail)ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.nx, message.ny, message.nz);
+		Wrap_TileEntityRail Wbase = (Wrap_TileEntityRail)ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.bx, message.by, message.bz));
+		Wrap_TileEntityRail Wnext = (Wrap_TileEntityRail)ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.nx, message.ny, message.nz));
     	
         if ((Wbase != null && Wnext != null))
         {

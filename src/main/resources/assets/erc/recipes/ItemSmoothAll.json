@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "B  ",
+    " P ",
+    "  I"
+  ],
+  "key":
+  {
+    "B":
+    {
+      "item": "minecraft:book",
+      "data": 0
+    },
+    "P":
+    {
+      "item": "erc:railpipe",
+      "data": 0
+    },
+    "I":
+    {
+      "item": "minecraft:stick",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:ItemSmoothAll",
+    "count": 1
+  }
+}

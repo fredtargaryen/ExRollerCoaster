@@ -32,7 +32,7 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
 	{
 		super(world);
 		CoasterType = 1;
-		if (worldObj.isRemote)
+		if (world.isRemote)
 		{
 			setModel(ModelID, CoasterType);
 			setModelOptions();
@@ -75,8 +75,8 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
     protected boolean requestConnectCoaster(EntityPlayer player)
     {
     	// cancel if player dont has a connective coaster
-    	if(player.getCurrentEquippedItem() == null ) return false;
-		if( !(player.getCurrentEquippedItem().getItem() instanceof ERC_ItemCoasterConnector) ) return false;
+    	if(player.getHeldItemMainhand() == null ) return false;
+		if( !(player.getHeldItemMainhand().getItem() instanceof ERC_ItemCoasterConnector) ) return false;
 		
 		//proxy connection to parent
 		if( !canConnectForrowingCoaster() )
@@ -149,7 +149,7 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
 		{
     		for(int i=0; i<seats.length; ++i)if(seats[i]!=null)
     		{
-    			if(!seats[i].addedToChunk && !worldObj.isRemote)worldObj.spawnEntityInWorld(seats[i]);
+    			if(!seats[i].addedToChunk && !world.isRemote)world.spawnEntity(seats[i]);
     			if(seats[i].updateFlag != this.updateFlag)seats[i]._onUpdate();
     		}
 //    		if(worldObj.isRemote)ERC_Logger.debugInfo("end coaster onUpdate");
@@ -163,19 +163,19 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
 	protected void syncToClient() {
 		if (this.UpdatePacketCounter-- <= 0) {
 			UpdatePacketCounter = 100;
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				if (tlrail != null) {
 					if (tlrail == null)
 						return;
 					ERC_MessageCoasterStC packet = new ERC_MessageCoasterStC(getEntityId(), this.paramT, this.Speed,
-							tlrail.xCoord, tlrail.yCoord, tlrail.zCoord, ModelID, CoasterOptions);
+							tlrail.getXcoord(), tlrail.getYcoord(), tlrail.getZcoord(), ModelID, CoasterOptions);
 					ERC_PacketHandler.INSTANCE.sendToAll(packet);
 				}
 			} else {
 				// クラはたまにサーバーと連結関係の同期を試みる
 				if (parent == null) {
 					ERC_MessageRequestConnectCtS packet = new ERC_MessageRequestConnectCtS(
-							Minecraft.getMinecraft().thePlayer.getEntityId(), this.getEntityId());
+							Minecraft.getMinecraft().player.getEntityId(), this.getEntityId());
 					ERC_PacketHandler.INSTANCE.sendToServer(packet);
 //					ERC_Logger.info("request sync from client");
 				}
@@ -186,7 +186,7 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
 	@Override
 	protected boolean updateInit() {
 		if (parent == null) {
-			if (!worldObj.isRemote) { // 鯖は親を探す
+			if (!world.isRemote) { // 鯖は親を探す
 				ERC_ManagerCoasterLoad.searchParent(this.getEntityId(), connectIndex, parentuuid);
 			}
 			return true;
@@ -291,7 +291,7 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
 			int idx = buf.readInt();
 			this.connectIndex = idx;
 			this.distanceToParent = buf.readFloat();
-			ERC_EntityCoaster parent = (ERC_EntityCoaster) worldObj.getEntityByID(parentid);
+			ERC_EntityCoaster parent = (ERC_EntityCoaster) world.getEntityByID(parentid);
 			if (parent == null)
 				return;// 親がまだロードされてないとなる？(そんなばかな)
 

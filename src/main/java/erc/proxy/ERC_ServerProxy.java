@@ -1,17 +1,11 @@
 package erc.proxy;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import erc._core.ERC_Core;
 import erc.handler.ERC_TickEventHandler;
 
-public class ERC_ServerProxy implements IProxy{
-	
-	@Override
-	public int getNewRenderType()
-	{
-		return -1;
-	}
-
+public class ERC_ServerProxy implements IProxy
+{
 	@Override
 	public void preInit()
 	{
@@ -24,4 +18,9 @@ public class ERC_ServerProxy implements IProxy{
 
 	@Override
 	public void postInit() {}
+
+	@Override
+	public void registerModels() {
+
+	}
 }

@@ -1,9 +1,9 @@
 package erc.message;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc.entity.Wrap_EntityCoaster;
 import io.netty.buffer.ByteBuf;
 
@@ -36,7 +36,7 @@ public class ERC_MessageCoasterMisc implements IMessage, IMessageHandler<ERC_Mes
 		this.EntityID = buf.readInt();
 	    this.flag = buf.readInt();
 	       	
-	    Wrap_EntityCoaster coaster = (Wrap_EntityCoaster)FMLClientHandler.instance().getClient().theWorld.getEntityByID(EntityID);
+	    Wrap_EntityCoaster coaster = (Wrap_EntityCoaster)FMLClientHandler.instance().getClient().world.getEntityByID(EntityID);
 		if(coaster!=null)coaster.SyncCoasterMisc_Receive(buf, flag);
     }
 	

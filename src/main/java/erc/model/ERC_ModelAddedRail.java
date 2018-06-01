@@ -1,27 +1,27 @@
 package erc.model;
 
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import erc.math.ERC_MathHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.client.model.IModelCustom;
 
 public class ERC_ModelAddedRail extends Wrap_RailRenderer {
 	
-	private IModelCustom modelRail;
+	private OBJModel modelRail;
 	private ResourceLocation TextureResource;
 	private int ModelNum;
-	private Vec3[] pos;
-	private Vec3[] rot;
+	private Vec3d[] pos;
+	private Vec3d[] rot;
 	private float[] Length;
 	
 	@SuppressWarnings("unused")
-	private ERC_ModelAddedRail(){} //ƒ[ƒh‚·‚éƒtƒ@ƒCƒ‹–¼–¢w’èƒCƒ“ƒXƒ^ƒ“ƒX¶¬‹‘”Û‚Å‚«‚éH
+	private ERC_ModelAddedRail(){} //ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û‚Å‚ï¿½ï¿½ï¿½H
 	
-	public ERC_ModelAddedRail(IModelCustom Obj, ResourceLocation Tex)
+	public ERC_ModelAddedRail(OBJModel Obj, ResourceLocation Tex)
 	{
 		modelRail = Obj;
 		TextureResource = Tex;
@@ -29,7 +29,7 @@ public class ERC_ModelAddedRail extends Wrap_RailRenderer {
 	
 	private void renderModel() 
 	{
-		modelRail.renderAll();
+		//modelRail.renderAll();
 	}
 	
 	public void render(double x, double y, double z, double yaw, double pitch, double roll, double length) 
@@ -53,32 +53,32 @@ public class ERC_ModelAddedRail extends Wrap_RailRenderer {
 	public void setModelNum(int PosNum_org)
 	{
 		ModelNum = PosNum_org-1;
-		pos = new Vec3[ModelNum];
-		rot = new Vec3[ModelNum];
+		pos = new Vec3d[ModelNum];
+		rot = new Vec3d[ModelNum];
 		Length = new float[ModelNum];
-		for(int i=0;i<ModelNum;++i)pos[i] = Vec3.createVectorHelper(0, 0, 0);
-		for(int i=0;i<ModelNum;++i)rot[i] = Vec3.createVectorHelper(0, 0, 0);
+		for(int i=0;i<ModelNum;++i)pos[i] = new Vec3d(0, 0, 0);
+		for(int i=0;i<ModelNum;++i)rot[i] = new Vec3d(0, 0, 0);
 	}
 	
-	public void construct(int idx, Vec3 Pos, Vec3 Dir, Vec3 Cross, float exParam)
+	public void construct(int idx, Vec3d Pos, Vec3d Dir, Vec3d Cross, float exParam)
 	{
 		if(idx>=ModelNum)return;
-		// ˆÊ’u
+		// ï¿½Ê’u
 		pos[idx] = Pos;
-		// Šp“x
-		Vec3 crossHorz = Vec3.createVectorHelper(0, 1, 0).crossProduct(Dir);
-		Vec3 dir_horz = Vec3.createVectorHelper(Dir.xCoord, 0, Dir.zCoord);
-		rot[idx].xCoord = -Math.toDegrees( Math.atan2(Dir.xCoord, Dir.zCoord) );
-		rot[idx].yCoord = Math.toDegrees( ERC_MathHelper.angleTwoVec3(Dir, dir_horz) * (Dir.yCoord>0?-1f:1f) );
-		rot[idx].zCoord = Math.toDegrees( ERC_MathHelper.angleTwoVec3(Cross, crossHorz) * (Cross.yCoord>0?1f:-1f) );
-		// ’·‚³
+		// ï¿½pï¿½x
+		Vec3d crossHorz = new Vec3d(0, 1, 0).crossProduct(Dir);
+		Vec3d dir_horz = new Vec3d(Dir.x, 0, Dir.z);
+		rot[idx] = new Vec3d(	-Math.toDegrees( Math.atan2(Dir.x, Dir.z)),
+								Math.toDegrees( ERC_MathHelper.angleTwoVec3(Dir, dir_horz) * (Dir.y>0?-1f:1f)),
+								Math.toDegrees( ERC_MathHelper.angleTwoVec3(Cross, crossHorz) * (Cross.y>0?1f:-1f) ));
+		// ï¿½ï¿½ï¿½ï¿½
 		Length[idx] = exParam;
 	}
 
 	public void render(Tessellator tess)
 	{
 		for(int i=0;i<ModelNum;++i)
-		render(pos[i].xCoord, pos[i].yCoord, pos[i].zCoord,
-				rot[i].xCoord, rot[i].yCoord, rot[i].zCoord, Length[i]);
+		render(pos[i].x, pos[i].y, pos[i].z,
+				rot[i].x, rot[i].y, rot[i].z, Length[i]);
 	}
 }

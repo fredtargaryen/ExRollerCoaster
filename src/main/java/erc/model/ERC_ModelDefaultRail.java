@@ -1,22 +1,26 @@
 package erc.model;
 
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.model.obj.OBJModel;
 import org.lwjgl.opengl.GL11;
 
 import erc._core.ERC_Logger;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.client.model.IModelCustom;
+import net.minecraft.util.math.Vec3d;
 
 public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 	
 	private int PosNum;
-	Vec3 posArray[];
-	Vec3 normalArray[];
+	Vec3d posArray[];
+	Vec3d normalArray[];
 	
-	public ERC_ModelDefaultRail(){} //ƒ[ƒh‚·‚éƒtƒ@ƒCƒ‹–¼–¢w’èƒCƒ“ƒXƒ^ƒ“ƒX¶¬‹‘”Û‚Å‚«‚éH
+	public ERC_ModelDefaultRail(){} //ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û‚Å‚ï¿½ï¿½ï¿½H
 	
-	public ERC_ModelDefaultRail(IModelCustom Obj, ResourceLocation Tex){}
+	public ERC_ModelDefaultRail(OBJModel Obj, ResourceLocation Tex){}
 	
 //	public void render(double x, double y, double z, double yaw, double pitch, double roll, double length) 
 //	{
@@ -39,13 +43,13 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 	public void setModelNum(int PosNum_org)
 	{
 		PosNum = PosNum_org;
-		posArray = new Vec3[PosNum_org*4];
-		normalArray = new Vec3[PosNum_org];
-		for(int i=0;i<PosNum*4;++i)posArray[i] = Vec3.createVectorHelper(0, 0, 0);
-		for(int i=0;i<PosNum;++i)normalArray[i] = Vec3.createVectorHelper(0, 0, 0);
+		posArray = new Vec3d[PosNum_org*4];
+		normalArray = new Vec3d[PosNum_org];
+		for(int i=0;i<PosNum*4;++i)posArray[i] = new Vec3d(0, 0, 0);
+		for(int i=0;i<PosNum;++i)normalArray[i] = new Vec3d(0, 0, 0);
 	}
 	
-	public void construct(int idx, Vec3 Pos, Vec3 Dir, Vec3 Cross, float exParam)
+	public void construct(int idx, Vec3d Pos, Vec3d Dir, Vec3d Cross, float exParam)
 	{
 		int j = idx*4;
 		double t1 = 0.4 + 0.1;
@@ -57,20 +61,20 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 			return;
 		}
 		
-		// ¶
-		posArray[j  ].xCoord = Pos.xCoord - Cross.xCoord*t1;
-		posArray[j  ].yCoord = Pos.yCoord - Cross.yCoord*t1;
-		posArray[j  ].zCoord = Pos.zCoord - Cross.zCoord*t1;
-		posArray[j+1].xCoord = Pos.xCoord - Cross.xCoord*t2;
-		posArray[j+1].yCoord = Pos.yCoord - Cross.yCoord*t2;
-		posArray[j+1].zCoord = Pos.zCoord - Cross.zCoord*t2;
-		// ‰E 
-		posArray[j+2].xCoord = Pos.xCoord + Cross.xCoord*t2;
-		posArray[j+2].yCoord = Pos.yCoord + Cross.yCoord*t2;
-		posArray[j+2].zCoord = Pos.zCoord + Cross.zCoord*t2;
-		posArray[j+3].xCoord = Pos.xCoord + Cross.xCoord*t1;
-		posArray[j+3].yCoord = Pos.yCoord + Cross.yCoord*t1;
-		posArray[j+3].zCoord = Pos.zCoord + Cross.zCoord*t1;
+		// ï¿½ï¿½
+		posArray[j  ] = new Vec3d(	Pos.x - Cross.x*t1,
+									Pos.y - Cross.y*t1,
+									Pos.z - Cross.z*t1);
+		posArray[j+1] = new Vec3d(	Pos.x - Cross.x*t2,
+									Pos.y - Cross.y*t2,
+									Pos.z - Cross.z*t2);
+		// ï¿½E 
+		posArray[j+2] = new Vec3d(	Pos.x + Cross.x*t2,
+									Pos.y + Cross.y*t2,
+									Pos.z + Cross.z*t2);
+		posArray[j+3] = new Vec3d(	Pos.x + Cross.x*t1,
+									Pos.y + Cross.y*t1,
+									Pos.z + Cross.z*t1);
 		
 		normalArray[idx] = Dir.crossProduct(Cross).normalize();
 	}
@@ -78,26 +82,27 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 	public void render(Tessellator tess)
 	{
 		float turnflag = 0f;
-		tess.startDrawing(GL11.GL_TRIANGLE_STRIP);
+		BufferBuilder bb = tess.getBuffer();
+		bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
 		
 		for(int i = 0; i<PosNum; ++i)
 		{
 			int index = i*4;
-			tess.addVertexWithUV(posArray[index].xCoord, posArray[index].yCoord, posArray[index].zCoord, 0.0d, turnflag);
-			tess.addVertexWithUV(posArray[index+1].xCoord, posArray[index+1].yCoord, posArray[index+1].zCoord, 1.0d, turnflag);
+			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag);
+			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag);
 			turnflag = turnflag>0?0f:1f;
-			tess.setNormal((float)normalArray[i].xCoord, (float)normalArray[i].yCoord, (float)normalArray[i].zCoord);
+			bb.normal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
 		}
 		tess.draw();
 		turnflag = 0f;
-		tess.startDrawing(GL11.GL_TRIANGLE_STRIP);
+		bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
 		for(int i = 0; i<PosNum; ++i)
 		{
 			int index = i*4+2;
-			tess.addVertexWithUV(posArray[index].xCoord, posArray[index].yCoord, posArray[index].zCoord, 0.0d, turnflag);
-			tess.addVertexWithUV(posArray[index+1].xCoord, posArray[index+1].yCoord, posArray[index+1].zCoord, 1.0d, turnflag);
+			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag);
+			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag);
 			turnflag = turnflag>0?0f:1f;
-			tess.setNormal((float)normalArray[i].xCoord, (float)normalArray[i].yCoord, (float)normalArray[i].zCoord);
+			bb.normal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
 		}
 		tess.draw();
 	}

@@ -6,8 +6,9 @@ import erc.message.ERC_PacketHandler;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.TileEntityRailBranch2;
 import erc.tileEntity.Wrap_TileEntityRail;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /*
@@ -38,7 +39,7 @@ public class ERC_EntityCoasterMonodentate extends ERC_EntityCoaster{
 	public void setParamFromPacket(float t, double speed, int x, int y, int z)
     {
     	 // 乗っているのが自分だったらパケット送り返し、他人のや誰も乗ってないコースターならサーバーと同期
-    	if(this.riddenByEntity instanceof EntityClientPlayerMP)
+    	if(this.getControllingPassenger() instanceof EntityPlayerSP)
     	{
     		if(tlrail==null)
     		{
@@ -49,12 +50,12 @@ public class ERC_EntityCoasterMonodentate extends ERC_EntityCoaster{
 				}
     		}
 	    	// send packet to server
-	    	ERC_MessageCoasterCtS packet = new ERC_MessageCoasterCtS(getEntityId(), this.paramT, this.Speed, tlrail.xCoord, tlrail.yCoord, tlrail.zCoord);
+	    	ERC_MessageCoasterCtS packet = new ERC_MessageCoasterCtS(getEntityId(), this.paramT, this.Speed, tlrail.getXcoord(), tlrail.getYcoord(), tlrail.getZcoord());
 		    ERC_PacketHandler.INSTANCE.sendToServer(packet);
     	}
     	else
     	{
-    		Wrap_TileEntityRail rail = (Wrap_TileEntityRail)worldObj.getTileEntity(x,y,z);
+    		Wrap_TileEntityRail rail = (Wrap_TileEntityRail)world.getTileEntity(new BlockPos(x,y,z));
     		if(rail == null)return;
     		if(rail instanceof TileEntityRailBranch2)return; // 分岐レール上のときは同期をちょっとやめてほしい
     		

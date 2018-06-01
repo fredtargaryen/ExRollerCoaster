@@ -8,7 +8,10 @@ import erc.message.ERC_MessageSpawnRequestWithCoasterOpCtS;
 import erc.message.ERC_PacketHandler;
 import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ERC_ItemCoaster extends Wrap_ItemCoaster
@@ -27,20 +30,20 @@ public class ERC_ItemCoaster extends Wrap_ItemCoaster
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_)
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-    	if (!blockRailBase.isBlockRail(world.getBlock(x, y, z)))
+    	if (!blockRailBase.isBlockRail(world.getBlockState(pos).getBlock()))
     	{
-            return false;
+            return EnumActionResult.FAIL;
         }
     	
     	if (world.isRemote)
     	{
-    		setCoaster(x, y, z, -1);
+    		setCoaster(pos.getX(), pos.getY(), pos.getZ(), -1);
     	}
 
-        --itemStack.stackSize;
-        return true;
+        player.getHeldItemMainhand().grow(-1);
+        return EnumActionResult.SUCCESS;
     }
     
     public void setCoaster(int x, int y, int z, int parentID)

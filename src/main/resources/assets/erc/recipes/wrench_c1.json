@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "PI ",
+    "II ",
+    "  I"
+  ],
+  "key":
+  {
+    "P":
+    {
+      "item": "erc:railpipe",
+      "data": 0
+    },
+    "I":
+    {
+      "item": "minecraft:iron_ingot",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:wrench_c1",
+    "count": 1
+  }
+}

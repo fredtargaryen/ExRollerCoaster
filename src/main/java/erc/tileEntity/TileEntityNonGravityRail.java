@@ -3,6 +3,7 @@ package erc.tileEntity;
 import erc._core.ERC_ReturnCoasterRot;
 import erc.entity.ERC_EntityCoaster;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 /**
  * Created by MOTTY on 2017/09/30.
@@ -28,4 +29,8 @@ public class TileEntityNonGravityRail extends TileEntityRailBase {
         return 0;
     }
 
+    @Override
+    public World getWorldObj() {
+        return this.world;
+    }
 }

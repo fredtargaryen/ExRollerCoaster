@@ -1,7 +1,8 @@
 package erc._core;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -17,9 +18,9 @@ public class ERC_CreateCreativeTab extends CreativeTabs{
  
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem()
+	public ItemStack getTabIconItem()
 	{
-		return IconItem;
+		return new ItemStack(IconItem);
 	}
  
 	@Override

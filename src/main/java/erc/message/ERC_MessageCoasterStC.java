@@ -1,24 +1,24 @@
 package erc.message;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import erc.entity.ERC_EntityCoaster;
 import erc.manager.ERC_ModelLoadManager.ModelOptions;
 import io.netty.buffer.ByteBuf;
 
 public class ERC_MessageCoasterStC implements IMessage, IMessageHandler<ERC_MessageCoasterStC, IMessage>{
 
-	// ƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç‚ÌƒŒ[ƒ‹À•W—pƒpƒ‰ƒ[ƒ^ŠÖ˜AƒƒbƒZ[ƒW
+	// ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½pï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Ö˜Aï¿½ï¿½ï¿½bï¿½Zï¿½[ï¿½W
 	public int entityID;
 	public float paramT;
 	public double speed;
-	// Œ»İæ‚Á‚Ä‚¢‚éƒŒ[ƒ‹‚ÌÀ•W
+	// ï¿½ï¿½ï¿½İï¿½ï¿½ï¿½Ä‚ï¿½ï¿½éƒŒï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½W
 	public int x;
 	public int y;
 	public int z;
-	// ƒ‚ƒfƒ‹•`‰æƒIƒvƒVƒ‡ƒ“
+	// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½`ï¿½ï¿½Iï¿½vï¿½Vï¿½ï¿½ï¿½ï¿½
 	public int modelID;
 	public ModelOptions ops;
 	
@@ -81,7 +81,7 @@ public class ERC_MessageCoasterStC implements IMessage, IMessageHandler<ERC_Mess
 	@Override
     public IMessage onMessage(ERC_MessageCoasterStC message, MessageContext ctx)
     {
-		ERC_EntityCoaster coaster = (ERC_EntityCoaster)FMLClientHandler.instance().getClient().theWorld.getEntityByID(message.entityID);
+		ERC_EntityCoaster coaster = (ERC_EntityCoaster)FMLClientHandler.instance().getClient().world.getEntityByID(message.entityID);
 		
 		if(coaster == null)return null;
 		

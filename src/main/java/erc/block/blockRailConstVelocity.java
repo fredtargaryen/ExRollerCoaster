@@ -5,7 +5,11 @@ import erc.message.ERC_PacketHandler;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.TileEntityRailConstVelosity;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class blockRailConstVelocity extends blockRailBase{
@@ -16,16 +20,17 @@ public class blockRailConstVelocity extends blockRailBase{
 		return new TileEntityRailConstVelosity();
 	}
 	
-	
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
     {
         if (!world.isRemote)
         {
-            boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
+            boolean flag = world.isBlockIndirectlyGettingPowered(pos) != 0;
             
-            if (flag || block.canProvidePower())
+            if (flag || block.canProvidePower(state))
             {
-            	TileEntityRailConstVelosity rail = (TileEntityRailConstVelosity)world.getTileEntity(x, y, z);
+            	TileEntityRailConstVelosity rail = (TileEntityRailConstVelosity)world.getTileEntity(pos);
             	boolean tgle = rail.getToggleFlag();
             	
             	if (flag && !tgle)
@@ -33,7 +38,8 @@ public class blockRailConstVelocity extends blockRailBase{
             		rail.changeToggleFlag();
             		rail.turnOnFlag();
                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                	world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0); //���ʉ��H
+                	//What was sound 1003 - FT
+                	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
                 }
             	else if(!flag && tgle)
                 {

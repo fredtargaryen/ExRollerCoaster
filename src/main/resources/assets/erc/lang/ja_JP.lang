@@ -6,8 +6,8 @@ tile.railDetector.name=検知レール
 tile.railBranch.name=分岐レール
 tile.railInvisible.name=透明レール
 
-item.RailPipe.name=レールパイプ
-item.Wrench.name=レンチ
+item.railpipe.name=レールパイプ
+item.wrench_c1.name=レンチ
 
 item.BlockPlacer.name=魔法のブロック空中設置ステッキ！
 item.ERCSmoothAll.name=魔法のレール全部滑らかにしちゃうステッキ！

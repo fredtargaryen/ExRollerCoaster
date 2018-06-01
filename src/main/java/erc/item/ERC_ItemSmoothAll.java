@@ -6,21 +6,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ERC_ItemSmoothAll extends Item {
 
 	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-			float hitX, float hitY, float hitZ) {
-		
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+	{
 		if(world.isRemote == false)
 		{
-			TileEntity te = world.getTileEntity(x, y, z);
+			TileEntity te = world.getTileEntity(pos);
 			if(te instanceof Wrap_TileEntityRail)
 			{
 				TileEntityRailBase rail = ((Wrap_TileEntityRail) te).getRail();
-				if(rail == null)return true;
+				if(rail == null)return EnumActionResult.SUCCESS;
 //				ERC_Logger.info("start");
 				smoothrail(0, rail, (Wrap_TileEntityRail) te, world, 1);
 				smoothrail(0, rail, (Wrap_TileEntityRail) te, world, -1);
@@ -28,7 +31,7 @@ public class ERC_ItemSmoothAll extends Item {
 		}
 			
 		
-		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+		return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
 	}
 
 	private void smoothrail(int num, TileEntityRailBase root, Wrap_TileEntityRail rail, World world, int v)

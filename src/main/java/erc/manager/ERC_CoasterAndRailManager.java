@@ -1,17 +1,17 @@
 package erc.manager;
 
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import erc._core.ERC_Logger;
 import erc.entity.ERC_EntityCoaster;
 import erc.entity.ERC_EntityCoasterSeat;
-import erc.entity.Wrap_EntityCoaster;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ERC_CoasterAndRailManager {
@@ -23,20 +23,20 @@ public class ERC_CoasterAndRailManager {
 	public static int nextX = -1;
 	public static int nextY = -1;
 	public static int nextZ = -1;
-	// ƒR[ƒXƒ^[İ’uˆÊ’u‚ğƒNƒ‰ƒCƒAƒ“ƒg‘¤‚É’m‚ç‚¹‚é—p
+	// ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½İ’uï¿½Ê’uï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Cï¿½Aï¿½ï¿½ï¿½gï¿½ï¿½ï¿½É’mï¿½ç‚¹ï¿½ï¿½p
 	public static int coastersetX = -1;
 	public static int coastersetY = -1;
 	public static int coastersetZ = -1;
-	// ˜AŒ‹ƒR[ƒXƒ^[—p@eƒR[ƒXƒ^[ID
+	// ï¿½Aï¿½ï¿½ï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ï¿½pï¿½@ï¿½eï¿½Rï¿½[ï¿½Xï¿½^ï¿½[ID
 	private static int parentCoasterID = -1;
-	// ƒ‚ƒfƒ‹‘I‘ğ—p@ƒ‚ƒfƒ‹ID
+	// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Iï¿½ï¿½pï¿½@ï¿½ï¿½ï¿½fï¿½ï¿½ID
 	public static int saveModelID = -1;
-	// æÔ’†‹“_ˆÚ“®—Ê
+	// ï¿½ï¿½Ô’ï¿½ï¿½ï¿½ï¿½_ï¿½Ú“ï¿½ï¿½ï¿½
 	public static float rotationViewYaw = 0f;
     public static float prevRotationViewYaw = 0f;
     public static float rotationViewPitch = 0f;
     public static float prevRotationViewPitch = 0f;
-    // ƒJƒƒ‰Šp“x§Œä
+    // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½pï¿½xï¿½ï¿½ï¿½ï¿½
     public static float rotationYaw = 0;      
 	public static float prevRotationYaw = 0;  
 	public static float rotationPitch = 0;    
@@ -90,11 +90,11 @@ public class ERC_CoasterAndRailManager {
 	
 	public static Wrap_TileEntityRail GetPrevTileEntity(World world)
 	{
-		return ((Wrap_TileEntityRail)world.getTileEntity(prevX, prevY, prevZ));
+		return (Wrap_TileEntityRail)world.getTileEntity(new BlockPos(prevX, prevY, prevZ));
 	}
 	public static Wrap_TileEntityRail GetNextTileEntity(World world)
 	{
-		return ((Wrap_TileEntityRail)world.getTileEntity(nextX, nextY, nextZ));
+		return (Wrap_TileEntityRail)world.getTileEntity(new BlockPos(nextX, nextY, nextZ));
 	}
 	
 	public static void OpenRailGUI(TileEntityRailBase tl)
@@ -180,16 +180,16 @@ public class ERC_CoasterAndRailManager {
     }
     
     
-    static Vec3 dir;
+    static Vec3d dir;
     static double speed;
     static EntityPlayer player;
     public static void GetOffAndButtobi(EntityPlayer Player)
     {
     	if(/*!Player.worldObj.isRemote &&*/ Player.isSneaking())
     	{
-    		if(Player.ridingEntity instanceof ERC_EntityCoasterSeat)
+    		if(Player.getRidingEntity() instanceof ERC_EntityCoasterSeat)
     		{
-    			ERC_EntityCoasterSeat seat = (ERC_EntityCoasterSeat)Player.ridingEntity;
+    			ERC_EntityCoasterSeat seat = (ERC_EntityCoasterSeat)Player.getRidingEntity();
     			dir = seat.parent.ERCPosMat.Dir;
     			player = Player;
     			speed = seat.parent.Speed;
@@ -202,9 +202,9 @@ public class ERC_CoasterAndRailManager {
     }
     public static void motionactive()
     {
-    	player.motionX += speed * dir.xCoord * 1;
-    	player.motionY += speed * dir.yCoord * 1;
-		player.motionZ += speed * dir.zCoord * 1;
+    	player.motionX += speed * dir.x * 1;
+    	player.motionY += speed * dir.y * 1;
+		player.motionZ += speed * dir.z * 1;
     }
 }
 

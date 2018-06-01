@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " L ",
+    "L L",
+    " L "
+  ],
+  "key":
+  {
+    "L":
+    {
+      "item": "minecraft:iron_ingot",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:railpipe",
+    "count": 2
+  }
+}

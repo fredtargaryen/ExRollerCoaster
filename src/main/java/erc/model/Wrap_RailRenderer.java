@@ -2,11 +2,11 @@ package erc.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 public abstract class Wrap_RailRenderer extends ModelBase{
 	
-	public abstract void setModelNum(int PosNum_org); // ƒŒ[ƒ‹\¬‚ÌÅ‰‚É1‰ñŒÄ‚Ô
-	public abstract void construct(int idx, Vec3 Pos, Vec3 Dir, Vec3 Cross, float exParam);
+	public abstract void setModelNum(int PosNum_org); // ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ÌÅï¿½ï¿½ï¿½1ï¿½ï¿½Ä‚ï¿½
+	public abstract void construct(int idx, Vec3d Pos, Vec3d Dir, Vec3d Cross, float exParam);
 	public abstract void render(Tessellator tess);
 }

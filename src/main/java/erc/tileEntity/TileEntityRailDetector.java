@@ -6,6 +6,10 @@ import erc.message.ERC_MessageRailMiscStC;
 import erc.message.ERC_PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class TileEntityRailDetector extends TileEntityRailBase{
 	
@@ -35,14 +39,25 @@ public class TileEntityRailDetector extends TileEntityRailBase{
 	{
 		if(!outputFlag && !(coaster instanceof ERC_EntityCoasterConnector))
 		{
-			// èoóÕäJén
-			Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
+			// ÔøΩoÔøΩÕäJÔøΩn
+			Block block = world.getBlockState(this.pos).getBlock();
 			
 			outputFlag = true;
 			ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(this));
-	        worldObj.notifyBlocksOfNeighborChange (xCoord, yCoord, zCoord, block);
-	        worldObj.notifyBlocksOfNeighborChange (xCoord, yCoord - 1,zCoord, block);
-	        worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)xCoord + 0.5D, "random.click", 0.3F, 0.6F);
+			BlockPos downPos = this.pos.down();
+			world.neighborChanged(this.pos, block, this.pos.up());
+			world.neighborChanged(this.pos, block, downPos);
+			world.neighborChanged(this.pos, block, this.pos.east());
+			world.neighborChanged(this.pos, block, this.pos.west());
+			world.neighborChanged(this.pos, block, this.pos.south());
+			world.neighborChanged(this.pos, block, this.pos.north());
+			world.neighborChanged(downPos, block, this.pos);
+			world.neighborChanged(downPos, block, downPos.down());
+			world.neighborChanged(downPos, block, downPos.east());
+			world.neighborChanged(downPos, block, downPos.west());
+			world.neighborChanged(downPos, block, downPos.south());
+			world.neighborChanged(downPos, block, downPos.north());
+	        world.playSound(null, this.pos.add(0.5, 0.5, 0.5), SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 
@@ -62,12 +77,23 @@ public class TileEntityRailDetector extends TileEntityRailBase{
 	
 	private void stopOutput()
 	{
-		// èoóÕí‚é~
+		// ÔøΩoÔøΩÕíÔøΩ~
 		outputFlag = false;
-		Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
-        worldObj.notifyBlocksOfNeighborChange (xCoord, yCoord, zCoord, block);
-        worldObj.notifyBlocksOfNeighborChange (xCoord, yCoord - 1,zCoord, block);
-        worldObj.playSoundEffect((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)xCoord + 0.5D, "random.click", 0.3F, 0.6F);
+		Block block = world.getBlockState(this.pos).getBlock();
+		BlockPos downPos = this.pos.down();
+		world.neighborChanged(this.pos, block, this.pos.up());
+		world.neighborChanged(this.pos, block, downPos);
+		world.neighborChanged(this.pos, block, this.pos.east());
+		world.neighborChanged(this.pos, block, this.pos.west());
+		world.neighborChanged(this.pos, block, this.pos.south());
+		world.neighborChanged(this.pos, block, this.pos.north());
+		world.neighborChanged(downPos, block, this.pos);
+		world.neighborChanged(downPos, block, downPos.down());
+		world.neighborChanged(downPos, block, downPos.east());
+		world.neighborChanged(downPos, block, downPos.west());
+		world.neighborChanged(downPos, block, downPos.south());
+		world.neighborChanged(downPos, block, downPos.north());
+        world.playSound(null, this.pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 
 	}
 	
@@ -78,5 +104,10 @@ public class TileEntityRailDetector extends TileEntityRailBase{
 	public void getDataFromByteMessage(ByteBuf buf)
 	{
 		outputFlag = buf.readBoolean();
+	}
+
+	@Override
+	public World getWorldObj() {
+		return this.world;
 	}
 }

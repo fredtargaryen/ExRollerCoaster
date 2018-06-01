@@ -5,14 +5,14 @@ tile.railDetector.name=Detector Rail
 tile.railBranch.name=Branch Rail
 tile.railInvisible.name=Invisible Rail
 
-item.RailPipe.name=Rail Pipe
-item.Wrench.name=Wrench
-item.BlockPlacer.name=Magical PlaceBlockInTheAir Stick!
-item.ERCSmoothAll.name=Magical AllRailSmoother Stick!
+item.railpipe.name=Rail Pipe
+item.wrench_c1.name=Wrench
+item.wrench_p.name=Magical PlaceBlockInTheAir Stick!
+item.itemsmoothall.name=Magical AllRailSmoother Stick!
 
-item.Coaster.name=Coaster
-item.CoasterConnector.name=Connector Coaster
-item.CoasterMono.name=Single Seat Coaster
+item.coaster.name=Coaster
+item.coasterconnector.name=Connector Coaster
+item.coastermono.name=Single Seat Coaster
 
-item.SwitchRailModel.name=Switch Rail Model
-item.ERCSUSHI.name=SUSHI
+item.switchrailmodel.name=Switch Rail Model
+item.sushi.name=SUSHI
