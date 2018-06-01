@@ -83,9 +83,9 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 		super(world);
 		CoasterOptions = new ModelOptions();
 		this.preventEntitySpawning = true;
-		this.isCollidedHorizontally = false;
-		this.isCollidedVertically = false;
-		this.isCollided = false;
+		this.collidedHorizontally = false;
+		this.collidedVertically = false;
+		this.collided = false;
 
 		this.setSize(1.7f, 0.4f);
 		if(world.isRemote) this.setRenderDistanceWeight(1000f);

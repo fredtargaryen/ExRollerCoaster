@@ -215,7 +215,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 	            {
 	                EntityLiving entityliving = iterator.next();
 
-	                if (entityliving.getLeashed() && entityliving.getLeashedToEntity() == player)
+	                if (entityliving.getLeashed() && entityliving.getLeashHolder() == player)
 	                {
 	                	entityliving.startRiding(this);
 	                    entityliving.clearLeashed(true, !player.capabilities.isCreativeMode);

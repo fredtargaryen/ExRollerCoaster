@@ -1,5 +1,6 @@
 /**
  * TODO
+ *
  * What was sound 1003
  * Advanced models for sushi!
  * -FT
@@ -50,7 +51,7 @@ import net.minecraft.item.Item;
 @Mod.EventBusSubscriber
 public class ERC_Core {
 	public static final String MODID = ERC_CONST.DOMAIN;
-	public static final String VERSION = "1.41";
+	public static final String VERSION = "1.5.1";
 
 	
 	//proxy////////////////////////////////////////
