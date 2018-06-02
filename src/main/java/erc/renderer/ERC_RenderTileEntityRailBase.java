@@ -28,7 +28,7 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
 		GL11.glPushMatrix();
 		GL11.glTranslated(x+0.5, y+0.5, z+0.5);
-		tessellator.getBuffer().color(1.0F, 1.0F, 1.0F, 1.0F);
+		//tessellator.getBuffer().color(1.0F, 1.0F, 1.0F, 1.0F);
 
 		t.render(tessellator);
 		

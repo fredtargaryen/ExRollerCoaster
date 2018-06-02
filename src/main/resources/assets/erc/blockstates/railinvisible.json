@@ -1,7 +1,21 @@
 {
 
   "variants": {
-    "normal": { "model": "erc:railinvisible" },
-    "inventory": { "model": "erc:railinvisible" }
+    "meta=0": { "model": "erc:railinvisible" },
+    "meta=1": { "model": "erc:railinvisible" },
+    "meta=2": { "model": "erc:railinvisible" },
+    "meta=3": { "model": "erc:railinvisible" },
+    "meta=4": { "model": "erc:railinvisible" },
+    "meta=5": { "model": "erc:railinvisible" },
+    "meta=6": { "model": "erc:railinvisible" },
+    "meta=7": { "model": "erc:railinvisible" },
+    "meta=8": { "model": "erc:railinvisible" },
+    "meta=9": { "model": "erc:railinvisible" },
+    "meta=10": { "model": "erc:railinvisible" },
+    "meta=11": { "model": "erc:railinvisible" },
+    "meta=12": { "model": "erc:railinvisible" },
+    "meta=13": { "model": "erc:railinvisible" },
+    "meta=14": { "model": "erc:railinvisible" },
+    "meta=15": { "model": "erc:railinvisible" }
   }
 }
