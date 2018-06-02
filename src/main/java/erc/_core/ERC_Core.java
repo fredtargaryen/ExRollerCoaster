@@ -1,9 +1,9 @@
 /**
  * TODO
- *
  * Failed to load a bunch of objs
- * What was sound 1003
  * "Loading sushi model is failure" in console
+ * Invisible rail models
+ * What was sound 1003
  * Correct rail ItemBlock models
  * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!
