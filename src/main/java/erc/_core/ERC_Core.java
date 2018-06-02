@@ -226,13 +226,12 @@ public class ERC_Core {
 
 		ItemWrench.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("wrench_c1")
-		.setRegistryName("Wrench");
+		.setRegistryName("wrench_c1");
 		ItemWrench.setMaxStackSize(1);
 
 		ItemStick.setCreativeTab(ERC_Tab)
-		.setUnlocalizedName("wrench_p")
-		//.setRegistryName("ItemWrenchPlaceBlock");
-		.setRegistryName("wrench_p");
+		.setUnlocalizedName("itemwrenchplaceblock")
+		.setRegistryName("itemwrenchplaceblock");
 		ItemStick.setMaxStackSize(1);
 
 		ItemCoaster.setCreativeTab(ERC_Tab)
@@ -255,17 +254,17 @@ public class ERC_Core {
 
 		ItemSwitchRail.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("switchrailmodel")
-		.setRegistryName("SwitchRailModel");
+		.setRegistryName("switchrailmodel");
 //		ItemSwitchRail.setTextureName(MODID+":switchrail");
 		ItemSwitchRail.setMaxStackSize(1);
 
 		ItemSUSHI.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("sushi")
-		.setRegistryName("ItemSUSHI");
+		.setRegistryName("sushi");
 
 		ItemSmoothAll.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("itemsmoothall")
-		.setRegistryName("ItemSmoothAll");
+		.setRegistryName("itemsmoothall");
 		//ItemSmoothAll.setTextureName(MODID+":SmoothAll");
 
 		//ITEMBLOCKS
