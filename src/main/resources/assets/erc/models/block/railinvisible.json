@@ -1,4 +1,6 @@
 {
   "parent": "builtin/generated",
-  "layer0": "minecraft:iron_block"
+  "textures": {
+    "layer0": "minecraft:blocks/glass"
+  }
 }

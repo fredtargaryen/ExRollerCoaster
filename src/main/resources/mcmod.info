@@ -8,8 +8,6 @@
   "url": "http://forum.minecraftuser.jp/viewtopic.php?f=13&t=28387",
   "authorList": ["motthors"],
   "credits": "1.12.2 port by FredTargaryen",
-  "logoFile": "",
-  "dependencies": [ "" ],
-  "useDependencyInformation": true
+  "logoFile": ""
 }
 ]

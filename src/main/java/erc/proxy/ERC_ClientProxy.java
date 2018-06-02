@@ -141,13 +141,19 @@ public class ERC_ClientProxy implements IProxy{
 		//Specify item models
 		ModelLoader.setCustomModelResourceLocation(ItemBasePipe, 0, new ModelResourceLocation(ERC_Core.MODID+":railpipe", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemWrench, 0, new ModelResourceLocation(ERC_Core.MODID+":wrench_c1", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(ItemStick, 0, new ModelResourceLocation(ERC_Core.MODID+":wrench_p", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemStick, 0, new ModelResourceLocation(ERC_Core.MODID+":itemwrenchplaceblock", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemCoaster, 0, new ModelResourceLocation(ERC_Core.MODID+":coaster", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemCoasterConnector, 0, new ModelResourceLocation(ERC_Core.MODID+":coasterconnector", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemCoasterMono, 0, new ModelResourceLocation(ERC_Core.MODID+":coastermono", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemSwitchRail, 0, new ModelResourceLocation(ERC_Core.MODID+":switchrailmodel", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemSUSHI, 0, new ModelResourceLocation(ERC_Core.MODID+":sushi", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(ItemSwitchRail, 0, new ModelResourceLocation(ERC_Core.MODID+":itemsmoothall", "inventory"));
-
+		ModelLoader.setCustomModelResourceLocation(ItemSmoothAll, 0, new ModelResourceLocation(ERC_Core.MODID+":itemsmoothall", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailBranch, 0, new ModelResourceLocation(ERC_Core.MODID+":railbranch", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailConst, 0, new ModelResourceLocation(ERC_Core.MODID+":railconst", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailDetect, 0, new ModelResourceLocation(ERC_Core.MODID+":raildetector", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailInvisible, 0, new ModelResourceLocation(ERC_Core.MODID+":railinvisible", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailNonGravity, 0, new ModelResourceLocation(ERC_Core.MODID+":railnongravity", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailNormal, 0, new ModelResourceLocation(ERC_Core.MODID+":railnormal", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailRedAccel, 0, new ModelResourceLocation(ERC_Core.MODID+":railredaccel", "inventory"));
 	}
 }

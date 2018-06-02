@@ -1,6 +1,7 @@
 package erc.block;
 
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -53,6 +54,24 @@ public abstract class blockRailBase extends BlockContainer
 //	{
 //		return ERC_Core.blockRailRenderId; // RenderBlockRail�p
 //	}
+
+	@Override
+	protected BlockStateContainer createBlockState()
+	{
+		return new BlockStateContainer(this, META);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return this.getDefaultState().withProperty(META, meta);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return state.getValue(META);
+	}
  
 	@Override
 	public boolean isOpaqueCube(IBlockState state)

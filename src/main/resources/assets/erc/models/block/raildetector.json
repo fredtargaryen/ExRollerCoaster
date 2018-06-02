@@ -1,6 +1,6 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "minecraft:blocks/iron_block"
+    "layer0": "minecraft:blocks/quartz_block_chiseled_top"
   }
 }

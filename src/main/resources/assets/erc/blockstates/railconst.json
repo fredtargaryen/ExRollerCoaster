@@ -1,9 +1,20 @@
 {
-
   "variants": {
-
-    "normal": { "model": "erc:erc.railconst" }
-
+    "meta=0": { "model": "erc:railconst" },
+    "meta=1": { "model": "erc:railconst" },
+    "meta=2": { "model": "erc:railconst" },
+    "meta=3": { "model": "erc:railconst" },
+    "meta=4": { "model": "erc:railconst" },
+    "meta=5": { "model": "erc:railconst" },
+    "meta=6": { "model": "erc:railconst" },
+    "meta=7": { "model": "erc:railconst" },
+    "meta=8": { "model": "erc:railconst" },
+    "meta=9": { "model": "erc:railconst" },
+    "meta=10": { "model": "erc:railconst" },
+    "meta=11": { "model": "erc:railconst" },
+    "meta=12": { "model": "erc:railconst" },
+    "meta=13": { "model": "erc:railconst" },
+    "meta=14": { "model": "erc:railconst" },
+    "meta=15": { "model": "erc:railconst" }
   }
-
 }

@@ -1,13 +1,14 @@
-tile.railNormal.name=Normal Rail
-tile.railRedAccel.name=RedStone Powered Rail
-tile.railConstVelocity.name=ConstVelocity Rail
-tile.railDetector.name=Detector Rail
-tile.railBranch.name=Branch Rail
-tile.railInvisible.name=Invisible Rail
+tile.railnormal.name=Normal Rail
+tile.railnongravity.name=Zero Gravity Rail
+tile.railredaccel.name=Redstone Powered Rail
+tile.railconst.name=ConstVelocity Rail
+tile.raildetector.name=Detector Rail
+tile.railbranch.name=Branch Rail
+tile.railinvisible.name=Invisible Rail
 
 item.railpipe.name=Rail Pipe
 item.wrench_c1.name=Wrench
-item.wrench_p.name=Magical PlaceBlockInTheAir Stick!
+item.itemwrenchplaceblock.name=Magical PlaceBlockInTheAir Stick!
 item.itemsmoothall.name=Magical AllRailSmoother Stick!
 
 item.coaster.name=Coaster

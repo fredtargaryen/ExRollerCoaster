@@ -1,9 +1,20 @@
 {
-
   "variants": {
-
-    "normal": { "model": "erc:erc.raildetector" }
-
+    "meta=0": { "model": "erc:raildetector" },
+    "meta=1": { "model": "erc:raildetector" },
+    "meta=2": { "model": "erc:raildetector" },
+    "meta=3": { "model": "erc:raildetector" },
+    "meta=4": { "model": "erc:raildetector" },
+    "meta=5": { "model": "erc:raildetector" },
+    "meta=6": { "model": "erc:raildetector" },
+    "meta=7": { "model": "erc:raildetector" },
+    "meta=8": { "model": "erc:raildetector" },
+    "meta=9": { "model": "erc:raildetector" },
+    "meta=10": { "model": "erc:raildetector" },
+    "meta=11": { "model": "erc:raildetector" },
+    "meta=12": { "model": "erc:raildetector" },
+    "meta=13": { "model": "erc:raildetector" },
+    "meta=14": { "model": "erc:raildetector" },
+    "meta=15": { "model": "erc:raildetector" }
   }
-
 }

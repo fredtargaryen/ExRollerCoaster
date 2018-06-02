@@ -1,21 +1,21 @@
 /**
  * TODO
- * Exception loading model for variant erc:raildetector#normal for blockstate "erc:raildetector"
- * Exception loading model for variant erc:railnongravity#inventory for item "erc:railnongravity"
- * etc.; lots of files not found; go through log
- * ExRollerCoaster creative tab has no picture
+ *
  * Failed to load a bunch of objs
  * What was sound 1003
  * "Loading sushi model is failure" in console
+ * Correct rail ItemBlock models
  * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!
  * Registering TileEntities: may have been meant to remember the new ResourceLocation
  * -FT
+ * Check against 1.7.10 version
  */
 package erc._core;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -150,7 +150,6 @@ public class ERC_Core {
 		ERC_Logger.info("Start Init");
 
 		proxy.init();
-		proxy.registerModels();
 		
 		//Register Entity
 		int eid=100;
@@ -177,44 +176,37 @@ public class ERC_Core {
 	{
 		railNormal = new blockRailNormal()
 			.setUnlocalizedName("railnormal")
-			.setRegistryName("railnormal")
-			//.setBlockTextureName("iron_block")
+				.setRegistryName("railnormal")
 			.setCreativeTab(ERC_Tab);
 		
 		railRedAccel
 			.setUnlocalizedName("railredaccel")
 				.setRegistryName("railredaccel")
-			//.setBlockTextureName("redstone_block")
 			.setCreativeTab(ERC_Tab);
 
 		railConst
 			.setUnlocalizedName("railconst")
 				.setRegistryName("railconst")
-			//.setBlockTextureName("obsidian")
 			.setCreativeTab(ERC_Tab);
 
 		railDetect
 			.setUnlocalizedName("raildetector")
 				.setRegistryName("raildetector")
-			//.setBlockTextureName("quartz_block_chiseled_top")
 			.setCreativeTab(ERC_Tab);
 
 		railBranch
 			.setUnlocalizedName("railbranch")
 				.setRegistryName("railbranch")
-			//.setBlockTextureName("lapis_block")
 			.setCreativeTab(ERC_Tab);
 
 		railInvisible
 			.setUnlocalizedName("railinvisible")
 				.setRegistryName("railinvisible")
-			//.setBlockTextureName("glass")
 			.setCreativeTab(ERC_Tab);
 
 		railNonGravity
             .setUnlocalizedName("railnongravity")
 				.setRegistryName("railnongravity")
-            //.setBlockTextureName("portal")
             .setCreativeTab(ERC_Tab);
 	}
 	
@@ -237,25 +229,21 @@ public class ERC_Core {
 		ItemCoaster.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("coaster")
 		.setRegistryName("coaster");
-		//ItemCoaster.setTextureName(MODID+":coaster");
 		ItemCoaster.setMaxStackSize(10);
 
 		ItemCoasterConnector.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("coasterconnector")
 		.setRegistryName("coasterconnector");
-		//ItemCoasterConnector.setTextureName(MODID+":coaster_c");
 		ItemCoasterConnector.setMaxStackSize(10);
 
 		ItemCoasterMono.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("coastermono")
-		.setRegistryName("CoasterMono");
-		//ItemCoasterMono.setTextureName(MODID+":coaster");
+		.setRegistryName("coastermono");
 		ItemCoasterMono.setMaxStackSize(10);
 
 		ItemSwitchRail.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("switchrailmodel")
 		.setRegistryName("switchrailmodel");
-//		ItemSwitchRail.setTextureName(MODID+":switchrail");
 		ItemSwitchRail.setMaxStackSize(1);
 
 		ItemSUSHI.setCreativeTab(ERC_Tab)
@@ -265,7 +253,6 @@ public class ERC_Core {
 		ItemSmoothAll.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("itemsmoothall")
 		.setRegistryName("itemsmoothall");
-		//ItemSmoothAll.setTextureName(MODID+":SmoothAll");
 
 		//ITEMBLOCKS
 		ItemRailBranch
@@ -303,5 +290,11 @@ public class ERC_Core {
 		evt.getRegistry().registerAll(ItemBasePipe, ItemWrench, ItemStick, ItemCoaster, ItemCoasterConnector,
 				ItemCoasterMono, ItemSwitchRail, ItemSUSHI, ItemSmoothAll, ItemRailBranch, ItemRailConst,
 				ItemRailDetect,ItemRailInvisible, ItemRailNonGravity, ItemRailNormal, ItemRailRedAccel);
+	}
+
+	@SubscribeEvent
+	public static void registerModels(ModelRegistryEvent event)
+	{
+		proxy.registerModels();
 	}
 }
