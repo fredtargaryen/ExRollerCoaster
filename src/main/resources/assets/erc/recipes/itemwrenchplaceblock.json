@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "B  ",
+    "D  ",
     " P ",
     "  I"
   ],
   "key":
   {
-    "B":
+    "D":
     {
-      "item": "minecraft:book",
+      "item": "minecraft:dirt",
       "data": 0
     },
     "P":
@@ -26,7 +26,7 @@
   },
   "result":
   {
-    "item": "erc:ItemSmoothAll",
+    "item": "erc:itemwrenchplaceblock",
     "count": 1
   }
 }

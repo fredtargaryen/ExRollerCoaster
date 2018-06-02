@@ -2,25 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "I I",
-    "PIP"
+    "FC"
   ],
   "key":
   {
-    "P":
+    "F":
     {
-      "item": "erc:railpipe",
+      "item": "minecraft:tripwire_hook",
       "data": 0
     },
-    "I":
+    "C":
     {
-      "item": "minecraft:iron_ingot",
+      "item": "erc:coaster",
       "data": 0
     }
   },
   "result":
   {
-    "item": "erc:Coaster",
+    "item": "erc:railinvisible",
+    "data": 0,
     "count": 1
   }
 }

@@ -1,29 +1,20 @@
 /**
  * TODO
- * Registering TileEntities: may have been meant to remember the new ResourceLocation
- * Exception loading model for variant erc:itemwrenchplaceblock#inventory for item "erc:itemwrenchplaceblock"
- * "Parsing error loading recipe erc:coasterconnector
- * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railinvisible'"
- * "Parsing error loading recipe erc:erc.rail
- * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
- * "Parsing error loading recipe erc:erc.rail2
- * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
- * "Parsing error loading recipe erc:erc.railaccel
- * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
- * "Parsing error loading recipe erc:erc.railbranch
- * * com.google.gson.JsonSyntaxException: Unknown item 'erc:railnormal'"
- * "Parsing error loading recipe erc:sushi
- * com.google.gson.JsonSyntaxException: Unknown item 'erc:sushi'"
- * "Parsing error loading recipe erc:wrench_c1
- * * com.google.gson.JsonSyntaxException: Unknown item 'erc:wrench_c1'"
+ * Exception loading model for variant erc:raildetector#normal for blockstate "erc:raildetector"
+ * Exception loading model for variant erc:railnongravity#inventory for item "erc:railnongravity"
+ * etc.; lots of files not found; go through log
  * ExRollerCoaster creative tab has no picture
+ * Failed to load a bunch of objs
  * What was sound 1003
  * "Loading sushi model is failure" in console
+ * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!
+ * Registering TileEntities: may have been meant to remember the new ResourceLocation
  * -FT
  */
 package erc._core;
 
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -76,13 +67,13 @@ public class ERC_Core {
 	public static IProxy proxy;
 	
 	//Blocks/////////////////////////////////////////
-	public static Block railNormal = new blockRailNormal();
-	public static Block railRedAccel = new blockRailRedstoneAccelerator();
+	public static Block railBranch = new blockRailBranch();
 	public static Block railConst = new blockRailConstVelocity();
 	public static Block railDetect = new blockRailDetector();
-	public static Block railBranch = new blockRailBranch();
-	public static Block railInvisible;
+	public static Block railInvisible = new blockRailInvisible();
 	public static Block railNonGravity = new BlockNonGravityRail();
+	public static Block railNormal = new blockRailNormal();
+	public static Block railRedAccel = new blockRailRedstoneAccelerator();
 	
 	//special block renderer ID
 	public static int blockRailRenderId;
@@ -98,6 +89,14 @@ public class ERC_Core {
 	public static Item ItemSUSHI = new itemSUSHI();
 	public static Item ItemStick = new ERC_ItemWrenchPlaceBlock();
 	public static Item ItemSmoothAll = new ERC_ItemSmoothAll();
+	//ITEMBLOCKS
+	public static Item ItemRailBranch = new ItemBlock(railBranch);
+	public static Item ItemRailConst = new ItemBlock(railConst);
+	public static Item ItemRailDetect = new ItemBlock(railDetect);
+	public static Item ItemRailInvisible = new ItemBlock(railInvisible);
+	public static Item ItemRailNonGravity = new ItemBlock(railNonGravity);
+	public static Item ItemRailNormal = new ItemBlock(railNormal);
+	public static Item ItemRailRedAccel = new ItemBlock(railRedAccel);
 	
 	//GUI/////////////////////////////////////////
 	@Mod.Instance(ERC_Core.MODID)
@@ -183,38 +182,38 @@ public class ERC_Core {
 			.setCreativeTab(ERC_Tab);
 		
 		railRedAccel
-			.setUnlocalizedName("railRedAccel")
-				.setRegistryName("ERC.RailAccel")
+			.setUnlocalizedName("railredaccel")
+				.setRegistryName("railredaccel")
 			//.setBlockTextureName("redstone_block")
 			.setCreativeTab(ERC_Tab);
 
 		railConst
-			.setUnlocalizedName("railConstVelocity")
-				.setRegistryName("ERC.RailConst")
+			.setUnlocalizedName("railconst")
+				.setRegistryName("railconst")
 			//.setBlockTextureName("obsidian")
 			.setCreativeTab(ERC_Tab);
 
 		railDetect
-			.setUnlocalizedName("railDetector")
-				.setRegistryName("ERC.RailDetector")
+			.setUnlocalizedName("raildetector")
+				.setRegistryName("raildetector")
 			//.setBlockTextureName("quartz_block_chiseled_top")
 			.setCreativeTab(ERC_Tab);
 
 		railBranch
-			.setUnlocalizedName("railBranch")
-				.setRegistryName("ERC.RailBranch")
+			.setUnlocalizedName("railbranch")
+				.setRegistryName("railbranch")
 			//.setBlockTextureName("lapis_block")
 			.setCreativeTab(ERC_Tab);
 
-		railInvisible = new blockRailInvisible()
+		railInvisible
 			.setUnlocalizedName("railinvisible")
 				.setRegistryName("railinvisible")
 			//.setBlockTextureName("glass")
 			.setCreativeTab(ERC_Tab);
 
 		railNonGravity
-            .setUnlocalizedName("railNonGravity")
-				.setRegistryName("ERC.RailNonGravity")
+            .setUnlocalizedName("railnongravity")
+				.setRegistryName("railnongravity")
             //.setBlockTextureName("portal")
             .setCreativeTab(ERC_Tab);
 	}
@@ -232,18 +231,19 @@ public class ERC_Core {
 
 		ItemStick.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("wrench_p")
-		.setRegistryName("ItemWrenchPlaceBlock");
+		//.setRegistryName("ItemWrenchPlaceBlock");
+		.setRegistryName("wrench_p");
 		ItemStick.setMaxStackSize(1);
 
 		ItemCoaster.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("coaster")
-		.setRegistryName("Coaster");
+		.setRegistryName("coaster");
 		//ItemCoaster.setTextureName(MODID+":coaster");
 		ItemCoaster.setMaxStackSize(10);
 
 		ItemCoasterConnector.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("coasterconnector")
-		.setRegistryName("CoasterConnector");
+		.setRegistryName("coasterconnector");
 		//ItemCoasterConnector.setTextureName(MODID+":coaster_c");
 		ItemCoasterConnector.setMaxStackSize(10);
 
@@ -267,6 +267,29 @@ public class ERC_Core {
 		.setUnlocalizedName("itemsmoothall")
 		.setRegistryName("ItemSmoothAll");
 		//ItemSmoothAll.setTextureName(MODID+":SmoothAll");
+
+		//ITEMBLOCKS
+		ItemRailBranch
+				.setUnlocalizedName("railbranch")
+				.setRegistryName("railbranch");
+		ItemRailConst
+				.setUnlocalizedName("railconst")
+				.setRegistryName("railconst");
+		ItemRailDetect
+				.setUnlocalizedName("raildetector")
+				.setRegistryName("raildetector");
+		ItemRailInvisible
+				.setUnlocalizedName("railinvisible")
+				.setRegistryName("railinvisible");
+		ItemRailNonGravity
+				.setUnlocalizedName("railnongravity")
+				.setRegistryName("railnongravity");
+		ItemRailNormal
+				.setUnlocalizedName("railnormal")
+				.setRegistryName("railnormal");
+		ItemRailRedAccel
+				.setUnlocalizedName("railredaccel")
+				.setRegistryName("railredaccel");
 	}
 
 	@SubscribeEvent
@@ -279,6 +302,7 @@ public class ERC_Core {
 	public static void registerItems(RegistryEvent.Register<Item> evt)
 	{
 		evt.getRegistry().registerAll(ItemBasePipe, ItemWrench, ItemStick, ItemCoaster, ItemCoasterConnector,
-				ItemCoasterMono, ItemSwitchRail, ItemSUSHI, ItemSmoothAll);
+				ItemCoasterMono, ItemSwitchRail, ItemSUSHI, ItemSmoothAll, ItemRailBranch, ItemRailConst,
+				ItemRailDetect,ItemRailInvisible, ItemRailNonGravity, ItemRailNormal, ItemRailRedAccel);
 	}
 }

@@ -2,26 +2,31 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "P P",
-    " B ",
-    "P P"
+    "B  ",
+    " P ",
+    "  I"
   ],
   "key":
   {
+    "B":
+    {
+      "item": "minecraft:book",
+      "data": 0
+    },
     "P":
     {
       "item": "erc:railpipe",
       "data": 0
     },
-    "B":
+    "I":
     {
-      "item": "minecraft:iron_block",
+      "item": "minecraft:stick",
       "data": 0
     }
   },
   "result":
   {
-    "item": "erc:railnormal",
-    "count": 10
+    "item": "erc:itemsmoothall",
+    "count": 1
   }
 }

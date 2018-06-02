@@ -2,17 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "D  ",
-    " P ",
-    "  I"
+    "I I",
+    "PIP"
   ],
   "key":
   {
-    "D":
-    {
-      "item": "minecraft:dirt",
-      "data": 0
-    },
     "P":
     {
       "item": "erc:railpipe",
@@ -20,13 +14,13 @@
     },
     "I":
     {
-      "item": "minecraft:stick",
+      "item": "minecraft:iron_ingot",
       "data": 0
     }
   },
   "result":
   {
-    "item": "erc:ItemWrenchPlaceBlock",
+    "item": "erc:coaster",
     "count": 1
   }
 }

@@ -3,7 +3,7 @@
   "pattern":
   [
     "R",
-    "G"
+    "O"
   ],
   "key":
   {
@@ -12,15 +12,15 @@
       "item": "erc:railnormal",
       "data": 0
     },
-    "G":
+    "O":
     {
-      "item": "minecraft:glass",
+      "item": "minecraft:obsidian",
       "data": 0
     }
   },
   "result":
   {
-    "item": "erc:ERC.RailInvisible",
+    "item": "erc:railconst",
     "count": 1
   }
 }

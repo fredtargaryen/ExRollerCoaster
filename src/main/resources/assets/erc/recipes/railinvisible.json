@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "R",
+    "G"
+  ],
+  "key":
+  {
+    "R":
+    {
+      "item": "erc:railnormal",
+      "data": 0
+    },
+    "G":
+    {
+      "item": "minecraft:glass",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:ERC.RailInvisible",
+    "count": 1
+  }
+}

@@ -2,9 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "R R",
-    "R R",
-    "R R"
+    " L ",
+    "LRL",
+    " L "
   ],
   "key":
   {
@@ -12,11 +12,16 @@
     {
       "item": "minecraft:rail",
       "data": 0
+    },
+    "L":
+    {
+      "item": "erc:railpipe",
+      "data": 0
     }
   },
   "result":
   {
-    "item": "erc:railnormal",
-    "count": 10
+    "item": "erc:switchrailmodel",
+    "count": 1
   }
 }

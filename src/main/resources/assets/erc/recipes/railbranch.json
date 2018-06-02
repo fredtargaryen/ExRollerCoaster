@@ -2,25 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "C",
-    "R"
+    "RLR",
+    " R "
   ],
   "key":
   {
-    "C":
-    {
-      "item": "erc:Coaster",
-      "data": 0
-    },
     "R":
     {
-      "item": "minecraft:redstone",
+      "item": "erc:railnormal",
+      "data": 0
+    },
+    "L":
+    {
+      "item": "minecraft:lever",
       "data": 0
     }
   },
   "result":
   {
-    "item": "erc:CoasterMono",
+    "item": "erc:railbranch",
     "count": 1
   }
 }

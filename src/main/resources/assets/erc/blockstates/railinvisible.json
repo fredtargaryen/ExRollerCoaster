@@ -2,6 +2,6 @@
 
   "variants": {
     "normal": { "model": "erc:railinvisible" },
-    "inventory": { "model": "erc.railinvisible" }
+    "inventory": { "model": "erc:railinvisible" }
   }
 }

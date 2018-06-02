@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "P P",
+    " B ",
+    "P P"
+  ],
+  "key":
+  {
+    "P":
+    {
+      "item": "erc:railpipe",
+      "data": 0
+    },
+    "B":
+    {
+      "item": "minecraft:iron_block",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:railnormal",
+    "count": 10
+  }
+}

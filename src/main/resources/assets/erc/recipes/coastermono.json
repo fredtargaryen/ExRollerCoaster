@@ -2,17 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "R",
-    "r"
+    "C",
+    "R"
   ],
   "key":
   {
-    "R":
+    "C":
     {
-      "item": "erc:railnormal",
+      "item": "erc:coaster",
       "data": 0
     },
-    "r":
+    "R":
     {
       "item": "minecraft:redstone",
       "data": 0
@@ -20,7 +20,7 @@
   },
   "result":
   {
-    "item": "minecraft:iron_ingot",
-    "count": 2
+    "item": "erc:coastermono",
+    "count": 1
   }
 }

@@ -2,7 +2,8 @@
 
   "variants": {
 
-    "normal": { "model": "erc:railnormal" }
+    "normal": { "model": "erc:railnormal" },
+    "inventory": { "model": "erc:railnormal" }
 
   }
 
