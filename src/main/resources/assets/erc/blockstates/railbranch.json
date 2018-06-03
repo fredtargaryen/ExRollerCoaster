@@ -1,5 +1,6 @@
 {
   "variants": {
+    "inventory": { "model": "erc:railbranch" },
     "meta=0": { "model": "erc:railbranch" },
     "meta=1": { "model": "erc:railbranch" },
     "meta=2": { "model": "erc:railbranch" },

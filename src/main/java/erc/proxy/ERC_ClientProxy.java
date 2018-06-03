@@ -2,12 +2,11 @@ package erc.proxy;
 
 import erc.renderer.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import erc._core.ERC_CONST;
 import erc._core.ERC_Core;
 import erc.entity.ERC_EntityCoaster;
@@ -25,18 +24,21 @@ import erc.manager.ERC_ModelLoadPlan;
 import erc.tileEntity.*;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLLog;
 
 import static erc._core.ERC_Core.*;
 
 public class ERC_ClientProxy implements IProxy{
-
 	@Override
 	public void preInit()
 	{
 //		FMLClientHandler.instance().addModAsResource( (new customResourceLoader() ).get());
 
 		OBJLoader.INSTANCE.addDomain(ERC_CONST.DOMAIN);
+		OBJLoader.INSTANCE.addDomain(ERC_CONST.D_AM);
+		ModelLoaderRegistry.registerLoader(new erc.model.ModelLoader());
 
+		FMLLog.log.info("Material unsupported spam incoming; I'm aware; don't be alarmed - FredTargaryen");
 		// �f�t�H�R�[�X�^�[�o�^
 		String defaultModel = ERC_CONST.DOMAIN+":models/coaster.obj";
 		String defaultModel_c = ERC_CONST.DOMAIN+":models/coaster_connect.obj";

@@ -1,7 +1,7 @@
 /**
  * TODO
- * Failed to load a bunch of objs
- * "Loading sushi model is failure" in console
+ * TileEntityRailBase, line 381 broken
+ * * fixedParamTTable empty when it shouldn't be
  * Invisible rail models
  * What was sound 1003
  * Correct rail ItemBlock models
@@ -10,6 +10,7 @@
  * Registering TileEntities: may have been meant to remember the new ResourceLocation
  * -FT
  * Check against 1.7.10 version
+ * Lots of keys and colours not supported in .mtls
  */
 package erc._core;
 
@@ -158,7 +159,7 @@ public class ERC_Core {
 		EntityRegistry.registerModEntity(new ResourceLocation(ERC_Core.MODID+":coasterdouble"), ERC_EntityCoasterDoubleSeat.class, "erc:coaster:double", eid++, this, 200, 10, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ERC_Core.MODID+":coasterseat"), ERC_EntityCoasterSeat.class, "erc:coaster:seat", eid++, this, 400, 20, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ERC_Core.MODID+":coasterconnect"), ERC_EntityCoasterConnector.class, "erc:coaster:connect", eid++, this, 200, 10, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(ERC_Core.MODID+":SUSHI"), entitySUSHI.class, "erc:SUSHI", eid++, this, 200, 50, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(ERC_Core.MODID+":sushi"), entitySUSHI.class, "erc:sushi", eid++, this, 200, 50, true);
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ERC_GUIHandler());
 		

@@ -1,6 +1,6 @@
 # Blender v2.64 (sub 0) OBJ File: 'SUSHI.blend'
 # www.blender.org
-mtllib SUSHI_e.mtl
+mtllib sushi_e.mtl
 o ebi001_Cube006
 v 0.163893 0.537385 -0.003126
 v -0.023758 0.557621 -0.010232

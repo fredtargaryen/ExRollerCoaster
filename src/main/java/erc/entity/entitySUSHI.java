@@ -47,16 +47,16 @@ public class entitySUSHI extends Entity {
 	@SideOnly(Side.CLIENT)
 	public static void clientInitSUSHI()
 	{
-		tex = new ResourceLocation(ERC_CONST.DOMAIN,"textures/entities/SUSHI.jpg");
+		tex = new ResourceLocation(ERC_CONST.DOMAIN,"textures/entities/sushi.jpg");
 		try {
-			model1 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_m.obj"));
-			model2 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_t.obj"));
-			model3 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_w.obj"));
-			model4 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_e.obj"));
-			model5 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/SUSHI/" + "SUSHI_g.obj"));
+			model1 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_m.obj"));
+			model2 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_t.obj"));
+			model3 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_w.obj"));
+			model4 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_e.obj"));
+			model5 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_g.obj"));
 		}
 		catch(Exception e){
-			ERC_Logger.warn("Loading SUSHI model is failure");
+			ERC_Logger.warn("Loading sushi model is failure");
 		}
 		models = new OBJModel[5];
 		models[0] = model2;

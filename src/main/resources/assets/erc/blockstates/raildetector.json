@@ -1,5 +1,6 @@
 {
   "variants": {
+    "inventory": { "model": "erc:raildetector" },
     "meta=0": { "model": "erc:raildetector" },
     "meta=1": { "model": "erc:raildetector" },
     "meta=2": { "model": "erc:raildetector" },

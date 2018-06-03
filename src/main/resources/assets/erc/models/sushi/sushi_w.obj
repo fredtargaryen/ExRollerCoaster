@@ -1,6 +1,6 @@
 # Blender v2.64 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib SUSHI_w.mtl
+mtllib sushi_w.mtl
 o Cylinder002_Cylinder003
 v -0.262373 0.517287 0.012114
 v -0.056241 0.691128 0.012085

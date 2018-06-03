@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "inventory": { "model": "erc:railnongravity" },
+    "meta=0": { "model": "erc:railnongravity" },
+    "meta=1": { "model": "erc:railnongravity" },
+    "meta=2": { "model": "erc:railnongravity" },
+    "meta=3": { "model": "erc:railnongravity" },
+    "meta=4": { "model": "erc:railnongravity" },
+    "meta=5": { "model": "erc:railnongravity" },
+    "meta=6": { "model": "erc:railnongravity" },
+    "meta=7": { "model": "erc:railnongravity" },
+    "meta=8": { "model": "erc:railnongravity" },
+    "meta=9": { "model": "erc:railnongravity" },
+    "meta=10": { "model": "erc:railnongravity" },
+    "meta=11": { "model": "erc:railnongravity" },
+    "meta=12": { "model": "erc:railnongravity" },
+    "meta=13": { "model": "erc:railnongravity" },
+    "meta=14": { "model": "erc:railnongravity" },
+    "meta=15": { "model": "erc:railnongravity" }
+  }
+}

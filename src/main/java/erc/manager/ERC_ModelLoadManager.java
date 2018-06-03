@@ -1,10 +1,8 @@
 package erc.manager;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 import erc._core.ERC_CONST;
 import erc._core.ERC_Logger;
@@ -20,13 +18,15 @@ import erc.tileEntity.TileEntityRailInvisible;
 import erc.tileEntity.TileEntityRailRedstoneAccelerator;
 import erc.tileEntity.Wrap_TileEntityRail;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
 
-public class ERC_ModelLoadManager {
-	
+public class ERC_ModelLoadManager{
+
 	public static class ModelPack{
 		public OBJModel Model;
 		public ResourceLocation Tex;
@@ -680,5 +680,4 @@ public class ERC_ModelLoadManager {
 		ModelPackList_Mono.add(modelpack);
 		return false; 
 	}
-	
 }

@@ -1,6 +1,6 @@
 {
-
   "variants": {
+    "inventory": { "model": "erc:railinvisible" },
     "meta=0": { "model": "erc:railinvisible" },
     "meta=1": { "model": "erc:railinvisible" },
     "meta=2": { "model": "erc:railinvisible" },
