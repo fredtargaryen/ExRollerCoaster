@@ -728,21 +728,33 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
     	super.readFromNBT(par1NBTTagCompound);      
     	loadFromNBT(par1NBTTagCompound, "");
     }
+
     public void loadFromNBT(NBTTagCompound nbt, String tag)
     {
-    	SetPosNum(nbt.getInteger(tag+"posnum"));
-//    	this.VertexNum = PosNum*4;
+    	//For some reason this TileEntity receives two NBTTagCompounds to read from.
+		//The first contains all the necessary info.
+		//The second only has the x, y and z positions.
+		//Updating from the first compound is fine, but when updating from the second, there is no posnum tag so instead
+		//of throwing, 0 is returned.
+		//Unfortunately posnum controls the size of an array, which is subsequently indexed into, so a posnum of 0
+		//cannot be allowed. I have added a workaround which checks if the posnum tag exists, and only continues if it
+		//does, in case the second packet has some usage I'm not aware of.
+		if(nbt.hasKey("posnum")) {
+			SetPosNum(nbt.getInteger(tag + "posnum"));
+			//    	this.VertexNum = PosNum*4;
 
-        readRailNBT(nbt, BaseRail, tag+"");
-        readRailNBT(nbt, NextRail, tag+"n");
+			readRailNBT(nbt, BaseRail, tag + "");
+			readRailNBT(nbt, NextRail, tag + "n");
 
-        modelrailindex = nbt.getInteger(tag+"railmodelindex");
-        changeRailModelRenderer(modelrailindex);
-//        this.CreateNewRailVertexFromControlPoint();
-//        if(world.isRemote)
-        	this.CalcRailPosition();
-//        else this.CalcRailLength();
+			modelrailindex = nbt.getInteger(tag + "railmodelindex");
+			changeRailModelRenderer(modelrailindex);
+			//        this.CreateNewRailVertexFromControlPoint();
+			//        if(world.isRemote)
+			this.CalcRailPosition();
+			//        else this.CalcRailLength();
+		}
     }
+
     // ���[���̏��1���ǂݎ��p
     protected void readRailNBT(NBTTagCompound nbt, DataTileEntityRail rail, String tag)
     {
@@ -775,10 +787,11 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
      */
     public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound = super.writeToNBT(par1NBTTagCompound);
         saveToNBT(par1NBTTagCompound, "");
-       return par1NBTTagCompound;
+        return par1NBTTagCompound;
     }
+
     public void saveToNBT(NBTTagCompound nbt, String tag)
     {
     	nbt.setInteger(tag+"posnum", this.PosNum);
@@ -786,6 +799,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
      	writeRailNBT(nbt, NextRail, tag+"n");
      	nbt.setInteger(tag+"railmodelindex", modelrailindex);
     }
+
     protected void writeRailNBT(NBTTagCompound nbt, DataTileEntityRail rail, String tag)
     {
     	writeVec3(nbt, rail.vecPos,  tag+"pos");

@@ -1,6 +1,7 @@
 {
-  "parent": "builtin/generated",
+  "parent": "block/cube",
+  "ambientocclusion": false,
   "textures": {
-    "layer0": "minecraft:blocks/portal"
+    "particle": "minecraft:blocks/portal"
   }
 }

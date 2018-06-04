@@ -1,6 +1,7 @@
 {
-  "parent": "builtin/generated",
+  "parent": "block/cube",
+  "ambientocclusion": false,
   "textures": {
-    "layer0": "minecraft:blocks/quartz_block_chiseled_top"
+    "particle": "minecraft:blocks/quartz_chiseled_block_top"
   }
 }

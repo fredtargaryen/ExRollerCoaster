@@ -1,6 +1,7 @@
 package erc.renderer;
 
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -23,12 +24,12 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 	
 	public void renderTileEntityAt(Wrap_TileEntityRail t, double x, double y, double z)
 	{
-		Tessellator tessellator = Tessellator.getInstance();
-		this.bindTexture(t.getDrawTexture());
-		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
 		GL11.glPushMatrix();
-		GL11.glTranslated(x+0.5, y+0.5, z+0.5);
-		//tessellator.getBuffer().color(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+		GlStateManager.translate(x+0.5, y+0.5, z+0.5);
+		Tessellator tessellator = Tessellator.getInstance();
+		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
+		this.bindTexture(t.getDrawTexture());
 
 		t.render(tessellator);
 		
@@ -42,7 +43,8 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
     	//DrawArrow(tessellator, t.vecUp);
     	
       	GL11.glEnable(GL11.GL_CULL_FACE); // �J�����OON
-      	GL11.glPopMatrix();
+      	GL11.glPopAttrib();
+		GL11.glPopMatrix();
 	}
 	
 	public void p_bindTexture(ResourceLocation texture){ this.bindTexture(texture);}

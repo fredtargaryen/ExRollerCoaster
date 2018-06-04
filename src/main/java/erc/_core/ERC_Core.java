@@ -1,7 +1,5 @@
 /**
  * TODO
- * TileEntityRailBase, line 381 broken
- * * fixedParamTTable empty when it shouldn't be
  * Invisible rail models
  * What was sound 1003
  * Correct rail ItemBlock models

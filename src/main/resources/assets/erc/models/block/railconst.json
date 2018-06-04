@@ -1,6 +1,7 @@
 {
-  "parent": "builtin/generated",
+  "parent": "block/cube",
+  "ambientocclusion": false,
   "textures": {
-    "layer0": "minecraft:blocks/obsidian"
+    "particle": "minecraft:blocks/obsidian"
   }
 }
