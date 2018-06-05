@@ -926,7 +926,4 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 				dir.z);
 	}
 
-
-
-
 }

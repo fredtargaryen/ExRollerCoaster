@@ -88,10 +88,11 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 		for(int i = 0; i<PosNum; ++i)
 		{
 			int index = i*4;
-			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag);
-			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag);
+			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag).endVertex();
+			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag).endVertex();
 			turnflag = turnflag>0?0f:1f;
-			bb.normal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
+			//Original method call was tess.setNormal. How to replace this?-FT
+			//bb.putNormal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
 		}
 		tess.draw();
 		turnflag = 0f;
@@ -99,10 +100,11 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 		for(int i = 0; i<PosNum; ++i)
 		{
 			int index = i*4+2;
-			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag);
-			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag);
+			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag).endVertex();
+			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag).endVertex();
 			turnflag = turnflag>0?0f:1f;
-			bb.normal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
+			//Original method call was tess.setNormal. How to replace this?-FT
+			//bb.putNormal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
 		}
 		tess.draw();
 	}

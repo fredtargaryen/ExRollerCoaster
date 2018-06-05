@@ -1,8 +1,17 @@
 /**
  * TODO
- * Invisible rail models
+ * Rail models:
+ * * Missing particle textures (check)
+ * * Zero gravity rail block not rendering
+ * * Get correct bounding boxes for each block face.
+ * * Selection bounding box - copy Floower Pot I guess
+ * * Redstone Rail not rendering any rails
+ * * Always extend *behind* the player that placed them
+ *   * MIght be a metadata thing
+ * * Don't connect or smooth
+ * * Don't accept coasters
+ * Normal rail doesn't appear in inventory
  * What was sound 1003
- * Correct rail ItemBlock models
  * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!
  * Registering TileEntities: may have been meant to remember the new ResourceLocation
@@ -280,7 +289,7 @@ public class ERC_Core {
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> evt)
 	{
-		evt.getRegistry().registerAll(railNormal, railRedAccel, railConst, railDetect, railBranch, railInvisible);
+		evt.getRegistry().registerAll(railBranch, railConst, railDetect, railInvisible, railNonGravity, railNormal, railRedAccel);
 	}
 
 	@SubscribeEvent

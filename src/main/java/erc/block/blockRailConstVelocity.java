@@ -2,12 +2,12 @@ package erc.block;
 
 import erc.message.ERC_MessageRailMiscStC;
 import erc.message.ERC_PacketHandler;
-import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.TileEntityRailConstVelosity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class blockRailConstVelocity extends blockRailBase{
 
 	@Override
-	public TileEntityRailBase getTileEntityInstance() 
+	public TileEntity createTileEntity(World world, IBlockState state)
 	{
 		return new TileEntityRailConstVelosity();
 	}

@@ -1,7 +1,6 @@
 {
-  "parent": "block/cube",
-  "ambientocclusion": false,
+  "parent": "erc:block/railbase",
   "textures": {
-    "particle": "minecraft:blocks/glass"
+    "all": "minecraft:blocks/glass"
   }
 }

@@ -24,15 +24,20 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 	
 	public void renderTileEntityAt(Wrap_TileEntityRail t, double x, double y, double z)
 	{
-		GL11.glPushMatrix();
-		GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-		GlStateManager.translate(x+0.5, y+0.5, z+0.5);
 		Tessellator tessellator = Tessellator.getInstance();
-		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
 		this.bindTexture(t.getDrawTexture());
+		GlStateManager.pushMatrix();
+		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
+		//GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+		//Motty used a y of 0.5 instead - FT
+		GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
+		//tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+		// set the key rendering flags appropriately...
+		//GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
+		//GL11.glDisable(GL11.GL_BLEND);        // turn off "alpha" transparency blending
+		//GL11.glDepthMask(true); // quad is hidden behind other objects
 
 		t.render(tessellator);
-		
 		
 		//GL11.glTranslated(t.x, t.y, t.z);
 		//GL11.glTranslated(0.5, y-t.y, z-t.z);
@@ -41,9 +46,8 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
     		DrawRotaArrow(tessellator, t);
     	}
     	//DrawArrow(tessellator, t.vecUp);
-    	
+		//GL11.glPopAttrib();
       	GL11.glEnable(GL11.GL_CULL_FACE); // �J�����OON
-      	GL11.glPopAttrib();
 		GL11.glPopMatrix();
 	}
 	
@@ -54,9 +58,9 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 	{
 		BufferBuilder bb = tess.getBuffer();
       	bb.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
-      	bb.pos(0.2d, 0d, 0.2d).tex(0.0d, 0.0d);
-      	bb.pos(vec.x*3d, vec.y*3d, vec.z*3d).tex(0.0d, 0.0d);
-      	bb.pos(-0.2d, 0d, -0.2d).tex(0.0d, 0.0d);
+      	bb.pos(0.2d, 0d, 0.2d).tex(0.0d, 0.0d).endVertex();
+      	bb.pos(vec.x*3d, vec.y*3d, vec.z*3d).tex(0.0d, 0.0d).endVertex();
+      	bb.pos(-0.2d, 0d, -0.2d).tex(0.0d, 0.0d).endVertex();
       	tess.draw();
 	}
 	
@@ -78,28 +82,28 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
       	GL11.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
       	BufferBuilder bb = tess.getBuffer();
       	bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
-	    bb.pos(( d.x+p.x)*s, ( d.y+p.y)*s, ( d.z+p.z)*s).tex(0.0d, 0.0d);
-		bb.pos(( d.x-p.x)*s, ( d.y-p.y)*s, ( d.z-p.z)*s).tex(1.0d, 0.0d);
-		bb.pos((-d.x+p.x)*s, (-d.y+p.y)*s, (-d.z+p.z)*s).tex(0.0d, 1.0d);
-		bb.pos((-d.x-p.x)*s, (-d.y-p.y)*s, (-d.z-p.z)*s).tex(1.0d, 1.0d);
+	    bb.pos(( d.x+p.x)*s, ( d.y+p.y)*s, ( d.z+p.z)*s).tex(0.0d, 0.0d).endVertex();
+		bb.pos(( d.x-p.x)*s, ( d.y-p.y)*s, ( d.z-p.z)*s).tex(1.0d, 0.0d).endVertex();
+		bb.pos((-d.x+p.x)*s, (-d.y+p.y)*s, (-d.z+p.z)*s).tex(0.0d, 1.0d).endVertex();
+		bb.pos((-d.x-p.x)*s, (-d.y-p.y)*s, (-d.z-p.z)*s).tex(1.0d, 1.0d).endVertex();
 		tess.draw();
 		// pitch axis
 		s = 1.5f;
 		GL11.glColor4f(0.0F, 1.0F, 0.0F, 1.0F);
 		bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
-	    bb.pos(( u.x+d.x)*s, ( u.y+d.y)*s, ( u.z+d.z)*s).tex(0.0d, 0.0d);
-		bb.pos(( u.x-d.x)*s, ( u.y-d.y)*s, ( u.z-d.z)*s).tex(1.0d, 0.0d);
-		bb.pos((-u.x+d.x)*s, (-u.y+d.y)*s, (-u.z+d.z)*s).tex(0.0d, 1.0d);
-		bb.pos((-u.x-d.x)*s, (-u.y-d.y)*s, (-u.z-d.z)*s).tex(1.0d, 1.0d);
+	    bb.pos(( u.x+d.x)*s, ( u.y+d.y)*s, ( u.z+d.z)*s).tex(0.0d, 0.0d).endVertex();
+		bb.pos(( u.x-d.x)*s, ( u.y-d.y)*s, ( u.z-d.z)*s).tex(1.0d, 0.0d).endVertex();
+		bb.pos((-u.x+d.x)*s, (-u.y+d.y)*s, (-u.z+d.z)*s).tex(0.0d, 1.0d).endVertex();
+		bb.pos((-u.x-d.x)*s, (-u.y-d.y)*s, (-u.z-d.z)*s).tex(1.0d, 1.0d).endVertex();
 		tess.draw();
 		// roll axis
 		s = 1.0f;
 		GL11.glColor4f(0.0F, 0.0F, 1.0F, 1.0F);
 		bb.begin(GL11.GL_TRIANGLE_STRIP, DefaultVertexFormats.POSITION_TEX);
-	    bb.pos(( u.x+p.x)*s, ( u.y+p.y)*s, ( u.z+p.z)*s).tex(0.0d, 0.0d);
-		bb.pos(( u.x-p.x)*s, ( u.y-p.y)*s, ( u.z-p.z)*s).tex(1.0d, 0.0d);
-		bb.pos((-u.x+p.x)*s, (-u.y+p.y)*s, (-u.z+p.z)*s).tex(0.0d, 1.0d);
-		bb.pos((-u.x-p.x)*s, (-u.y-p.y)*s, (-u.z-p.z)*s).tex(1.0d, 1.0d);
+	    bb.pos(( u.x+p.x)*s, ( u.y+p.y)*s, ( u.z+p.z)*s).tex(0.0d, 0.0d).endVertex();
+		bb.pos(( u.x-p.x)*s, ( u.y-p.y)*s, ( u.z-p.z)*s).tex(1.0d, 0.0d).endVertex();
+		bb.pos((-u.x+p.x)*s, (-u.y+p.y)*s, (-u.z+p.z)*s).tex(0.0d, 1.0d).endVertex();
+		bb.pos((-u.x-p.x)*s, (-u.y-p.y)*s, (-u.z-p.z)*s).tex(1.0d, 1.0d).endVertex();
 		tess.draw();                            
 	}
 

@@ -3,14 +3,16 @@ package erc.block;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.TileEntityRailDetector;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class blockRailDetector extends blockRailBase{
 
 	@Override
-	public TileEntityRailBase getTileEntityInstance() 
+	public TileEntity createTileEntity(World world, IBlockState state)
 	{
 		return new TileEntityRailDetector();
 	}

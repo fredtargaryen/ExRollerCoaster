@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -17,7 +18,7 @@ import net.minecraft.world.World;
 public class blockRailBranch extends blockRailBase{
 
 	@Override
-	public Wrap_TileEntityRail getTileEntityInstance() 
+	public TileEntity createTileEntity(World world, IBlockState state)
 	{
 		return new TileEntityRailBranch2();
 	}

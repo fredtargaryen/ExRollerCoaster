@@ -1,7 +1,6 @@
 {
-  "parent": "block/cube",
-  "ambientocclusion": false,
+  "parent": "erc:block/railbase",
   "textures": {
-    "particle": "minecraft:blocks/quartz_chiseled_block_top"
+    "all": "minecraft:blocks/quartz_block_chiseled_top"
   }
 }

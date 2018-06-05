@@ -3,6 +3,7 @@ package erc.block;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +26,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public abstract class blockRailBase extends BlockContainer
+public abstract class blockRailBase extends Block
 {
 	public static final PropertyInteger META = PropertyInteger.create("meta", 0, 15);
 	private static final AxisAlignedBB[] boxes = new AxisAlignedBB[]
@@ -78,25 +79,19 @@ public abstract class blockRailBase extends BlockContainer
 	{
 		return false;
 	}
- 
-	public boolean renderAsNormalBlock()
-	{
-		return false;
-	}
-	
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         return false;
     }
-	
-	public abstract Wrap_TileEntityRail getTileEntityInstance();
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
 	{
 //		Wrap_TileEntityRail WPrevTile = ERC_BlockRailManager.GetPrevTileEntity(world);
 //		Wrap_TileEntityRail WNextTile = ERC_BlockRailManager.GetNextTileEntity(world);
-		Wrap_TileEntityRail tlRailTest = getTileEntityInstance();
+		Wrap_TileEntityRail tlRailTest = (Wrap_TileEntityRail) createTileEntity(world, state);
 //		ERC_TileEntityRailTest tlRailTest = (ERC_TileEntityRailTest)world.getTileEntity(x, y, z);
 		
 		/**
@@ -248,12 +243,6 @@ public abstract class blockRailBase extends BlockContainer
 	{
 		return boxes[state.getValue(META) & 7];
 	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
-	{
-		return getTileEntityInstance();
-	}
 	
 	public static boolean isBlockRail(Block block) {
 		return block instanceof blockRailBase;
@@ -271,7 +260,25 @@ public abstract class blockRailBase extends BlockContainer
     	}
 		return new Vec3d(0, 0, 0);
     }
-    
-    
-    
+
+	@Override
+	public boolean hasTileEntity(IBlockState ibs)
+	{
+		return true;
+	}
+
+	@Override
+	public abstract TileEntity createTileEntity(World world, IBlockState state);
+
+	@Override
+	public boolean isFullCube(IBlockState state)
+	{
+		return false;
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state)
+	{
+		return EnumBlockRenderType.MODEL;
+	}
 }

@@ -1,7 +1,6 @@
 {
-  "parent": "block/cube_all",
-  "ambientocclusion": false,
+  "parent": "erc:block/railbase",
   "textures": {
-    "particle": "minecraft:blocks/lapis_block"
+    "all": "minecraft:blocks/lapis_block"
   }
 }
