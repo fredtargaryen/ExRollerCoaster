@@ -1,16 +1,16 @@
 /**
  * TODO
  * Rail models:
- * * Missing particle textures (check)
- * * Zero gravity rail block not rendering
- * * Get correct bounding boxes for each block face.
- * * Selection bounding box - copy Floower Pot I guess
- * * Redstone Rail not rendering any rails
- * * Always extend *behind* the player that placed them
- *   * MIght be a metadata thing
- * * Don't connect or smooth
- * * Don't accept coasters
- * Normal rail doesn't appear in inventory
+ * * PLACING RAILS
+ *   HOW IT SHOULD BE					HOW IT IS								WHY
+ *   * Rail extends out in player 		Rail extends in opposite direction		metadata?
+ *     direction when placed
+ *   * Redstone Rails renders red rails Only for a split second					idk
+ * 	 * Placing subsequent rails 		No connection							idk
+ * 	   connects them to the previous
+ * 	   rail
+ * * Normal rail doesn't appear in inventory (not a clue)
+ * Coaster not rendering
  * What was sound 1003
  * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!

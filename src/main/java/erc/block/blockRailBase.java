@@ -15,7 +15,6 @@ import erc.message.ERC_PacketHandler;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.Wrap_TileEntityRail;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -224,6 +223,7 @@ public abstract class blockRailBase extends Block
 	{
 		return boxes[state.getValue(META) & 7];
 	}
+
 //	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity)
 //    {
 //        if (flag || flag1)
