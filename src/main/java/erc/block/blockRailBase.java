@@ -3,6 +3,7 @@ package erc.block;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -280,5 +281,39 @@ public abstract class blockRailBase extends Block
 	public EnumBlockRenderType getRenderType(IBlockState state)
 	{
 		return EnumBlockRenderType.MODEL;
+	}
+
+	/**
+	 * Gets the {@link IBlockState} to place
+	 * @param world The world the block is being placed in
+	 * @param pos The position the block is being placed at
+	 * @param facing The side the block is being placed on
+	 * @param hitX The X coordinate of the hit vector
+	 * @param hitY The Y coordinate of the hit vector
+	 * @param hitZ The Z coordinate of the hit vector
+	 * @param meta The metadata of {@link ItemStack} as processed by {@link Item#getMetadata(int)}
+	 * @param placer The entity placing the block
+	 * @param hand The player hand used to place this block
+	 * @return The state to be placed in the world
+	 */
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
+		switch(facing) {
+			case DOWN:
+				return this.getDefaultState().withProperty(META, 0);
+			case UP:
+				return this.getDefaultState().withProperty(META, 1);
+			//May be nonsense
+			case NORTH:
+				return this.getDefaultState().withProperty(META, 2);
+			case SOUTH:
+				return this.getDefaultState().withProperty(META, 3);
+			case WEST:
+				return this.getDefaultState().withProperty(META, 4);
+			case EAST:
+				return this.getDefaultState().withProperty(META, 5);
+			default:
+				return this.getDefaultState().withProperty(META, 6);
+		}
 	}
 }

@@ -3,14 +3,18 @@
  * Rail models:
  * * PLACING RAILS
  *   HOW IT SHOULD BE					HOW IT IS								WHY
- *   * Rail extends out in player 		Rail extends in opposite direction		metadata?
+ *   * Rail extends out in player 		Rail extends in opposite direction		Probably a rendering bug
  *     direction when placed
  *   * Redstone Rails renders red rails Only for a split second					idk
- * 	 * Placing subsequent rails 		No connection							idk
+ * 	 * Placing subsequent rails 		No connection							Need to try using the mod properly...
  * 	   connects them to the previous
  * 	   rail
- * * Normal rail doesn't appear in inventory (not a clue)
- * Coaster not rendering
+ * 	 * Branch rail extends out a few    Branch rail immediately branches
+ * 	   blocks, then branches into one
+ * 	   white and one grey rail
+ * Wrench textures
+ * Render grey branch rail slightly beneath white one to avoid colours fighting
+ * Coaster spams the server when rails are not connected. Not great but Motty's decision
  * What was sound 1003
  * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!
@@ -182,7 +186,7 @@ public class ERC_Core {
 
 	private void InitBlock_RC()
 	{
-		railNormal = new blockRailNormal()
+		railNormal
 			.setUnlocalizedName("railnormal")
 				.setRegistryName("railnormal")
 			.setCreativeTab(ERC_Tab);

@@ -29,8 +29,7 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 		GlStateManager.pushMatrix();
 		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
 		//GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-		//Motty used a y of 0.5 instead - FT
-		GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 		//tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 		// set the key rendering flags appropriately...
 		//GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
