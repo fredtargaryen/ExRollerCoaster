@@ -1,7 +1,8 @@
 /**
  * TODO
- * Render grey branch rail slightly beneath white one to avoid colours fighting
- * A redstone rail placed with metadata 1 and no power, switches to metadata 9
+ * Switching to high metadata values causes the redstone rails to disappear
+ * * Is it refreshing the TileEntity or something?
+ * Tile entities don't seem to persist (might be related?)
  * Rails stop rendering when moving far enough away from them
  * Weird cross at the end of placed rails
  * Wrench textures

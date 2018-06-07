@@ -1,5 +1,9 @@
 package erc.tileEntity;
 
+import erc.block.blockRailBase;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -122,8 +126,25 @@ public class TileEntityRailRedstoneAccelerator extends TileEntityRailBase{
     
     public void render(Tessellator tess)
 	{
-    	float col = toggleflag?2.0f:0.3f;
+		GlStateManager.disableLighting();
+    	float col = toggleflag?1.0f:0.3f;
     	GL11.glColor4f(col, col, col, 1.0F);
     	super.render(tess);
+    	GlStateManager.enableLighting();
+	}
+
+	/**
+	 * Called from Chunk.setBlockIDWithMetadata and Chunk.fillChunk, determines if this tile entity should be re-created when the ID, or Metadata changes.
+	 * Use with caution as this will leave straggler TileEntities, or create conflicts with other TileEntities if not used properly.
+	 *
+	 * @param world Current world
+	 * @param pos Tile's world position
+	 * @param oldState The old ID of the block
+	 * @param newState The new ID of the block (May be the same)
+	 * @return true forcing the invalidation of the existing TE, false not to invalidate the existing TE
+	 */
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+	{
+		return !(oldState.getBlock() == newState.getBlock() && oldState.getValue(blockRailBase.META) == newState.getValue(blockRailBase.META));
 	}
 }

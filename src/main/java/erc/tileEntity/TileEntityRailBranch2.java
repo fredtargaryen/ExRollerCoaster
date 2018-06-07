@@ -2,6 +2,7 @@ package erc.tileEntity;
 
 import java.util.Iterator;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
@@ -207,6 +208,7 @@ public class TileEntityRailBranch2 extends /*ERC_TileEntityRailBase*/Wrap_TileEn
 	public void render(Tessellator tess) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		rails[branchflag].render(tess);
+		GlStateManager.translate(0.0, -0.00005, 0.0);
 		GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
 		rails[branchflag==0?1:0].render(tess);
 	}

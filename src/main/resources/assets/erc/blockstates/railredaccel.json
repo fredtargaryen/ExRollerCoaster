@@ -10,11 +10,11 @@
     "meta=6": { "model": "erc:railaccel" },
     "meta=7": { "model": "erc:railaccel" },
     "meta=8": { "model": "erc:railaccel" },
-    "meta=9": { "model": "erc:railaccel" },
-    "meta=10": { "model": "erc:railaccel" },
-    "meta=11": { "model": "erc:railaccel" },
-    "meta=12": { "model": "erc:railaccel" },
-    "meta=13": { "model": "erc:railaccel" },
+    "meta=9": { "model": "erc:railaccel", "x": 180 },
+    "meta=10": { "model": "erc:railaccel", "x": 90, "y": 180 },
+    "meta=11": { "model": "erc:railaccel", "x": 90 },
+    "meta=12": { "model": "erc:railaccel", "x": 90, "y": 90 },
+    "meta=13": { "model": "erc:railaccel", "x": 90, "y": 270 },
     "meta=14": { "model": "erc:railaccel" },
     "meta=15": { "model": "erc:railaccel" }
   }
