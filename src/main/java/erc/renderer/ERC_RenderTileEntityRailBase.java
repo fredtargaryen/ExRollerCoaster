@@ -28,16 +28,10 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 		this.bindTexture(t.getDrawTexture());
 		GlStateManager.pushMatrix();
 		GL11.glDisable(GL11.GL_CULL_FACE); // �J�����OOFF
-		//GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 		//tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-		// set the key rendering flags appropriately...
-		//GL11.glDisable(GL11.GL_LIGHTING);     // turn off "item" lighting (face brightness depends on which direction it is facing)
-		//GL11.glDisable(GL11.GL_BLEND);        // turn off "alpha" transparency blending
-		//GL11.glDepthMask(true); // quad is hidden behind other objects
-
 		t.render(tessellator);
-		
+
 		//GL11.glTranslated(t.x, t.y, t.z);
 		//GL11.glTranslated(0.5, y-t.y, z-t.z);
     	
@@ -45,7 +39,6 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
     		DrawRotaArrow(tessellator, t);
     	}
     	//DrawArrow(tessellator, t.vecUp);
-		//GL11.glPopAttrib();
       	GL11.glEnable(GL11.GL_CULL_FACE); // �J�����OON
 		GL11.glPopMatrix();
 	}

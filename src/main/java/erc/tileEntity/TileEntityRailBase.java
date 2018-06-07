@@ -360,7 +360,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		
 		////pos
 		Vec3d Base = new Vec3d(BaseRail.vecUp.x * 0.5, BaseRail.vecUp.y * 0.5, BaseRail.vecUp.z * 0.5);
-		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos);
+		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos); //Used to be Base subtract Next but that made things go backwards - FT
 		Next = new Vec3d(Next.x + NextRail.vecUp.x * 0.5, Next.y + NextRail.vecUp.y * 0.5, Next.z + NextRail.vecUp.z * 0.5);
 		
 		////dir
