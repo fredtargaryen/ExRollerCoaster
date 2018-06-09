@@ -438,7 +438,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //				ERC_Logger.warn("index exception");
 //				return;
 //			}
-			
+			if(i == PosNum - 1) cross = new Vec3d(-cross.x, -cross.y, -cross.z);
 			if(modelrail!=null)modelrail.construct(i, center, dir1, cross, ModelLen);
 //			// ��
 //			posArray[j  ].xCoord = center.xCoord - cross.xCoord*t1;
@@ -756,9 +756,9 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
     // ���[���̏��1���ǂݎ��p
     protected void readRailNBT(NBTTagCompound nbt, DataTileEntityRail rail, String tag)
     {
-    	readVec3(nbt, rail.vecPos,  tag+"pos");
-    	readVec3(nbt, rail.vecDir,  tag+"dir");
-        readVec3(nbt, rail.vecUp, 	tag+"up");
+    	rail.vecPos = readVec3(nbt, tag+"pos");
+    	rail.vecDir = readVec3(nbt, tag+"dir");
+        rail.vecUp = readVec3(nbt, tag+"up");
         
         rail.fUp 		= nbt.getFloat(tag+"fup");
         rail.fDirTwist 	= nbt.getFloat(tag+"fdt");
@@ -775,7 +775,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
         }
     }
     // NBT�ǂݍ��ݕ⏕
-    private Vec3d readVec3(NBTTagCompound nbt, Vec3d vec, String name)
+    private Vec3d readVec3(NBTTagCompound nbt, String name)
     {
     	return new Vec3d(nbt.getDouble(name+"x"), nbt.getDouble(name+"y"), nbt.getDouble(name+"z"));
     }
@@ -785,7 +785,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
      */
     public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        par1NBTTagCompound = super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(par1NBTTagCompound);
         saveToNBT(par1NBTTagCompound, "");
         return par1NBTTagCompound;
     }
@@ -876,6 +876,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		this.SetPrevRailPosition(x, y, z);
     	this.syncData();
 	}
+
 	public void connectionToNext(DataTileEntityRail next, int x, int y, int z)
 	{
 		// �����ɂȂ���v���͔j��
@@ -924,4 +925,9 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 				dir.z);
 	}
 
+	@Override
+	public NBTTagCompound getUpdateTag()
+	{
+		return this.writeToNBT(new NBTTagCompound());
+	}
 }

@@ -1,11 +1,8 @@
 /**
  * TODO
- * Switching to high metadata values causes the redstone rails to disappear
- * * Is it refreshing the TileEntity or something?
- * Tile entities don't seem to persist (might be related?)
- * Rails stop rendering when moving far enough away from them
- * Weird cross at the end of placed rails
- * Wrench textures
+ * Coaster is invisible?? (check and debug)
+ * Rails stop rendering when moving far enough away from them and looking away from block
+ * Smoothing makes all rails invisible rip
  * Coaster spams the server when rails are not connected. Not great but Motty's decision
  * What was sound 1003
  * The coremod erc.rewriteClass.loadingPlugin
@@ -133,14 +130,14 @@ public class ERC_Core {
 		InitItem_RC();
 		
 		// Register TileEntity
-		GameRegistry.registerTileEntity(TileEntityRailBase.class, new ResourceLocation("ERC:TileEntityRailBase"));
-		GameRegistry.registerTileEntity(TileEntityRailNormal.class, new ResourceLocation("ERC:TileEntityRail"));
-		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, new ResourceLocation("ERC:TileEntityRailRedAcc"));
-		GameRegistry.registerTileEntity(TileEntityRailConstVelosity.class, new ResourceLocation("ERC:TileEntityRailconstvel"));
-		GameRegistry.registerTileEntity(TileEntityRailDetector.class, new ResourceLocation("ERC:TileEntityRailDetector"));
-		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, new ResourceLocation("ERC:TileEntityRailBranch"));
-		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, new ResourceLocation("ERC:TileEntityInvisible"));
-		GameRegistry.registerTileEntity(TileEntityNonGravityRail.class, new ResourceLocation( "ERC:TileEntityNonGravity"));
+		GameRegistry.registerTileEntity(TileEntityRailBase.class, new ResourceLocation("erc:tileentityrailbase"));
+		GameRegistry.registerTileEntity(TileEntityRailNormal.class, new ResourceLocation("erc:tileentityrail"));
+		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, new ResourceLocation("erc:tileentityrailredacc"));
+		GameRegistry.registerTileEntity(TileEntityRailConstVelosity.class, new ResourceLocation("erc:tileentityrailconstvel"));
+		GameRegistry.registerTileEntity(TileEntityRailDetector.class, new ResourceLocation("erc:tileentityraildetector"));
+		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, new ResourceLocation("erc:tileentityrailbranch"));
+		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, new ResourceLocation("erc:tileentityinvisible"));
+		GameRegistry.registerTileEntity(TileEntityNonGravityRail.class, new ResourceLocation( "erc:tileentitynongravity"));
 
 		proxy.preInit();
 

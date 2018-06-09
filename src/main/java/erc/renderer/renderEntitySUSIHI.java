@@ -1,5 +1,6 @@
 package erc.renderer;
 
+import erc._core.ERC_CONST;
 import erc.entity.entitySUSHI;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -7,7 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class renderEntitySUSIHI extends Render {
-	
+
+	private static final ResourceLocation tex = new ResourceLocation(ERC_CONST.DOMAIN + ":textures/entities/sushi.png");
 	protected boolean canBePushed = true;
 
 	protected renderEntitySUSIHI(RenderManager renderManager) {
@@ -26,8 +28,6 @@ public class renderEntitySUSIHI extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity e) {
-		// TODO Auto-generated method stub
-		return null;
+		return tex;
 	}
-
 }

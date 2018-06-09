@@ -1,9 +1,10 @@
 package erc.item;
 
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import erc.block.blockRailBase;
@@ -18,6 +19,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class ERC_ItemWrench extends Item {
 
@@ -34,10 +39,27 @@ public class ERC_ItemWrench extends Item {
 	static final int modenum = 2;
 	final String ModeStr[] = {	"Connection mode", 
 								"Adjustment mode"};
-	final String texStr[] = {	"wrench_c1", 
-								"wrench_c2",
-								"wrench_e1",
-								"wrench_e2"};
+
+	public ERC_ItemWrench()
+	{
+		super();
+		this.addPropertyOverride(new ResourceLocation("mode"), new IItemPropertyGetter()
+		{
+			@SideOnly(Side.CLIENT)
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
+			{
+				return (float) mode;
+			}
+		});
+		this.addPropertyOverride(new ResourceLocation("phase"), new IItemPropertyGetter()
+		{
+			@SideOnly(Side.CLIENT)
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
+			{
+				return ERC_CoasterAndRailManager.isPlacedRail() ? 1.0F : 0.0F;
+			}
+		});
+	}
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand handIn)
@@ -126,45 +148,4 @@ public class ERC_ItemWrench extends Item {
 		}
 		return EnumActionResult.FAIL;
 	}
-	//Keep for when doing textures - FT
-//	@SideOnly(Side.CLIENT)
-//    public void registerIcons(IIconRegister p_94581_1_)
-//    {
-//    	for(int i=0;i<texStr.length;++i)
-//    	{
-//    		this.itemIcons[i] = p_94581_1_.registerIcon(ERC_CONST.DOMAIN+":"+texStr[i]);
-//    	}
-//    	temIcon = itemIcons[0];
-//    }
-//
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIconFromDamage(int p_77617_1_)
-//	{
-//		return ERCwrench_getIcon();
-//	}
-//
-//	@Override
-//	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
-//	{
-//		return ERCwrench_getIcon();
-//	}
-//
-//	@Override
-//	public IIcon getIcon(ItemStack stack, int pass)
-//	{
-//		return ERCwrench_getIcon();
-//	}
-//
-//    private IIcon ERCwrench_getIcon()
-//    {
-//    	int iconid=0;
-//    	switch(mode)
-//    	{
-//    	case 0:/*connect*/ 	iconid = ERC_CoasterAndRailManager.isPlacedRail() ? 1 : 0; break;
-//    	case 1:/*adjust*/	iconid = ERC_CoasterAndRailManager.isPlacedRail() ? 3 : 2; break;
-//    	}
-//
-//		return this.itemIcons[iconid];
-//    }
 }

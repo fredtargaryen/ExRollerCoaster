@@ -1,5 +1,6 @@
 package erc.renderer;
 
+import erc._core.ERC_CONST;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -10,7 +11,8 @@ import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class ERC_RenderEntityCoaster extends Render<ERC_EntityCoaster> {
-	
+
+	private static final ResourceLocation tex = new ResourceLocation(ERC_CONST.DOMAIN + ":models/coaster.png");
 	protected boolean canBePushed = true;
 
 	public ERC_RenderEntityCoaster(RenderManager renderManager) {
@@ -30,9 +32,6 @@ public class ERC_RenderEntityCoaster extends Render<ERC_EntityCoaster> {
 
 	@Override
 	protected ResourceLocation getEntityTexture(ERC_EntityCoaster p_110775_1_) {
-		// TODO Auto-generated method stub
-		return null;
+		return tex;
 	}
-
-
 }

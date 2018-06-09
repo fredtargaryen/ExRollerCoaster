@@ -2,5 +2,35 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "erc:items/wrench_c1"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "mode": 0.0,
+        "phase": 0.0
+      },
+      "model": "erc:item/wrench_c1"
+    },
+    {
+      "predicate": {
+        "mode": 0.0,
+        "phase": 1.0
+      },
+      "model": "erc:item/wrench_c2"
+    },
+    {
+      "predicate": {
+        "mode": 1.0,
+        "phase": 0.0
+      },
+      "model": "erc:item/wrench_e1"
+    },
+    {
+      "predicate": {
+        "mode": 1.0,
+        "phase": 1.0
+      },
+      "model": "erc:item/wrench_e2"
+    }
+  ]
 }

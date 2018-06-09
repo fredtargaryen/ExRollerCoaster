@@ -145,6 +145,7 @@ public class TileEntityRailRedstoneAccelerator extends TileEntityRailBase{
 	 */
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
 	{
-		return !(oldState.getBlock() == newState.getBlock() && oldState.getValue(blockRailBase.META) == newState.getValue(blockRailBase.META));
-	}
+		//return super.shouldRefresh(world, pos, oldState, newState);
+		return !(oldState.getBlock() == newState.getBlock() && (oldState.getValue(blockRailBase.META) & 7) == (newState.getValue(blockRailBase.META) & 7));
+    }
 }
