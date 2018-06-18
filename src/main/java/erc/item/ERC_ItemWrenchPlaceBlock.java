@@ -43,8 +43,7 @@ public class ERC_ItemWrenchPlaceBlock extends Item {
 			{
 	    		if(!iscreative)player.inventory.clearMatchingItems(placedBlockItemStack.getItem(), -1, 1, null);
 	    		world.playSound((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), SoundEvents.BLOCK_GRASS_STEP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
-	    		//Needed? - FT
-	    		//player.swingItem();
+	    		player.swingArm(handIn);
 	    		ERC_PacketHandler.INSTANCE.sendToServer(new ERC_MessageItemWrenchSync(2,x,y,z));
 			}
 			return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(handIn));
@@ -106,30 +105,4 @@ public class ERC_ItemWrenchPlaceBlock extends Item {
 	{
 		return EnumActionResult.FAIL;
 	}
-	//Keep for when doing textures - FT
-//	@SideOnly(Side.CLIENT)
-//    public void registerIcons(IIconRegister p_94581_1_)
-//    {
-//		this.itemIcon = p_94581_1_.registerIcon(ERC_CONST.DOMAIN+":"+"wrench_p");
-//    }
-//
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIconFromDamage(int p_77617_1_)
-//	{
-//		return itemIcon;
-//	}
-//
-//	@Override
-//	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
-//	{
-//		return itemIcon;
-//	}
-//
-//	@Override
-//	public IIcon getIcon(ItemStack stack, int pass)
-//	{
-//		return itemIcon;
-//	}
-    
 }

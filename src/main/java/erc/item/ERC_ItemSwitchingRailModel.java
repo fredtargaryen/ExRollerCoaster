@@ -52,24 +52,4 @@ public class ERC_ItemSwitchingRailModel extends Item{
     	else if(modelCount < 0)modelCount = ERC_ModelLoadManager.getRailPackNum();
 //    	ERC_Logger.info("modelcount:"+modelCount);
     }
-
-    //Use when dealing with textures - FT
-//	@SideOnly(Side.CLIENT)
-//    public void registerIcons(IIconRegister p_94581_1_)
-//    {
-//		String[] names = ERC_ModelLoadManager.getRailIconStrings();
-//		itemIcons = new IIcon[names.length];
-//    	for(int i=0;i<names.length;++i)
-//    	{
-//    		this.itemIcons[i] = p_94581_1_.registerIcon(names[i]);
-//    	}
-//    	itemIcon = itemIcons[0];
-//    }
-//
-//	@Override
-//	@SideOnly(Side.CLIENT)
-//	public IIcon getIconFromDamage(int p_77617_1_)
-//	{
-//		return itemIcons[modelCount];
-//	}
 }

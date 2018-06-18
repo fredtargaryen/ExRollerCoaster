@@ -184,8 +184,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 				e.startRiding(this);
 				if(!player.capabilities.isCreativeMode)player.getHeldItemMainhand().grow(-1);
 			}
-			//Needed? - FT
-			//player.swingItem();
+			player.swingArm(player.getActiveHand());
 			return true;
 		}
 		return false;
@@ -201,8 +200,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 			Entity entity = ItemMonsterPlacer.spawnCreature(world, ItemMonsterPlacer.getNamedIdFrom(is), posX, posY, posZ);
 			entity.startRiding(this);
 			if (!player.capabilities.isCreativeMode)is.grow(-1);
-			//Needed? - FT
-			//player.swingItem();
+			player.swingArm(player.getActiveHand());
 			return true;
 		}
 		if(is.getItem() instanceof ItemLead)
@@ -221,8 +219,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 	                {
 	                	entityliving.startRiding(this);
 	                    entityliving.clearLeashed(true, !player.capabilities.isCreativeMode);
-	                    //Needed? - FT
-						// player.swingItem();
+	                    player.swingArm(player.getActiveHand());
 	                    return true;
 	                }
 	            }

@@ -438,8 +438,7 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 			ERC_CoasterAndRailManager.client_setParentCoaster(this);
 		}
 		if(!player.capabilities.isCreativeMode)player.getHeldItemMainhand().grow(-1);
-		//Is swingItem needed now? - FT
-		//player.swingItem();
+		player.swingArm(player.getActiveHand());
     }
 
 	public void connectionCoaster(ERC_EntityCoasterConnector followCoaster)

@@ -3,6 +3,7 @@ package erc.entity;
 import java.util.Random;
 
 import erc._core.ERC_Logger;
+import erc.renderer.ModelRenderer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -125,8 +126,7 @@ public class entitySUSHI extends Entity {
 			else if(getRot()>0)setRot(-3.0f);
 			else if(getRot()<0)setRot(0);
 		}
-		//Needed? - FT
-		//player.swingItem();
+		player.swingArm(hand);
 		return false;
 	}
 	
@@ -153,8 +153,7 @@ public class entitySUSHI extends Entity {
 
 		GL11.glScalef(1.2f, 1.2f, 1.2f);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(tex);
-		//How to get this to render? - FT
-		//if(models[getId()]!=null)models[getId()].renderAll();
+		if(models[getId()]!=null)ModelRenderer.renderObj(models[getId()]);
 		GL11.glPopMatrix();
 	}
 	

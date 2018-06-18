@@ -1,10 +1,12 @@
 /**
  * TODO v0.1
+ * Advanced models for sushi! (check)
  * Riding the coaster
  * * The coremod erc.rewriteClass.loadingPlugin
- * Advanced models for sushi!
- * Check against 1.7.10 version
- * What was sound 1003
+ * Check against 1.7.10 version; write problems in v0.2
+ * * What was sound 1003?
+ * * What were the EnumEntitySizes?
+ * * Need replacement for canPlaceEntityOnSide
  * TODO v0.2
  * Smoothing makes all rails invisible rip
  * Rail lighting is patchy
