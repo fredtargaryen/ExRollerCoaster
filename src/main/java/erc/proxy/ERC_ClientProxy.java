@@ -42,7 +42,7 @@ public class ERC_ClientProxy implements IProxy{
 		// �f�t�H�R�[�X�^�[�o�^
 		String defaultModel = ERC_CONST.DOMAIN+":models/coaster.obj";
 		String defaultModel_c = ERC_CONST.DOMAIN+":models/coaster_connect.obj";
-		String defaultTex = ERC_CONST.DOMAIN+":textures/gui/gui.png";
+		String defaultTex = ERC_CONST.DOMAIN+":models/coaster.png";
 		String defaultIcon_c = "erc:coaster_c";
 		String defaultIcon = "erc:coaster";
 		

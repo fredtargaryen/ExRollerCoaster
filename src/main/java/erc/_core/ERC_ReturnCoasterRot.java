@@ -51,4 +51,10 @@ public class ERC_ReturnCoasterRot {
 	{
 		return prevPitch + (pitch - prevPitch)*partialTicks;
 	}
+
+	public void printInfo() {
+		System.out.println("Coaster transform info");
+		System.out.println("Position:\nx: "+Pos.x+"\ny: "+Pos.y+"\nz: "+Pos.z);
+		System.out.println("Rotation:\npitch: "+pitch+"\nyaw: "+yaw+"\n roll: "+roll);
+	}
 }

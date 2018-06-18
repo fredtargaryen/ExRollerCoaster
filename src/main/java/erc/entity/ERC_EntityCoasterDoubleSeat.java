@@ -3,6 +3,7 @@ package erc.entity;
 import erc.tileEntity.TileEntityRailBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ERC_EntityCoasterDoubleSeat extends ERC_EntityCoaster{
@@ -26,7 +27,8 @@ public class ERC_EntityCoasterDoubleSeat extends ERC_EntityCoaster{
     }
 	
 	// �E�N���b�N�ŏ�鏈�����ۂ�
-    public boolean interactFirst(EntityPlayer player)
+	@Override
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
     	if(!canBeRidden())return false;
     	Entity THIS = this;

@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erc._core.ERC_Logger;
@@ -133,7 +134,8 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
     }
 	
     // �E�N���b�N���ꂽ�炭��
-    public boolean interactFirst(EntityPlayer player)
+    @Override
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
     	if(parent==null)return true;
     	if(parent.requestConnectCoaster(player))return true;

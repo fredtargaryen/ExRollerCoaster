@@ -3,6 +3,7 @@ package erc.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -208,8 +209,9 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //        return entity.boundingBox;
     	return null;
     }
-	
-    public AxisAlignedBB getBoundingBox()
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox()
     {
         return null;
     }
@@ -366,8 +368,7 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
     }
     
 	@Override
-    protected boolean canTriggerWalking()
-    {
+    protected boolean canTriggerWalking() {
 		// ����Entity������Ă���u���b�N��onEntityWalking���ĂԂ��ǂ���
         return false;
     }
@@ -386,7 +387,8 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
     }
     
     // �E�N���b�N���ꂽ�炭��
-    public boolean interactFirst(EntityPlayer player)
+	@Override
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
     	if(requestConnectCoaster(player))return true;
 //    	if(isRiddenSUSHI(player))return true;
@@ -739,7 +741,7 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //        			this.killCoaster(); 
         			Speed = -Speed*0.1; // ���]����
         			paramT = 0.99f;
-        			if(!world.isRemote)ERC_Logger.info("Rails aren't connected. Check status of connection. (next)");
+        			//if(!world.isRemote)ERC_Logger.info("Rails aren't connected. Check status of connection. (next)");
         			return false; 
         		}
         		paramT -= 1f;

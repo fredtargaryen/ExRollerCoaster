@@ -517,12 +517,14 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	{	
 		//////////////�R�[�X�^�[����v�Z
 		
-		////pos
-		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z);
-		Base = new Vec3d(Base.x * 0.5, Base.y * 0.5, Base.z * 0.5);
-		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos);
-		Next = new Vec3d(NextRail.vecUp.x * 1.5, NextRail.vecUp.y * 1.5, NextRail.vecUp.z * 1.5);
-		
+		////positions of *rails*, relative to the base (current) rail *block*
+		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z).scale(0.5);
+		//My fix - seems to work
+		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos).add(NextRail.vecUp.scale(0.5));
+		//Motty's original code said
+		//Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos).add(NextRail.vecUp.scale(0.5));
+		//Next = new Vec3d(NextRail.vecUp.x * 1.5, NextRail.vecUp.y * 1.5, NextRail.vecUp.z * 1.5);
+
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);
 //		float nextpow = ERC_MathHelper.Lerp(0.8f, BaseRail.Power, NextRail.Power);
@@ -632,10 +634,8 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	public float CalcRailLength()
 	{	
 		////pos
-		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z);
-		Base = Base.scale(0.5);
-		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos);
-		Next = Next.add(NextRail.vecUp.scale(0.5));
+		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z).scale(0.5);
+		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos).add(NextRail.vecUp.scale(0.5));
 		
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);

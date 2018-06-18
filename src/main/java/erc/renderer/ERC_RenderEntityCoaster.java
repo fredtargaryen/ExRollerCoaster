@@ -22,7 +22,7 @@ public class ERC_RenderEntityCoaster extends Render<ERC_EntityCoaster> {
 	public void doRender(ERC_EntityCoaster Coaster, double x, double y, double z, float f, float p_76986_9_)
 	{
 		if(Coaster.getModelRenderer()==null)return;
-		Coaster.getModelRenderer().render((ERC_EntityCoaster)Coaster, x, y, z, p_76986_9_);
+		Coaster.getModelRenderer().render(Coaster, x, y, z, p_76986_9_);
 //		Entity[] ea = Coaster.getParts();
 //		for(int i=0; i<ea.length; i++)
 //		{

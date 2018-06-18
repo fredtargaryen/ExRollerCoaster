@@ -1,16 +1,19 @@
 /**
- * TODO
- * Coaster is invisible?? (check and debug)
- * Rails stop rendering when moving far enough away from them and looking away from block
- * Smoothing makes all rails invisible rip
- * Coaster spams the server when rails are not connected. Not great but Motty's decision
- * What was sound 1003
- * The coremod erc.rewriteClass.loadingPlugin
+ * TODO v0.1
+ * Riding the coaster
+ * * The coremod erc.rewriteClass.loadingPlugin
  * Advanced models for sushi!
- * Registering TileEntities: may have been meant to remember the new ResourceLocation
- * -FT
  * Check against 1.7.10 version
+ * What was sound 1003
+ * TODO v0.2
+ * Smoothing makes all rails invisible rip
+ * Rail lighting is patchy
+ * Coaster spams the server when rails are not connected. Not great but Motty's decision.
+ * * Commented out for now (2, ERC_EntityCoaster:745)
+ * Coaster looks shocking!!
+ * Rails stop rendering when moving far enough away from them and looking away from block
  * Lots of keys and colours not supported in .mtls
+ * Movement not terribly smooth; might just be my laptop
  */
 package erc._core;
 
