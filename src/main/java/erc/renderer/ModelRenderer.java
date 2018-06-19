@@ -25,7 +25,7 @@ public class ModelRenderer {
      * Necessary transforms must be done before calling this.
      * @param model
      */
-    public static void renderObj(OBJModel model) {
+    public static void renderObj(OBJModel model, boolean hasNormal) {
         //Prepare to draw
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexbuffer = tessellator.getBuffer();
@@ -36,18 +36,30 @@ public class ModelRenderer {
         //Yes it's deprecated but I don't know any alternatives
         Collection<OBJModel.Group> groups = model.getMatLib().getGroups().values();
         Iterator<OBJModel.Group> iterGroup = groups.iterator();
+        if(hasNormal) {
+            renderWithNormal(vertexbuffer, iterGroup);
+        }
+        else {
+            renderWithoutNormal(vertexbuffer, iterGroup);
+        }
+        tessellator.draw();
+        //Clear up
+        GlStateManager.enableLighting();
+    }
+
+    private static void renderWithNormal(BufferBuilder vertexbuffer, Iterator<OBJModel.Group> iterGroup) {
         vertexbuffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
         while(iterGroup.hasNext()) {
             OBJModel.Group g = iterGroup.next();
             Set<OBJModel.Face> faces = g.getFaces();
             Iterator<OBJModel.Face> iterFace = faces.iterator();
-            while(iterFace.hasNext()) {
+            while (iterFace.hasNext()) {
                 OBJModel.Face f = iterFace.next();
                 OBJModel.Vertex[] vertices = f.getVertices();
                 Vector3f pos;
                 OBJModel.Normal norm;
                 OBJModel.TextureCoordinate uv;
-                for(int i = 0; i < vertices.length; ++i) {
+                for (int i = 0; i < vertices.length; ++i) {
                     pos = vertices[i].getPos3();
                     norm = vertices[i].getNormal();
                     uv = vertices[i].getTextureCoordinate();
@@ -56,9 +68,26 @@ public class ModelRenderer {
                 }
             }
         }
+    }
 
-        tessellator.draw();
-        //Clear up
-        GlStateManager.enableLighting();
+    private static void renderWithoutNormal(BufferBuilder vertexbuffer, Iterator<OBJModel.Group> iterGroup) {
+        vertexbuffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX);
+        while(iterGroup.hasNext()) {
+            OBJModel.Group g = iterGroup.next();
+            Set<OBJModel.Face> faces = g.getFaces();
+            Iterator<OBJModel.Face> iterFace = faces.iterator();
+            while (iterFace.hasNext()) {
+                OBJModel.Face f = iterFace.next();
+                OBJModel.Vertex[] vertices = f.getVertices();
+                Vector3f pos;
+                OBJModel.TextureCoordinate uv;
+                for (int i = 0; i < vertices.length; ++i) {
+                    pos = vertices[i].getPos3();
+                    uv = vertices[i].getTextureCoordinate();
+                    //OBJModel: May need to use 1 - uv.v instead
+                    vertexbuffer.pos(pos.x, pos.y, pos.z).tex(uv.u, uv.v).endVertex();
+                }
+            }
+        }
     }
 }

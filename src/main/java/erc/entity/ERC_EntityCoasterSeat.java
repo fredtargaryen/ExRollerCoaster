@@ -1,13 +1,16 @@
 package erc.entity;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import erc._core.ERC_Logger;
@@ -31,8 +34,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
-public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
+public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 
 	private static final DataParameter<Integer> SEAT_INDEX = EntityDataManager.<Integer>createKey(ERC_EntityCoasterSeat.class, DataSerializers.VARINT);
 	private static final DataParameter<Float> OFFSET_X = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
@@ -61,15 +65,15 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 		setSize(1.1f, 0.8f);
 //		ERC_ManagerPrevTickCoasterSeatSetPos.addSeat(this);
 	}
-	
-	public ERC_EntityCoasterSeat(World world, ERC_EntityCoaster parent, int i) {
-		this(world);
+
+	public ERC_EntityCoasterSeat(World w, ERC_EntityCoaster parent, int i) {
+		this(w);
 		this.parent = parent;
 		setSeatIndex(i);
 //		spawnControl = true;
 //		ERC_Logger.info("***seat create, x:"+posX+", y:"+posY+", z:"+posZ);
 	}
-	
+
 	public void setOptions(ModelOptions op, int idx)
 	{
 		if(op==null)return;
@@ -547,7 +551,51 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster{
 			return;
 		}
 	}
-	
+
+	/////////////////////
+	//FT RIDING METHODS//
+	/////////////////////
+	@Override
+	protected void addPassenger(Entity p)
+	{
+		super.addPassenger(p);
+		if(this.world.isRemote)
+		{
+			MinecraftForge.EVENT_BUS.register(this);
+		}
+	}
+
+	@Override
+	public void removePassenger(Entity passenger)
+	{
+		super.removePassenger(passenger);
+		if(this.world.isRemote)
+		{
+			MinecraftForge.EVENT_BUS.unregister(this);
+		}
+	}
+
+	@SubscribeEvent
+	public void onRenderTick(TickEvent.RenderTickEvent event) {
+		if (event.phase == TickEvent.Phase.START) {
+			// player available is: mc.thePlayer, need to null check if you crash during world start-up
+			// update player rotation (i.e. render view) based on your conditions
+			GlStateManager.pushMatrix();
+            //Yaw = coaster yaw + player yaw
+            //Pitch = coaster pitch + player pitch
+            //Roll = Coaster roll
+			GlStateManager.rotate(180.0F - this.parent.ERCPosMat.getFixedYaw(event.renderTickTime), 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(this.parent.ERCPosMat.getFixedPitch(event.renderTickTime),-1f, 0f, 0f);
+            GlStateManager.rotate(-this.parent.ERCPosMat.getFixedRoll(event.renderTickTime), 0f, 0f, 1f);
+		}
+		else {
+			//END
+			GlStateManager.popMatrix();
+		}
+	}
+	////////////////////////////
+	//END OF FT RIDING METHODS//
+    ////////////////////////////
 	////////////////////////////////////////this.dataManager
 	public int getSeatIndex()
 	{

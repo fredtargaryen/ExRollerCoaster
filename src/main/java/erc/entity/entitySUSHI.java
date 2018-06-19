@@ -48,7 +48,7 @@ public class entitySUSHI extends Entity {
 	@SideOnly(Side.CLIENT)
 	public static void clientInitSUSHI()
 	{
-		tex = new ResourceLocation(ERC_CONST.DOMAIN,"textures/entities/sushi.jpg");
+		tex = new ResourceLocation(ERC_CONST.DOMAIN,"textures/entities/sushi.png");
 		try {
 			model1 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_m.obj"));
 			model2 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_t.obj"));
@@ -153,7 +153,8 @@ public class entitySUSHI extends Entity {
 
 		GL11.glScalef(1.2f, 1.2f, 1.2f);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(tex);
-		if(models[getId()]!=null)ModelRenderer.renderObj(models[getId()]);
+		int id = this.getId();
+		if (models[id] != null) ModelRenderer.renderObj(models[id]);
 		GL11.glPopMatrix();
 	}
 	

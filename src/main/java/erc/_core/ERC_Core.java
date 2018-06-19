@@ -1,8 +1,9 @@
 /**
  * TODO v0.1
- * Advanced models for sushi! (check)
- * Riding the coaster
- * * The coremod erc.rewriteClass.loadingPlugin
+ * Sushi texture not bound (check)
+ * Mounting a coaster causes player to stop moving and camera to lock
+ * The coremod erc.rewriteClass.loadingPlugin
+ * * RenderTickEvent - see ERC_EntityCoasterSeatBase
  * Check against 1.7.10 version; write problems in v0.2
  * * What was sound 1003?
  * * What were the EnumEntitySizes?
@@ -12,7 +13,7 @@
  * Rail lighting is patchy
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.
  * * Commented out for now (2, ERC_EntityCoaster:745)
- * Coaster looks shocking!!
+ * Models look shocking!!
  * Rails stop rendering when moving far enough away from them and looking away from block
  * Lots of keys and colours not supported in .mtls
  * Movement not terribly smooth; might just be my laptop
