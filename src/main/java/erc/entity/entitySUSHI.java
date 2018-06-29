@@ -154,7 +154,7 @@ public class entitySUSHI extends Entity {
 		GL11.glScalef(1.2f, 1.2f, 1.2f);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(tex);
 		int id = this.getId();
-		if (models[id] != null) ModelRenderer.renderObj(models[id]);
+		if (models[id] != null) ModelRenderer.renderObj(models[id], false);
 		GL11.glPopMatrix();
 	}
 	

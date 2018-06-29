@@ -1,6 +1,6 @@
 package erc.proxy;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import erc._core.ERC_Core;
 import erc.handler.ERC_TickEventHandler;
 
@@ -10,7 +10,7 @@ public class ERC_ServerProxy implements IProxy
 	public void preInit()
 	{
 		ERC_Core.tickEventHandler = new ERC_TickEventHandler();
-		FMLCommonHandler.instance().bus().register(ERC_Core.tickEventHandler);
+		MinecraftForge.EVENT_BUS.register(ERC_Core.tickEventHandler);
 	}
 
 	@Override

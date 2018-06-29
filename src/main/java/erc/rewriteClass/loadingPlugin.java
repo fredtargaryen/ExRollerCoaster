@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 //@TransformerExclusions({"erc.rewriteClass"})
-@MCVersion("1.7.10")
+@MCVersion("1.12.2")
 public class loadingPlugin implements IFMLLoadingPlugin {
 	
 	static File location;

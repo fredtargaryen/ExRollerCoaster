@@ -1,14 +1,13 @@
 /**
- * TODO v0.1
+ * TODO v0.0.1
  * Sushi texture not bound (check)
- * Mounting a coaster causes player to stop moving and camera to lock
- * The coremod erc.rewriteClass.loadingPlugin
- * * RenderTickEvent - see ERC_EntityCoasterSeatBase
+ * Horrible coaster model
+ * * All 130 faces imported; not all are visible...
  * Check against 1.7.10 version; write problems in v0.2
  * * What was sound 1003?
  * * What were the EnumEntitySizes?
  * * Need replacement for canPlaceEntityOnSide
- * TODO v0.2
+ * TODO v0.0.2
  * Smoothing makes all rails invisible rip
  * Rail lighting is patchy
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.
@@ -81,9 +80,7 @@ public class ERC_Core {
 	public static Block railNonGravity = new BlockNonGravityRail();
 	public static Block railNormal = new blockRailNormal();
 	public static Block railRedAccel = new blockRailRedstoneAccelerator();
-	
-	//special block renderer ID
-	public static int blockRailRenderId;
+
 //	public static int blockFerrisSupporterRenderID;
 	
 	// items /////////////////////////////////////////

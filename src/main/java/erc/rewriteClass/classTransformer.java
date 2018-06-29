@@ -18,7 +18,7 @@ public class classTransformer implements IClassTransformer {
 	// ���ϑΏۂ̃N���X�̊��S�C�����ł��B
     // ��q��Minecraft.jar���̓�ǉ������t�@�C����ΏۂƂ���ꍇ�̊ȈՂȎ擾���@���Љ�܂��B
     private static final String TARGET_CLASS_NAME = "net.minecraft.client.renderer.EntityRenderer";
-     static int counter = 0;
+    static int counter = 0;
  	@Override
  	public byte[] transform(String name, String transformedName, byte[] bytes) 
  	{
