@@ -49,12 +49,6 @@ public abstract class blockRailBase extends Block
 		this.setLightOpacity(0);
 		this.setLightLevel(0.6F);//0.6
 	}
- 
-//	@Override
-//	public int getRenderType()
-//	{
-//		return ERC_Core.blockRailRenderId; // RenderBlockRail�p
-//	}
 
 	@Override
 	protected BlockStateContainer createBlockState()

@@ -96,7 +96,7 @@ public class ERC_ClientProxy implements IProxy{
 		ERC_RenderTileEntityRailBase tileRenderer = new ERC_RenderTileEntityRailBase();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailNormal.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailRedstoneAccelerator.class, tileRenderer);
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailConstVelosity.class, tileRenderer);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailConstVelocity.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailDetector.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailBranch2.class,tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailInvisible.class, tileRenderer);

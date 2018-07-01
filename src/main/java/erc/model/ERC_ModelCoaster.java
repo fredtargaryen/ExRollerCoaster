@@ -37,7 +37,7 @@ public class ERC_ModelCoaster extends ModelBase {
 
 		GL11.glScalef(1.0f, 1.0f, 1.0f);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureResource);
-		ModelRenderer.renderObj(this.modelCoaster, true);
+		ModelRenderer.renderObj(this.modelCoaster);
 		GL11.glPopMatrix();
 	}
 }

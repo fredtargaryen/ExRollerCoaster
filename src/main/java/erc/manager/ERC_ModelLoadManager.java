@@ -12,7 +12,7 @@ import erc.model.ERC_ModelDefaultRail;
 import erc.model.Wrap_RailRenderer;
 import erc.tileEntity.TileEntityRailBase;
 import erc.tileEntity.TileEntityRailBranch2;
-import erc.tileEntity.TileEntityRailConstVelosity;
+import erc.tileEntity.TileEntityRailConstVelocity;
 import erc.tileEntity.TileEntityRailDetector;
 import erc.tileEntity.TileEntityRailInvisible;
 import erc.tileEntity.TileEntityRailRedstoneAccelerator;
@@ -556,7 +556,7 @@ public class ERC_ModelLoadManager{
 		if(Index <= 0 || Index > 6) return new ERC_ModelDefaultRail();
 		int flag = 0;
 		if		(tile instanceof TileEntityRailRedstoneAccelerator)flag = 1;
-		else if (tile instanceof TileEntityRailConstVelosity)flag = 2;
+		else if (tile instanceof TileEntityRailConstVelocity)flag = 2;
 		else if (tile instanceof TileEntityRailDetector)flag = 3;
 		else if (tile instanceof TileEntityRailBranch2)flag = 4;
 		else if (tile instanceof TileEntityRailInvisible)flag = 5;

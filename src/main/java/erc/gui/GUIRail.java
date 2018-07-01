@@ -27,6 +27,7 @@ public class GUIRail extends GuiContainer {
     private static final ResourceLocation TEXTURE = new ResourceLocation(ERC_CONST.DOMAIN, "textures/gui/gui.png");
     private static int buttonid;
     private static final int buttonidoffset = 0;
+    private boolean clickedTileExists;
     
     int offsetx;
     int offsety;
@@ -74,9 +75,12 @@ public class GUIRail extends GuiContainer {
 		addButton1(60, 13, "smooth", editFlag.SMOOTH);
 		addButton1(60, 13, "Reset rot", editFlag.RESET);
 
-		try {
+		if(ERC_CoasterAndRailManager.clickedTileForGUI == null) {
+            this.clickedTileExists = false;
+        } else {
+		    this.clickedTileExists = true;
             ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIInit(this);
-        } catch(NullPointerException npe) {}
+        }
     }
 	@SuppressWarnings("unchecked")
     public void addButton1(int lenx, int leny, String str, editFlag flag)
@@ -156,9 +160,11 @@ public class GUIRail extends GuiContainer {
         	this.fontRenderer.drawString(g.name,g.x,g.y,0x404040);
         }
         
-        drawString(this.fontRenderer, ""+ERC_CoasterAndRailManager.clickedTileForGUI.GetPosNum(), 43, 29, 0xffffff);
-        drawString(this.fontRenderer, String.format("% 2.1f",ERC_CoasterAndRailManager.clickedTileForGUI.BaseRail.Power), 37, 56, 0xffffff);
-        drawString(this.fontRenderer, ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIDrawString(), 42, 172, 0xffffff);
+        if(this.clickedTileExists) {
+            drawString(this.fontRenderer, "" + ERC_CoasterAndRailManager.clickedTileForGUI.GetPosNum(), 43, 29, 0xffffff);
+            drawString(this.fontRenderer, String.format("% 2.1f", ERC_CoasterAndRailManager.clickedTileForGUI.BaseRail.Power), 37, 56, 0xffffff);
+            drawString(this.fontRenderer, ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIDrawString(), 42, 172, 0xffffff);
+        }
     }
  
     /*GUI�̔w�i�̕`�揈��*/
@@ -191,13 +197,15 @@ public class GUIRail extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		TileEntityRailBase entity = ERC_CoasterAndRailManager.clickedTileForGUI;
+        if(this.clickedTileExists) {
+            TileEntityRailBase entity = ERC_CoasterAndRailManager.clickedTileForGUI;
 
-		GUIName obj = GUINameMap.get(button.id);
-		int data = (button.id - obj.baseID);
-		ERC_MessageRailGUICtS packet = new ERC_MessageRailGUICtS((int)entity.getXcoord(),(int)entity.getYcoord(),(int)entity.getZcoord(),
-				obj.flag, data);
-	    ERC_PacketHandler.INSTANCE.sendToServer(packet);
+            GUIName obj = GUINameMap.get(button.id);
+            int data = (button.id - obj.baseID);
+            ERC_MessageRailGUICtS packet = new ERC_MessageRailGUICtS((int) entity.getXcoord(), (int) entity.getYcoord(), (int) entity.getZcoord(),
+                    obj.flag, data);
+            ERC_PacketHandler.INSTANCE.sendToServer(packet);
+        }
 	}
     
     

@@ -29,9 +29,7 @@ import net.minecraft.world.World;
 public class entitySUSHI extends Entity {
 	private static final DataParameter<Integer> ID = EntityDataManager.<Integer>createKey(entitySUSHI.class, DataSerializers.VARINT);
 	private static final DataParameter<Float> ROT = EntityDataManager.<Float>createKey(entitySUSHI.class, DataSerializers.FLOAT);
-	
-	@SideOnly(Side.CLIENT)
-	public static ResourceLocation tex;
+
 	@SideOnly(Side.CLIENT)
 	public static OBJModel model1;
 	@SideOnly(Side.CLIENT)
@@ -48,7 +46,6 @@ public class entitySUSHI extends Entity {
 	@SideOnly(Side.CLIENT)
 	public static void clientInitSUSHI()
 	{
-		tex = new ResourceLocation(ERC_CONST.DOMAIN,"textures/entities/sushi.png");
 		try {
 			model1 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_m.obj"));
 			model2 = (OBJModel) OBJLoader.INSTANCE.loadModel(new ResourceLocation(ERC_CONST.DOMAIN, "models/sushi/" + "sushi_t.obj"));
@@ -74,13 +71,20 @@ public class entitySUSHI extends Entity {
 	{
 		super(world);
 		setSize(0.9f, 0.4f);
-		
 	}
+
 	public entitySUSHI(World world, double posX, double posY, double posZ)
 	{
 		this(world);
 		setPosition(posX, posY, posZ);
 	}
+
+	public float getInterpRotation(float partialTicks)
+	{
+		return this.prevRotation + (this.rotation - this.prevRotation) * partialTicks;
+	}
+
+	public OBJModel getModel() { return models[this.getId()];}
 	
 	@Override
 	protected void entityInit()
@@ -136,26 +140,6 @@ public class entitySUSHI extends Entity {
 		prevRotation = rotation;
 		rotation += getRot();
 		ERC_MathHelper.fixrot(rotation, prevRotation);
-	}
-
-	public ResourceLocation getTexture()
-	{
-		return tex;
-	}
-	
-	public void render(double x, double y, double z, float f)
-	{
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float)x, (float)y-0.2f, (float)z);
-		GL11.glRotatef(prevRotation+(rotation-prevRotation)*f, 0f, -1f, 0f);
-// 		GL11.glRotatef(coaster.ERCPosMat.getFixedPitch(t),1f, 0f, 0f);
-// 		GL11.glRotatef(coaster.ERCPosMat.getFixedRoll(t), 0f, 0f, 1f);
-
-		GL11.glScalef(1.2f, 1.2f, 1.2f);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(tex);
-		int id = this.getId();
-		if (models[id] != null) ModelRenderer.renderObj(models[id], false);
-		GL11.glPopMatrix();
 	}
 	
 	@Override

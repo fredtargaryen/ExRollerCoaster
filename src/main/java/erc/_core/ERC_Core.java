@@ -1,21 +1,13 @@
 /**
  * TODO
- * 3D MODELS
- * * General
- *   * All faces are imported but not all are rendered
- *     * Try negating v? (check)
- * * Sushi
- *   * Texture not bound (check)
- * SUSHI (non model)
- * * Right clicking should start/stop rotation
- * * Rotation either random or depends on side of dish clicked
+ * 3D MODELS (check)
  * WRENCH
- * * Wrench should stay red with every block placed, each rail connecting to the next
+ * * Wrench should stay red with every block placed, each rail connecting to the next (debug)
  * * 3 rails in a row:
- *   * Deleting block 2 should preserve 1 and 3 in manager
- *   * Placing another block should connect it to 1 and 3
+ *   * Deleting block 2 should preserve 1 and 3 in manager (debug)
+ *   * Placing another block should connect it to 1 and 3 (debug)
  * * ADJUSTMENT MODE
- *   * Smoothing makes all rails invisible rip
+ *   * Pressing smooth... really doesn't smooth
  *   * Right-clicking the rail should make a dark column on the right, with the rail GUI panel in it(textures/gui/gui.png)
  * Coaster gravity?
  * Check coaster connectors
