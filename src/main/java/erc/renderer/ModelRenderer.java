@@ -64,7 +64,7 @@ public class ModelRenderer {
                     norm = vertices[i].getNormal();
                     uv = vertices[i].getTextureCoordinate();
                     //OBJModel: May need to use 1 - uv.v instead
-                    vertexbuffer.pos(pos.x, pos.y, pos.z).tex(uv.u, uv.v).normal(norm.x, norm.y, norm.z).endVertex();
+                    vertexbuffer.pos(pos.x, pos.y, pos.z).tex(uv.u, 1.0F - uv.v).normal(norm.x, norm.y, norm.z).endVertex();
                 }
             }
         }
@@ -85,7 +85,7 @@ public class ModelRenderer {
                     pos = vertices[i].getPos3();
                     uv = vertices[i].getTextureCoordinate();
                     //OBJModel: May need to use 1 - uv.v instead
-                    vertexbuffer.pos(pos.x, pos.y, pos.z).tex(uv.u, uv.v).endVertex();
+                    vertexbuffer.pos(pos.x, pos.y, pos.z).tex(uv.u, 1.0F - uv.v).endVertex();
                 }
             }
         }

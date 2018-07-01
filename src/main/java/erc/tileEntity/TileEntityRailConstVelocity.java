@@ -1,6 +1,5 @@
 package erc.tileEntity;
 
-import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import erc.entity.ERC_EntityCoaster;
@@ -13,13 +12,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-public class TileEntityRailConstVelosity extends TileEntityRailBase{
+public class TileEntityRailConstVelocity extends TileEntityRailBase{
 	
 	float constVelosityParam;
 	boolean toggleflag;
 	boolean onflag;
 	
-	public TileEntityRailConstVelosity()
+	public TileEntityRailConstVelocity()
 	{
 		super();
 		toggleflag = false;
@@ -69,11 +68,6 @@ public class TileEntityRailConstVelosity extends TileEntityRailBase{
 	}
 
 	@Override
-	public World getWorldObj() {
-		return this.world;
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbt) 
 	{
 		super.readFromNBT(nbt);
@@ -82,12 +76,11 @@ public class TileEntityRailConstVelosity extends TileEntityRailBase{
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+	public void writeToNBT(NBTTagCompound nbt) 
 	{
 		super.writeToNBT(nbt);
 		nbt.setBoolean("const:onflag", onflag);
 		nbt.setFloat("constvel", constVelosityParam);
-		return nbt;
 	}
 	
 	// GUI

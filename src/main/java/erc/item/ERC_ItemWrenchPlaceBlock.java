@@ -32,8 +32,6 @@ public class ERC_ItemWrenchPlaceBlock extends Item {
 			int y = (int) Math.floor(player.posY - Math.sin(Math.toRadians(player.rotationPitch))*2);
 			int z = (int) Math.floor(player.posZ + Math.cos(Math.toRadians(player.rotationYaw))*2*pit);
 			BlockPos pos = new BlockPos(x, y, z);
-			//Couldn't find a corresponding method in 1.12 - FT
-			//if (!world.canPlaceEntityOnSide(placedBlock, x, y, z, false, x, player, itemstack))return itemstack;
 			
 			// �u���b�N��ݒu�ł��邩�`�F�b�N
 			Block b = world.getBlockState(pos).getBlock();
@@ -83,8 +81,6 @@ public class ERC_ItemWrenchPlaceBlock extends Item {
 		int y = (int) Math.floor(player.posY - Math.sin(Math.toRadians(player.rotationPitch))*2);
 		int z = (int) Math.floor(player.posZ + Math.cos(Math.toRadians(player.rotationYaw))*2*pit);
 		BlockPos newPos = new BlockPos(x, y, z);
-		//Couldn't find similar method in 1.12 - FT
-		//if (!world.canPlaceEntityOnSide(placedBlock, x, y, z, false, x, player, player.getHeldItem()))return false;
 		
 		// �u���b�N��ݒu�ł��邩�`�F�b�N
 		Block b = world.getBlockState(newPos).getBlock();

@@ -46,8 +46,7 @@ public class blockRailBranch extends blockRailBase{
                 	rail.changeRail();
                 	rail.changeToggleFlag();
                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                	//Sound 1003?? - FT
-                	world.playSound((EntityPlayer)null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 1.0F, 1.0F); //���ʉ��H
+                	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F); //���ʉ��H
                 }
                 else if(!flag && tgle)
                 {

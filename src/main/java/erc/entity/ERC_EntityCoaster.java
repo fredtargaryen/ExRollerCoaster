@@ -199,9 +199,6 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //                this.moveEntity((double)(f2 - this.width), 0.0D, (double)(f2 - this.width));
 //            }
         }
-		//What was EnumEntitySize.SIZE6 - FT
-        //this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
-        
     }
     
     public AxisAlignedBB getCollisionBox(Entity entity)

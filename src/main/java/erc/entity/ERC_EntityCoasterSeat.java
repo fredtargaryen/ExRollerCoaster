@@ -34,7 +34,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 
@@ -113,8 +112,6 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
             this.setEntityBoundingBox(new AxisAlignedBB(-w/2 + this.posX, +h/2 + this.posY, -w/2 + this.posZ,
 														+w/2 + this.posX, +h/2 + this.posY, +w/2 + this.posZ));
         }
-        //What was SIZE_2 - FT
-        //this.myEntitySize = Entity.EnumEntitySize.SIZE_2;
     }
     
 	public boolean canBeCollidedWith()

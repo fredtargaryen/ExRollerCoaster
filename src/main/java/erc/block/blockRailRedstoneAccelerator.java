@@ -49,8 +49,7 @@ public class blockRailRedstoneAccelerator extends blockRailBase{
                      //Not powered, so use the higher meta values - FT
                  	world.setBlockState(pos, state.withProperty(META,8^state.getValue(META)), 2);
 //                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                     //Sound 1003?? - FT
-                 	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
+                 	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
                  }
             } 
         }
@@ -78,8 +77,7 @@ public class blockRailRedstoneAccelerator extends blockRailBase{
                 rail.setToggleFlag(poweredNow);
                 world.setBlockState(pos, state.withProperty(META,8^state.getValue(META)), 2);
                 ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                //Sound 1003?? - FT
-                world.playSound((EntityPlayer)null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
+                world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
             }
         }
     }

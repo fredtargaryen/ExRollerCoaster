@@ -2,7 +2,7 @@ package erc.block;
 
 import erc.message.ERC_MessageRailMiscStC;
 import erc.message.ERC_PacketHandler;
-import erc.tileEntity.TileEntityRailConstVelosity;
+import erc.tileEntity.TileEntityRailConstVelocity;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +17,7 @@ public class blockRailConstVelocity extends blockRailBase{
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
-		return new TileEntityRailConstVelosity();
+		return new TileEntityRailConstVelocity();
 	}
 	
 
@@ -30,7 +30,7 @@ public class blockRailConstVelocity extends blockRailBase{
             
             if (flag || block.canProvidePower(state))
             {
-            	TileEntityRailConstVelosity rail = (TileEntityRailConstVelosity)world.getTileEntity(pos);
+            	TileEntityRailConstVelocity rail = (TileEntityRailConstVelocity)world.getTileEntity(pos);
             	boolean tgle = rail.getToggleFlag();
             	
             	if (flag && !tgle)
@@ -38,8 +38,7 @@ public class blockRailConstVelocity extends blockRailBase{
             		rail.changeToggleFlag();
             		rail.turnOnFlag();
                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
-                	//What was sound 1003 - FT
-                	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
+                	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
                 }
             	else if(!flag && tgle)
                 {

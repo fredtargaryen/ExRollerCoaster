@@ -73,8 +73,10 @@ public class GUIRail extends GuiContainer {
         
 		addButton1(60, 13, "smooth", editFlag.SMOOTH);
 		addButton1(60, 13, "Reset rot", editFlag.RESET);
-		
-		ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIInit(this);
+
+		try {
+            ERC_CoasterAndRailManager.clickedTileForGUI.SpecialGUIInit(this);
+        } catch(NullPointerException npe) {}
     }
 	@SuppressWarnings("unchecked")
     public void addButton1(int lenx, int leny, String str, editFlag flag)

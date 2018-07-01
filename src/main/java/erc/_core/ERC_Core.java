@@ -1,21 +1,30 @@
 /**
- * TODO v0.0.1
- * Sushi texture not bound (check)
- * Horrible coaster model
- * * All 130 faces imported; not all are visible...
- * Check against 1.7.10 version; write problems in v0.2
- * * What was sound 1003?
- * * What were the EnumEntitySizes?
- * * Need replacement for canPlaceEntityOnSide
- * TODO v0.0.2
- * Smoothing makes all rails invisible rip
- * Rail lighting is patchy
+ * TODO
+ * 3D MODELS
+ * * General
+ *   * All faces are imported but not all are rendered
+ *     * Try negating v? (check)
+ * * Sushi
+ *   * Texture not bound (check)
+ * SUSHI (non model)
+ * * Right clicking should start/stop rotation
+ * * Rotation either random or depends on side of dish clicked
+ * WRENCH
+ * * Wrench should stay red with every block placed, each rail connecting to the next
+ * * 3 rails in a row:
+ *   * Deleting block 2 should preserve 1 and 3 in manager
+ *   * Placing another block should connect it to 1 and 3
+ * * ADJUSTMENT MODE
+ *   * Smoothing makes all rails invisible rip
+ *   * Right-clicking the rail should make a dark column on the right, with the rail GUI panel in it(textures/gui/gui.png)
+ * Coaster gravity?
+ * Check coaster connectors
+ * RAIL GRAPHICS
+ * * Rail lighting is patchy
+ * * Rails stop rendering when moving far enough away from them and looking away from block
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.
  * * Commented out for now (2, ERC_EntityCoaster:745)
- * Models look shocking!!
- * Rails stop rendering when moving far enough away from them and looking away from block
  * Lots of keys and colours not supported in .mtls
- * Movement not terribly smooth; might just be my laptop
  */
 package erc._core;
 
@@ -136,7 +145,7 @@ public class ERC_Core {
 		GameRegistry.registerTileEntity(TileEntityRailBase.class, new ResourceLocation("erc:tileentityrailbase"));
 		GameRegistry.registerTileEntity(TileEntityRailNormal.class, new ResourceLocation("erc:tileentityrail"));
 		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, new ResourceLocation("erc:tileentityrailredacc"));
-		GameRegistry.registerTileEntity(TileEntityRailConstVelosity.class, new ResourceLocation("erc:tileentityrailconstvel"));
+		GameRegistry.registerTileEntity(TileEntityRailConstVelocity.class, new ResourceLocation("erc:tileentityrailconstvel"));
 		GameRegistry.registerTileEntity(TileEntityRailDetector.class, new ResourceLocation("erc:tileentityraildetector"));
 		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, new ResourceLocation("erc:tileentityrailbranch"));
 		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, new ResourceLocation("erc:tileentityinvisible"));
