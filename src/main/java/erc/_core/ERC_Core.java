@@ -1,14 +1,13 @@
 /**
  * TODO
- * 3D MODELS (check)
  * WRENCH
- * * Wrench should stay red with every block placed, each rail connecting to the next (debug)
+ * * Wrench should stay red with every block placed, each rail connecting to the next
  * * 3 rails in a row:
- *   * Deleting block 2 should preserve 1 and 3 in manager (debug)
- *   * Placing another block should connect it to 1 and 3 (debug)
+ *   * Deleting block 2 should preserve 1 and 3 in manager
+ *   * Placing another block should connect it to 1 and 3
  * * ADJUSTMENT MODE
  *   * Pressing smooth... really doesn't smooth
- *   * Right-clicking the rail should make a dark column on the right, with the rail GUI panel in it(textures/gui/gui.png)
+ *   * Right-clicking the rail should make a dark column on the right
  * Coaster gravity?
  * Check coaster connectors
  * RAIL GRAPHICS
@@ -17,6 +16,8 @@
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.
  * * Commented out for now (2, ERC_EntityCoaster:745)
  * Lots of keys and colours not supported in .mtls
+ * Slight sushi texture bug; probably because of the out-of-range UVs in the original
+ * Coaster texture doesn't look like the original
  */
 package erc._core;
 

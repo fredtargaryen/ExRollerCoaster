@@ -181,10 +181,10 @@ public class GUIRail extends GuiContainer {
         float f1 = 1f/(float)height;
         BufferBuilder wr = Tessellator.getInstance().getBuffer();
         wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        wr.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex((double)((float)(z + 0) * f), (double)((float)(v + height) * f1));
-        wr.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(((double)((float)(z + width) * f)), (double)((float)(v + height) * f1));
-        wr.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex((double)((float)(z + width) * f), (double)((float)(v + 0) * f1));
-        wr.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex((double)((float)(z + 0) * f), (double)((float)(v + 0) * f1));
+        wr.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex((double)((float)(z + 0) * f), (double)((float)(v + height) * f1)).endVertex();
+        wr.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(((double)((float)(z + width) * f)), (double)((float)(v + height) * f1)).endVertex();
+        wr.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex((double)((float)(z + width) * f), (double)((float)(v + 0) * f1)).endVertex();
+        wr.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex((double)((float)(z + 0) * f), (double)((float)(v + 0) * f1)).endVertex();
         Tessellator.getInstance().draw();
     }
  

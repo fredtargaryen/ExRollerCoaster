@@ -66,19 +66,19 @@ public class ModelRenderer {
                 Vector4f pos = vertices[0].getPos();
                 if(tc0.u > averageU) offsetU = -offsetU;
                 if(tc0.v > averageV) offsetV = -offsetV;
-                vertexbuffer.pos(pos.x, pos.y, pos.z).tex(tc0.u + offsetU, tc0.v + offsetV).normal(faceNormal.x, faceNormal.y, faceNormal.z).endVertex();
+                vertexbuffer.pos(pos.x, pos.y, pos.z).tex(tc0.u + offsetU, 1.0F - (tc0.v + offsetV)).normal(faceNormal.x, faceNormal.y, faceNormal.z).endVertex();
                 offsetU = offset;
                 offsetV = offset;
                 pos = vertices[1].getPos();
                 if(tc1.u > averageU) offsetU = -offsetU;
                 if(tc1.v > averageV) offsetV = -offsetV;
-                vertexbuffer.pos(pos.x, pos.y, pos.z).tex(tc1.u + offsetU, tc1.v + offsetV).normal(faceNormal.x, faceNormal.y, faceNormal.z).endVertex();
+                vertexbuffer.pos(pos.x, pos.y, pos.z).tex(tc1.u + offsetU, 1.0F - (tc1.v + offsetV)).normal(faceNormal.x, faceNormal.y, faceNormal.z).endVertex();
                 offsetU = offset;
                 offsetV = offset;
                 pos = vertices[2].getPos();
                 if(tc2.u > averageU) offsetU = -offsetU;
                 if(tc2.v > averageV) offsetV = -offsetV;
-                vertexbuffer.pos(pos.x, pos.y, pos.z).tex(tc2.u + offsetU, tc2.v + offsetV).normal(faceNormal.x, faceNormal.y, faceNormal.z).endVertex();
+                vertexbuffer.pos(pos.x, pos.y, pos.z).tex(tc2.u + offsetU, 1.0F - (tc2.v + offsetV)).normal(faceNormal.x, faceNormal.y, faceNormal.z).endVertex();
             }
         }
     }
