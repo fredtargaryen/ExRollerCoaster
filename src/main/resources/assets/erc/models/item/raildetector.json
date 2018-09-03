@@ -1,3 +1,8 @@
 {
-  "parent": "erc:block/raildetector"
+  "parent": "minecraft:block/half_slab",
+  "textures": {
+    "bottom": "minecraft:blocks/quartz_block_chiseled_top",
+    "top": "minecraft:blocks/quartz_block_chiseled_top",
+    "side": "minecraft:blocks/quartz_block_chiseled_top"
+  }
 }

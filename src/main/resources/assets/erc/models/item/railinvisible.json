@@ -1,3 +1,8 @@
 {
-  "parent": "erc:block/railinvisible"
+  "parent": "minecraft:block/half_slab",
+  "textures": {
+    "bottom": "minecraft:blocks/glass",
+    "top": "minecraft:blocks/glass",
+    "side": "minecraft:blocks/glass"
+  }
 }

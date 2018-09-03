@@ -27,7 +27,7 @@ public class DataTileEntityRail {
 	public void SetData(Vec3d pos, Vec3d dir, Vec3d up, float fup, float fdir, float pow, int x, int y, int z)
 	{
 		vecPos = pos;                      
-		vecDir = dir;                    
+		vecDir = dir;
 		vecUp = up;
 		fUp = fup;
 		fDirTwist = fdir;
@@ -70,7 +70,12 @@ public class DataTileEntityRail {
 		fUp = 0;
 		fDirTwist = 0;
 	}
-	
+
+	//FTvecUp is a normalised up direction, which fUp scales
+	//FTvecDir is general direction of entire rail
+	//FTpow is
+	//FT((vecUp * fUp) + vecDir) is the resultant of the dir and up vectors
+	//FT((vecUp * fUp) + vecDir) * pow
 	public Vec3d CalcVec3DIRxPOW(float pow)
 	{
 		return new Vec3d(

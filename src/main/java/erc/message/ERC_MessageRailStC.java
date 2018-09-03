@@ -3,6 +3,8 @@ package erc.message;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -98,24 +100,24 @@ public class ERC_MessageRailStC implements IMessage, IMessageHandler<ERC_Message
 	@Override
     public IMessage onMessage(ERC_MessageRailStC message, MessageContext ctx)
     {
-//    	TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
-    	TileEntity te = FMLClientHandler.instance().getClient().world.getTileEntity(new BlockPos(message.x, message.y, message.z));
-        if (!(te instanceof Wrap_TileEntityRail))
-        {
-        	ERC_Logger.info("MessageRailStC::onMessage, tileentity is not tilerail. pos:"+message.x+"."+message.y+"."+message.z);
-        	if(te==null)ERC_Logger.info("�E�E�ETileEntity is null.");
-        	return null;
-        }
-              
-        Wrap_TileEntityRail ter = ((Wrap_TileEntityRail)te);
-        ter.SetRailDataFromMessage(message);
-        ter.changeRailModelRenderer(message.modelIndex);
-//        ERC_TileEntityRailBase ter = ((Wrap_TileEntityRail)te).getRail();
-//    	ter.SetPosNum(message.posnum);	
-//    	ter.SetRailDataFromRailListMessage(message.raillist);
-//    	ter.CreateNewRailVertexFromControlPoint();
-//    	ter.CalcRailPosition();
-        return null;
-    }
+		final IThreadListener clientListener = Minecraft.getMinecraft();
+		clientListener.addScheduledTask(() -> {
+			TileEntity te = FMLClientHandler.instance().getClient().world.getTileEntity(new BlockPos(message.x, message.y, message.z));
+			if (!(te instanceof Wrap_TileEntityRail)) {
+				ERC_Logger.info("MessageRailStC::onMessage, tileentity is not tilerail. pos:" + message.x + "." + message.y + "." + message.z);
+				if (te == null) ERC_Logger.info("�E�E�ETileEntity is null.");
+			} else {
+				Wrap_TileEntityRail ter = ((Wrap_TileEntityRail) te);
+				ter.SetRailDataFromMessage(message);
+				ter.changeRailModelRenderer(message.modelIndex);
+				//        	ERC_TileEntityRailBase ter = ((Wrap_TileEntityRail)te).getRail();
+				//    		ter.SetPosNum(message.posnum);
+				//    		ter.SetRailDataFromRailListMessage(message.raillist);
+				//    		ter.CreateNewRailVertexFromControlPoint();
+				//    		ter.CalcRailPosition();
+			}
+		});
+		return null;
+	}
     
 }

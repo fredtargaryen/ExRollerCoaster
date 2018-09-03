@@ -250,8 +250,15 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 //			ERC_Logger.debugInfo("seat update");
 			_onUpdate();						// �U�D�e���ゾ����X�V����
 		}
-		
-		updateFlag = !updateFlag;
+
+		/**
+		 * FTHACK
+		 * Problem fixed:
+		 * Sitting in the coaster doesn't always work (1 and 2)
+		 *  * Player updates when seat updateFlag == coaster updateFlag
+		 *    * They alternate but rarely match
+		 */
+		//updateFlag = !updateFlag;
 	}
 
 	public void _onUpdate() 
@@ -364,7 +371,9 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 	@Override
 	public void updatePassenger(Entity passenger)
 	{
-		if(parent == null)return;
+		if(parent == null) {
+			return;
+		}
 		if(updateFlag!=parent.updateFlag)
 		{
 //			ERC_Logger.debugInfo("seat rider stay");
@@ -581,9 +590,14 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
             //Yaw = coaster yaw + player yaw
             //Pitch = coaster pitch + player pitch
             //Roll = Coaster roll
-			GlStateManager.rotate(180.0F - this.parent.ERCPosMat.getFixedYaw(event.renderTickTime), 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(this.parent.ERCPosMat.getFixedPitch(event.renderTickTime),-1f, 0f, 0f);
-            GlStateManager.rotate(-this.parent.ERCPosMat.getFixedRoll(event.renderTickTime), 0f, 0f, 1f);
+			try {
+				GlStateManager.rotate(180.0F - this.parent.ERCPosMat.getFixedYaw(event.renderTickTime), 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(this.parent.ERCPosMat.getFixedPitch(event.renderTickTime), -1f, 0f, 0f);
+				GlStateManager.rotate(-this.parent.ERCPosMat.getFixedRoll(event.renderTickTime), 0f, 0f, 1f);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		else {
 			//END

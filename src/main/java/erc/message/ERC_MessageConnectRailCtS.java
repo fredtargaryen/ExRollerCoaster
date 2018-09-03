@@ -1,5 +1,7 @@
 package erc.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -51,31 +53,33 @@ public class ERC_MessageConnectRailCtS implements IMessage, IMessageHandler<ERC_
 	@Override
     public IMessage onMessage(ERC_MessageConnectRailCtS message, MessageContext ctx)
     {
-		Wrap_TileEntityRail Wbase = (Wrap_TileEntityRail)ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.bx, message.by, message.bz));
-		Wrap_TileEntityRail Wnext = (Wrap_TileEntityRail)ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.nx, message.ny, message.nz));
-    	
-        if ((Wbase != null && Wnext != null))
-        {
-//        	ERC_TileEntityRailBase base = Wbase.getRail();
-//        	ERC_TileEntityRailBase next = Wnext.getRail();
-        	
+    	final EntityPlayerMP player = ctx.getServerHandler().player;
+    	final IThreadListener serverListener = player.getServerWorld();
+    	serverListener.addScheduledTask(() -> {
+			Wrap_TileEntityRail Wbase = (Wrap_TileEntityRail)ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.bx, message.by, message.bz));
+			Wrap_TileEntityRail Wnext = (Wrap_TileEntityRail)ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.nx, message.ny, message.nz));
 
-//        	next.SetPrevRailPosition(message.bx, message.by, message.bz);
-//        	next.CreateNewRailVertexFromControlPoint();
-//        	next.CalcRailLength();
-//        	next.syncData();
-        	Wnext.connectionFromBack(message.bx, message.by, message.bz);
-        	
-//        	base.BaseRail.Power = power; // TODO check
-//        	base.SetNextRailPosition(message.nx, message.ny, message.nz);
-//        	base.SetNextRailVectors(next);
-//        	base.CreateNewRailVertexFromControlPoint();
-//        	base.CalcRailLength();
-//        	base.syncData();
-        	Wbase.connectionToNext(Wnext.getRail().BaseRail, message.nx, message.ny, message.nz);
-   
-        }
+			if ((Wbase != null && Wnext != null))
+			{
+//        		ERC_TileEntityRailBase base = Wbase.getRail();
+//        		ERC_TileEntityRailBase next = Wnext.getRail();
+
+
+//        		next.SetPrevRailPosition(message.bx, message.by, message.bz);
+//        		next.CreateNewRailVertexFromControlPoint();
+//        		next.CalcRailLength();
+//        		next.syncData();
+				Wnext.connectionFromBack(message.bx, message.by, message.bz);
+
+//        		base.BaseRail.Power = power; // TODO check
+//        		base.SetNextRailPosition(message.nx, message.ny, message.nz);
+//        		base.SetNextRailVectors(next);
+//        		base.CreateNewRailVertexFromControlPoint();
+//        		base.CalcRailLength();
+//        		base.syncData();
+				Wbase.connectionToNext(Wnext.getRail().BaseRail, message.nx, message.ny, message.nz);
+			}
+		});
         return null;
     }
-    
 }

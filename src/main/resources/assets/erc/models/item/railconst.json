@@ -1,3 +1,8 @@
 {
-  "parent": "erc:block/railconst"
+  "parent": "minecraft:block/half_slab",
+  "textures": {
+    "bottom": "minecraft:blocks/obsidian",
+    "top": "minecraft:blocks/obsidian",
+    "side": "minecraft:blocks/obsidian"
+  }
 }

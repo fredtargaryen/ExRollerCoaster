@@ -1,5 +1,7 @@
 package erc.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -23,7 +25,7 @@ public class ERC_MessageCoasterCtS implements IMessage, IMessageHandler<ERC_Mess
 //	// ���f���`��I�v�V����
 //	public int modelID;
 //	public ModelOptions ops;
-	
+
 	public ERC_MessageCoasterCtS(){/*ops = new ModelOptions();*/}
 	
 	public ERC_MessageCoasterCtS(int id, float t, double v, int x, int y, int z)
@@ -72,23 +74,24 @@ public class ERC_MessageCoasterCtS implements IMessage, IMessageHandler<ERC_Mess
 	@Override
     public IMessage onMessage(ERC_MessageCoasterCtS message, MessageContext ctx)
     {
-		World world = ctx.getServerHandler().player.world;
-		ERC_EntityCoaster coaster = (ERC_EntityCoaster)world.getEntityByID(message.entityID);
-		if(coaster == null)return null;
-		if(message.paramT > -50f)
-		{
-			coaster.setParamT(message.paramT);
-			coaster.Speed = message.speed;
-			coaster.setRail( ((Wrap_TileEntityRail) world.getTileEntity(new BlockPos(message.x, message.y, message.z))).getRail() );
-//			coaster.setModel(message.modelID);
-		}
-		else
-		{
-			ERC_Logger.warn("MessageCoasterCtS : this code must not call.");
-//			coaster.setModel(message.modelID);
-//			coaster.setModelOptions(message.ops);
-		}
-        return null;
-    }
-    
+    	final EntityPlayerMP player = ctx.getServerHandler().player;
+    	final IThreadListener serverListener = player.getServerWorld();
+		serverListener.addScheduledTask((Runnable) () -> {
+			World world = (World) serverListener;
+			ERC_EntityCoaster coaster = (ERC_EntityCoaster) world.getEntityByID(message.entityID);
+			if (coaster != null) {
+				if (message.paramT > -50f) {
+					coaster.setParamT(message.paramT);
+					coaster.Speed = message.speed;
+					coaster.setRail(((Wrap_TileEntityRail) world.getTileEntity(new BlockPos(message.x, message.y, message.z))).getRail());
+//					coaster.setModel(message.modelID);
+				} else {
+					ERC_Logger.warn("MessageCoasterCtS : this code must not call.");
+//					coaster.setModel(message.modelID);
+//					coaster.setModelOptions(message.ops);
+				}
+			}
+		});
+    	return null;
+	}
 }

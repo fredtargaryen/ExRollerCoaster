@@ -1,5 +1,6 @@
 package erc.message;
 
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -68,21 +69,23 @@ public class ERC_MessageSpawnRequestWithCoasterOpCtS implements IMessage, IMessa
 	@Override
     public IMessage onMessage(ERC_MessageSpawnRequestWithCoasterOpCtS m, MessageContext ctx)
     {
-		// spawn!
-		World world = ctx.getServerHandler().player.world;
-		Wrap_TileEntityRail tile = (Wrap_TileEntityRail)world.getTileEntity(new BlockPos(m.x, m.y, m.z));
-		Wrap_ItemCoaster item = (Wrap_ItemCoaster) (m.itemID==1?ERC_Core.ItemCoaster:(m.itemID==2?ERC_Core.ItemCoasterConnector:ERC_Core.ItemCoasterMono));
-		ERC_EntityCoaster entitycoaster = item.getItemInstance(world, tile, (double)((float)m.x + 0.5F), (double)((float)m.y + 0.6F), (double)((float)m.z + 0.5F));
-		entitycoaster.setModelOptions(m.modelID, m.ops); // �����I��OP��ݒ肳���邽�߂�-1
-		
-		if(m.parentID > -1)
-		{
-			ERC_EntityCoaster parent = (ERC_EntityCoaster) world.getEntityByID(m.parentID);
-			parent.connectionCoaster((ERC_EntityCoasterConnector) entitycoaster);
-			((ERC_EntityCoasterConnector)entitycoaster).setParent(parent);
-		}
-		
-		world.spawnEntity(entitycoaster);
+		IThreadListener serverListener = ctx.getServerHandler().player.getServerWorld();
+		serverListener.addScheduledTask(() -> {
+			// spawn!
+			World world = (World) serverListener;
+			Wrap_TileEntityRail tile = (Wrap_TileEntityRail) world.getTileEntity(new BlockPos(m.x, m.y, m.z));
+			Wrap_ItemCoaster item = (Wrap_ItemCoaster) (m.itemID == 1 ? ERC_Core.ItemCoaster : (m.itemID == 2 ? ERC_Core.ItemCoasterConnector : ERC_Core.ItemCoasterMono));
+			ERC_EntityCoaster entitycoaster = item.getItemInstance(world, tile, (double) ((float) m.x + 0.5F), (double) ((float) m.y + 0.6F), (double) ((float) m.z + 0.5F));
+			entitycoaster.setModelOptions(m.modelID, m.ops); // �����I��OP��ݒ肳���邽�߂�-1
+
+			if (m.parentID > -1) {
+				ERC_EntityCoaster parent = (ERC_EntityCoaster) world.getEntityByID(m.parentID);
+				parent.connectionCoaster((ERC_EntityCoasterConnector) entitycoaster);
+				((ERC_EntityCoasterConnector) entitycoaster).setParent(parent);
+			}
+
+			world.spawnEntity(entitycoaster);
+		});
 
 		return null;
     }

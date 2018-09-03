@@ -34,6 +34,10 @@ public class ERC_ModelCoaster extends ModelBase {
 		GL11.glRotatef(180.0F - coaster.ERCPosMat.getFixedYaw(t), 0f, 1f, 0f);
 		GL11.glRotatef(coaster.ERCPosMat.getFixedPitch(t),-1f, 0f, 0f);
  		GL11.glRotatef(-coaster.ERCPosMat.getFixedRoll(t), 0f, 0f, 1f);
+		//FTMakes the coaster look like it's going in reverse
+		//FTGL11.glRotatef(coaster.ERCPosMat.getFixedYaw(t), 0f, -1f, 0f);
+		//FTGL11.glRotatef(coaster.ERCPosMat.getFixedPitch(t),1f, 0f, 0f);
+		//FTGL11.glRotatef(-coaster.ERCPosMat.getFixedRoll(t), 0f, 0f, 1f);
 
 		GL11.glScalef(1.0f, 1.0f, 1.0f);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureResource);

@@ -1,5 +1,7 @@
 package erc.message;
 
+import net.minecraft.util.IThreadListener;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -36,8 +38,11 @@ public class ERC_MessageRequestConnectCtS implements IMessage, IMessageHandler<E
 	@Override
     public IMessage onMessage(ERC_MessageRequestConnectCtS message, MessageContext ctx)
     {
-		ERC_EntityCoasterConnector coaster = (ERC_EntityCoasterConnector) ctx.getServerHandler().player.world.getEntityByID(message.CoasterID);
-		coaster.receiveConnectionRequestFromClient(message.playerEntityID);
-		return null;
+    	final IThreadListener serverListener = ctx.getServerHandler().player.getServerWorld();
+    	serverListener.addScheduledTask(() -> {
+			ERC_EntityCoasterConnector coaster = (ERC_EntityCoasterConnector) ((World) serverListener).getEntityByID(message.CoasterID);
+			if(coaster != null) coaster.receiveConnectionRequestFromClient(message.playerEntityID);
+		});
+    	return null;
     }
 }

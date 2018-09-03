@@ -1,6 +1,8 @@
 package erc.message;
 
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -76,54 +78,59 @@ public class ERC_MessageRailGUICtS implements IMessage, IMessageHandler<ERC_Mess
 	@Override
     public IMessage onMessage(ERC_MessageRailGUICtS message, MessageContext ctx)
     {
-    	TileEntity Wte = ctx.getServerHandler().player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
-        if ((Wte instanceof Wrap_TileEntityRail))
-        {
-        	Wrap_TileEntityRail te = ((Wrap_TileEntityRail) Wte);
-        	GUIRail.editFlag[] values = GUIRail.editFlag.values();
-        	GUIRail.editFlag align = values[message.FLAG];
-        	switch(align)
-        	{
-        	case CONTROLPOINT:
-        		te.AddControlPoint((int) message.MiscInt); break;
-        		
-        	case SMOOTH:
-//        		if(te.isConnectRail_prev1_next2())
-        		te.Smoothing(); 
-        		break;
-        		
-        	case POW:
-        		te.AddPower(message.MiscInt); break;
-        		
-        	case ROTRED:
-        	case ROTGREEN:
-        	case ROTBLUE:
-        		te.UpdateDirection(align, message.MiscInt); break;
-        	
-        	case RESET:
-        		te.ResetRot(); break;
-        		
-        	case SPECIAL:
-        		te.SpecialGUISetData(message.MiscInt); break;
-        		
-        	case RailModelIndex: // modelIndex send to server �Ԏ؂肵�Ă܂�
-        		te.changeRailModelRenderer(message.MiscInt);
-        		return null;
-        	}
-        	
-        	te.CalcRailLength();
-        	te.syncData();
-        	Wrap_TileEntityRail prev = ((Wrap_TileEntityRail) Wte).getPrevRailTileEntity();
-        	if(prev!=null)
-        	{
-        		TileEntityRailBase r = prev.getRail();
-        		r.SetNextRailVectors((TileEntityRailBase) te.getRail());
+    	final IThreadListener serverListener = ctx.getServerHandler().player.getServerWorld();
+    	serverListener.addScheduledTask(() -> {
+    		World world = (World) serverListener;
+			TileEntity Wte = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
+			if ((Wte instanceof Wrap_TileEntityRail))
+			{
+				Wrap_TileEntityRail te = ((Wrap_TileEntityRail) Wte);
+				GUIRail.editFlag[] values = GUIRail.editFlag.values();
+				GUIRail.editFlag align = values[message.FLAG];
+				switch(align)
+				{
+					case CONTROLPOINT:
+						te.AddControlPoint((int) message.MiscInt); break;
+
+					case SMOOTH:
+//        				if(te.isConnectRail_prev1_next2())
+						te.Smoothing();
+						break;
+
+					case POW:
+						te.AddPower(message.MiscInt); break;
+
+					case ROTRED:
+					case ROTGREEN:
+					case ROTBLUE:
+						te.UpdateDirection(align, message.MiscInt); break;
+
+					case RESET:
+						te.ResetRot(); break;
+
+					case SPECIAL:
+						te.SpecialGUISetData(message.MiscInt); break;
+
+					case RailModelIndex: // modelIndex send to server �Ԏ؂肵�Ă܂�
+						te.changeRailModelRenderer(message.MiscInt);
+						break;
+					default:
+						break;
+				}
+
+				te.CalcRailLength();
+				te.syncData();
+				Wrap_TileEntityRail prev = ((Wrap_TileEntityRail) Wte).getPrevRailTileEntity();
+				if(prev!=null)
+				{
+					TileEntityRailBase r = prev.getRail();
+					r.SetNextRailVectors((TileEntityRailBase) te.getRail());
 //        		r.CreateNewRailVertexFromControlPoint();
-        		r.CalcRailLength();
-        		prev.syncData();
-        	}
-        }
+					r.CalcRailLength();
+					prev.syncData();
+				}
+			}
+		});
         return null;
     }
-    
 }

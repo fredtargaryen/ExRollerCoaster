@@ -517,13 +517,13 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	{	
 		//////////////�R�[�X�^�[����v�Z
 		
-		////positions of *rails*, relative to the base (current) rail *block*
+		//FTpositions of *rails*, relative to the base (current) rail *block*
 		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z).scale(0.5);
-		//My fix - seems to work
+		//FTMy fix - seems to work
 		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos).add(NextRail.vecUp.scale(0.5));
-		//Motty's original code said
-		//Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos).add(NextRail.vecUp.scale(0.5));
-		//Next = new Vec3d(NextRail.vecUp.x * 1.5, NextRail.vecUp.y * 1.5, NextRail.vecUp.z * 1.5);
+		//FTMotty's original code said
+		//FTVec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos).add(NextRail.vecUp.scale(0.5));
+		//FTNext = new Vec3d(NextRail.vecUp.x * 1.5, NextRail.vecUp.y * 1.5, NextRail.vecUp.z * 1.5);
 
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);
@@ -542,6 +542,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 			ERC_Logger.warn("tileentityrailbase.calcposition2 : paramT is smaller than 0");
 			t = 0;
 		}
+		//FTGets current control point and r
 		int T = (int)Math.floor(t * (PosNum-1));
 		if(PosNum-1 <= T) lT = fixedParamTTable[PosNum-1];
 		else lT = ERC_MathHelper.Lerp(t*(PosNum-1)-T, fixedParamTTable[T], fixedParamTTable[T+1]);
@@ -549,21 +550,21 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		
 		ret.Pos = ERC_MathHelper.Spline(t, Base, Next, DirxPowb, DirxPown);
 
-		Vec3d dir1;
+		Vec3d dir1 = null;
 		// ����_�����Ԓn�_�ł���ΑO��̃x�N�g���A�����b�_�ł���ΐ�������x�N�g����p����
 		if(t <= 0.01f)
 		{
 //			dir1 = new Vec3d(BaseRail.vecDir.xCoord, BaseRail.vecDir.yCoord, BaseRail.vecDir.zCoord);
 			dir1 = DirxPowb.normalize();
 		}
-		if(t >= 0.99f)
+		else if(t >= 0.99f)
 		{
 //			dir1 = new Vec3d(NextRail.vecDir.xCoord, NextRail.vecDir.yCoord, NextRail.vecDir.zCoord);
 			dir1 = DirxPown.normalize();
 		}
 		else
 		{
-				 dir1 = ERC_MathHelper.Spline((t+0.01f), Base, Next, DirxPowb, DirxPown);
+			dir1 = ERC_MathHelper.Spline((t+0.01f), Base, Next, DirxPowb, DirxPown);
 			Vec3d dir2 = ERC_MathHelper.Spline((t-0.01f), Base, Next, DirxPowb, DirxPown);
 			dir1 = dir2.subtract(dir1).normalize(); // dir1 - dir2
 		}
@@ -635,7 +636,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	{	
 		////pos
 		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z).scale(0.5);
-		Vec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos).add(NextRail.vecUp.scale(0.5));
+		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos).add(NextRail.vecUp.scale(0.5));
 		
 		////dir
 //		float basepow = ERC_MathHelper.Lerp(0.2f, BaseRail.Power, NextRail.Power);

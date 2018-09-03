@@ -1,6 +1,6 @@
 {
   "variants": {
-    "inventory": { "model": "erc:railconst" },
+    "inventory": { "model": "erc:railconst_inv" },
     "meta=0": { "model": "erc:railconst" },
     "meta=1": { "model": "erc:railconst", "x": 180 },
     "meta=2": { "model": "erc:railconst", "x": 90, "y": 180 },

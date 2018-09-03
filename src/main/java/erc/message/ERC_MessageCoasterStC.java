@@ -1,5 +1,7 @@
 package erc.message;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -81,26 +83,28 @@ public class ERC_MessageCoasterStC implements IMessage, IMessageHandler<ERC_Mess
 	@Override
     public IMessage onMessage(ERC_MessageCoasterStC message, MessageContext ctx)
     {
-		ERC_EntityCoaster coaster = (ERC_EntityCoaster)FMLClientHandler.instance().getClient().world.getEntityByID(message.entityID);
-		
-		if(coaster == null)return null;
-		
-		coaster.setParamFromPacket(message.paramT, message.speed, message.x, message.y, message.z);
-		coaster.setModelOptions(message.modelID, message.ops);
-	
-//		if(message.connectparentID > -1)
-//		{
-//			 ERC_EntityCoaster parent = (ERC_EntityCoaster)FMLClientHandler.instance().getClient().theWorld.getEntityByID(message.connectparentID);
-//			 if(parent == null)
-//			 {
-//				 coaster.killCoaster();
-//				 return null;
-//			 }
-//			 ((ERC_EntityCoasterConnector)coaster).setParentPointer(parent);
-//			 parent.connectionCoaster((ERC_EntityCoasterConnector) coaster);
-//			 ((ERC_EntityCoasterConnector)coaster).setConnectParentFlag(-1);
-//		}
+		IThreadListener client = Minecraft.getMinecraft();
+		client.addScheduledTask(() -> {
+			Minecraft mc = (Minecraft) client;
+			ERC_EntityCoaster coaster = (ERC_EntityCoaster) mc.world.getEntityByID(message.entityID);
+			if (coaster != null) {
+				coaster.setParamFromPacket(message.paramT, message.speed, message.x, message.y, message.z);
+				coaster.setModelOptions(message.modelID, message.ops);
+
+//				if(message.connectparentID > -1)
+//				{
+//			 		ERC_EntityCoaster parent = (ERC_EntityCoaster)FMLClientHandler.instance().getClient().theWorld.getEntityByID(message.connectparentID);
+//			 		if(parent == null)
+//			 		{
+//				 		coaster.killCoaster();
+//				 		return null;
+//					}
+//			 		((ERC_EntityCoasterConnector)coaster).setParentPointer(parent);
+//			 		parent.connectionCoaster((ERC_EntityCoasterConnector) coaster);
+//			 		((ERC_EntityCoasterConnector)coaster).setConnectParentFlag(-1);
+//				}
+			}
+		});
         return null;
     }
-    
 }

@@ -1,5 +1,18 @@
 /**
  * TODO
+ * Sometimes juddering
+ * * Not related to control points
+ * * Juddering affects coaster model position and player angle
+ * * Sometimes there is a 'rail model' and a 'shake model'
+ *   * The 'rail model' travels along the curve of the rail
+ *   * The 'shake model' travels along a straight line to the next rail
+ * * Often judders downwards
+ * Violent 180 degree rotation when moving onto next rail
+ * * Look for point where rail changes
+ *   * Flips wrong way at highest t, and flips back at lowest t
+ *   * Yaw is atan2 of x and z components of dir1
+ * * Coaster is 180 degrees off when placed; holdover from 1.7.10 reversed direction
+ *   * Players can only look straight behind as if it's going in reverse
  * WRENCH
  * * Wrench should stay red with every block placed, each rail connecting to the next
  * * 3 rails in a row:
@@ -115,7 +128,7 @@ public class ERC_Core {
     
 	////////////////////////////////////////////////////////////////
 	//Creative Tab
-	public static ERC_CreateCreativeTab ERC_Tab = new ERC_CreateCreativeTab("ExRC", ItemBasePipe);
+	public static ERC_CreateCreativeTab ERC_Tab = new ERC_CreateCreativeTab("ExRC", ItemCoaster);
 	
 	////////////////////////////////////////////////////////////////
 	// TickEventProxy

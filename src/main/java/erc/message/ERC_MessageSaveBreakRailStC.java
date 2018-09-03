@@ -1,5 +1,7 @@
 package erc.message;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -47,10 +49,12 @@ public class ERC_MessageSaveBreakRailStC implements IMessage, IMessageHandler<ER
     }
 	
 	@Override
-    public IMessage onMessage(ERC_MessageSaveBreakRailStC message, MessageContext ctx)
-	{
-		ERC_CoasterAndRailManager.SetPrevData(message.bx, message.by, message.bz);
-		ERC_CoasterAndRailManager.SetNextData(message.nx, message.ny, message.nz);
+    public IMessage onMessage(ERC_MessageSaveBreakRailStC message, MessageContext ctx) {
+		IThreadListener clientListener = Minecraft.getMinecraft();
+		clientListener.addScheduledTask(() -> {
+			ERC_CoasterAndRailManager.SetPrevData(message.bx, message.by, message.bz);
+			ERC_CoasterAndRailManager.SetNextData(message.nx, message.ny, message.nz);
+		});
         return null;
     }
     
