@@ -31,12 +31,11 @@ public class TileEntityRailInvisible extends TileEntityRailBase{
 	public void render(Tessellator tess)
 	{
 		ItemStack is = Minecraft.getMinecraft().player.getHeldItemMainhand();
-		if(is==null)return;
-		Item heldItem = is.getItem();	
-		if(Block.getBlockFromItem(heldItem) instanceof blockRailInvisible ||
-				heldItem instanceof ERC_ItemWrench)
-			super.render(tess);
+		if(!is.isEmpty()) {
+			Item heldItem = is.getItem();
+			if (Block.getBlockFromItem(heldItem) instanceof blockRailInvisible ||
+					heldItem instanceof ERC_ItemWrench)
+				super.render(tess);
+		}
 	}
-
-	
 }

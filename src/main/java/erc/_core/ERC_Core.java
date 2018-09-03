@@ -1,5 +1,6 @@
 /**
  * TODO
+ * Make cobblestone like redstone
  * Sometimes juddering
  * * Not related to control points
  * * Juddering affects coaster model position and player angle
@@ -24,7 +25,6 @@
  * Coaster gravity?
  * Check coaster connectors
  * RAIL GRAPHICS
- * * Rail lighting is patchy
  * * Rails stop rendering when moving far enough away from them and looking away from block
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.
  * * Commented out for now (2, ERC_EntityCoaster:745)

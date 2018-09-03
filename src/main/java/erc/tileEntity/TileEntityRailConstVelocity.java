@@ -1,5 +1,6 @@
 package erc.tileEntity;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -113,11 +114,14 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
     {
     	return String.format("%02.1f", (constVelosityParam * 10f));
     }
-    
-    public void render(Tessellator tess)
-   	{
-       	float col = toggleflag?2.0f:0.6f;
-       	GL11.glColor4f(col, col, col, 1.0F);
-       	super.render(tess);
-   	}
+
+	@Override
+	public void render(Tessellator tess)
+	{
+		GlStateManager.disableLighting();
+		float col = toggleflag?1.0f:0.3f;
+		GL11.glColor4f(col, col, col, 1.0F);
+		super.render(tess);
+		GlStateManager.enableLighting();
+	}
 }

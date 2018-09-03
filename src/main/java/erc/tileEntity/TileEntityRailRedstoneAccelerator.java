@@ -123,7 +123,8 @@ public class TileEntityRailRedstoneAccelerator extends TileEntityRailBase{
     {
     	return String.format("%02.1f", (accelParam * 100f));
     }
-    
+
+    @Override
     public void render(Tessellator tess)
 	{
 		GlStateManager.disableLighting();
