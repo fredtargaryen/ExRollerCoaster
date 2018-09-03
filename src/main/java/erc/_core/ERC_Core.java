@@ -1,6 +1,5 @@
 /**
  * TODO
- * Make cobblestone like redstone
  * Sometimes juddering
  * * Not related to control points
  * * Juddering affects coaster model position and player angle

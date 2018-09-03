@@ -1,6 +1,6 @@
 {
   "variants": {
-    "inventory": { "model": "erc:railnongravity_inv" },
+    "inventory": { "model": "erc:railnongravity" },
     "meta=0": { "model": "erc:railnongravity" },
     "meta=1": { "model": "erc:railnongravity", "x": 180 },
     "meta=2": { "model": "erc:railnongravity", "x": 90, "y": 180 },

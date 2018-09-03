@@ -1,6 +1,9 @@
 package erc.tileEntity;
 
+import erc.block.blockRailBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -18,7 +21,6 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
 	
 	float constVelosityParam;
 	boolean toggleflag;
-	boolean onflag;
 	
 	public TileEntityRailConstVelocity()
 	{
@@ -27,18 +29,18 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
 		constVelosityParam = 0.07f;
 		RailTexture = new ResourceLocation("textures/blocks/cobblestone.png");
 	}
-	
+
 	public boolean getToggleFlag()
 	{
 		return toggleflag;
 	}
+	public void setToggleFlag(boolean flag)
+	{
+		toggleflag = flag;
+	}
 	public void changeToggleFlag()
 	{
 		toggleflag = !toggleflag;
-	}
-	public void turnOnFlag()
-	{
-		onflag = !onflag;
 	}
 
 	public void setconstVelosityParam(float f)
@@ -52,20 +54,20 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
 	
 	public void SpecialRailProcessing(ERC_EntityCoaster coaster)
 	{
-		coaster.Speed -= constVelosityParam * (onflag?1f:0f);
+		coaster.Speed -= constVelosityParam * (toggleflag?1f:0f);
 		coaster.Speed *= 0.9;
 		if(coaster.Speed < 0.008)coaster.Speed = 0;
-		coaster.Speed += constVelosityParam * (onflag?1f:0f);
+		coaster.Speed += constVelosityParam * (toggleflag?1f:0f);
 	}
 
 	public void setDataToByteMessage(ByteBuf buf)
 	{
-		buf.writeBoolean(this.onflag);
+		buf.writeBoolean(this.toggleflag);
 		buf.writeFloat(constVelosityParam);
 	}
 	public void getDataFromByteMessage(ByteBuf buf)
 	{
-		onflag = buf.readBoolean();
+		toggleflag = buf.readBoolean();
 		constVelosityParam = buf.readFloat();
 	}
 
@@ -78,7 +80,7 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
 	public void readFromNBT(NBTTagCompound nbt) 
 	{
 		super.readFromNBT(nbt);
-		onflag = nbt.getBoolean("const:onflag");
+		toggleflag = nbt.getBoolean("const:toggleflag");
 		constVelosityParam = nbt.getFloat("constvel");
 	}
 
@@ -86,7 +88,7 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setBoolean("const:onflag", onflag);
+		nbt.setBoolean("const:toggleflag", toggleflag);
 		nbt.setFloat("constvel", constVelosityParam);
 		return nbt;
 	}
@@ -123,5 +125,21 @@ public class TileEntityRailConstVelocity extends TileEntityRailBase{
 		GL11.glColor4f(col, col, col, 1.0F);
 		super.render(tess);
 		GlStateManager.enableLighting();
+	}
+
+	/**
+	 * Called from Chunk.setBlockIDWithMetadata and Chunk.fillChunk, determines if this tile entity should be re-created when the ID, or Metadata changes.
+	 * Use with caution as this will leave straggler TileEntities, or create conflicts with other TileEntities if not used properly.
+	 *
+	 * @param world Current world
+	 * @param pos Tile's world position
+	 * @param oldState The old ID of the block
+	 * @param newState The new ID of the block (May be the same)
+	 * @return true forcing the invalidation of the existing TE, false not to invalidate the existing TE
+	 */
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+	{
+		//return super.shouldRefresh(world, pos, oldState, newState);
+		return !(oldState.getBlock() == newState.getBlock() && (oldState.getValue(blockRailBase.META) & 7) == (newState.getValue(blockRailBase.META) & 7));
 	}
 }

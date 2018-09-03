@@ -40,7 +40,7 @@ public class blockRailRedstoneAccelerator extends blockRailBase{
         	
         	if (flag)
             {
-//        		 ERC_TileEntityRailRedstoneAccelerator rail = (ERC_TileEntityRailRedstoneAccelerator)world.getTileEntity(x, y, z);
+//        		 TileEntityRailRedstoneAccelerator rail = (TileEntityRailRedstoneAccelerator)world.getTileEntity(x, y, z);
 //        		 boolean tgle = rail.getToggleFlag();
              	
 //        		 if (flag != tgle)
