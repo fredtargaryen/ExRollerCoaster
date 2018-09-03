@@ -797,7 +797,6 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 
         // t�����ɍ��W�X�V
     	this.setPosition(ERCPosMat.Pos.x, ERCPosMat.Pos.y, ERCPosMat.Pos.z);
-
     }
     
     @Override

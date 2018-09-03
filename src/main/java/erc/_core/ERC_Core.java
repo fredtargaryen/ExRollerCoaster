@@ -1,18 +1,14 @@
 /**
  * TODO
- * Sometimes juddering
+ * SCUFFED COASTER ROTATION
+ * * Need to rotate coaster 180 degrees; Blender import and export
+ * OCCASIONAL JUDDERING
  * * Not related to control points
  * * Juddering affects coaster model position and player angle
  * * Sometimes there is a 'rail model' and a 'shake model'
  *   * The 'rail model' travels along the curve of the rail
  *   * The 'shake model' travels along a straight line to the next rail
  * * Often judders downwards
- * Violent 180 degree rotation when moving onto next rail
- * * Look for point where rail changes
- *   * Flips wrong way at highest t, and flips back at lowest t
- *   * Yaw is atan2 of x and z components of dir1
- * * Coaster is 180 degrees off when placed; holdover from 1.7.10 reversed direction
- *   * Players can only look straight behind as if it's going in reverse
  * WRENCH
  * * Wrench should stay red with every block placed, each rail connecting to the next
  * * 3 rails in a row:
@@ -21,8 +17,8 @@
  * * ADJUSTMENT MODE
  *   * Pressing smooth... really doesn't smooth
  *   * Right-clicking the rail should make a dark column on the right
- * Coaster gravity?
- * Check coaster connectors
+ * COASTER GRAVITY?
+ * CHECK COASTER CONNECTORS
  * RAIL GRAPHICS
  * * Rails stop rendering when moving far enough away from them and looking away from block
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.

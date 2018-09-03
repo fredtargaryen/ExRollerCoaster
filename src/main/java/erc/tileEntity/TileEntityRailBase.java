@@ -566,7 +566,9 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		{
 			dir1 = ERC_MathHelper.Spline((t+0.01f), Base, Next, DirxPowb, DirxPown);
 			Vec3d dir2 = ERC_MathHelper.Spline((t-0.01f), Base, Next, DirxPowb, DirxPown);
-			dir1 = dir2.subtract(dir1).normalize(); // dir1 - dir2
+			//FTMAY BE WRONG BUT I DON'T THINK SO
+			//dir1 = dir2.subtract(dir1).normalize(); // dir1 - dir2
+			dir1 = dir1.subtract(dir2).normalize(); //dir1 - dir2
 		}
 		
 		////pair of rail Vertex
