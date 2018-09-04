@@ -1,22 +1,15 @@
 /**
  * TODO
- * SCUFFED COASTER ROTATION
- * * Need to rotate coaster 180 degrees; Blender import and export
  * OCCASIONAL JUDDERING
  * * Not related to control points
- * * Juddering affects coaster model position and player angle
- * * Sometimes there is a 'rail model' and a 'shake model'
- *   * The 'rail model' travels along the curve of the rail
- *   * The 'shake model' travels along a straight line to the next rail
- * * Often judders downwards
- * WRENCH
- * * Wrench should stay red with every block placed, each rail connecting to the next
- * * 3 rails in a row:
- *   * Deleting block 2 should preserve 1 and 3 in manager
- *   * Placing another block should connect it to 1 and 3
- * * ADJUSTMENT MODE
- *   * Pressing smooth... really doesn't smooth
- *   * Right-clicking the rail should make a dark column on the right
+ * * Juddering affects coaster model position
+ * * Can judder up or down
+ * * ERCPosMat y and render y is always consistent
+ * WRENCH ADJUSTMENT MODE
+ * * Pressing smooth causes assorted problems:
+ *   * Can make everything invisible and break coasters
+ *   * Can warp the selected rail
+ * * Right-clicking the rail should make a dark column on the right
  * COASTER GRAVITY?
  * CHECK COASTER CONNECTORS
  * RAIL GRAPHICS
