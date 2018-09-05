@@ -1,10 +1,8 @@
 /**
  * TODO
- * OCCASIONAL JUDDERING
- * * Not related to control points
- * * Juddering affects coaster model position
- * * Can judder up or down
- * * ERCPosMat y and render y is always consistent
+ * SHAKES ALL THE TIME WHEN RIDING
+ * *
+ * [Netty Local Client IO #0/WARN]: ERC_EntityCoaster::addSeat, seats is null
  * WRENCH ADJUSTMENT MODE
  * * Pressing smooth causes assorted problems:
  *   * Can make everything invisible and break coasters

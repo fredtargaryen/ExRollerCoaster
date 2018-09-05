@@ -1044,5 +1044,17 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 			return;
 		}
 	}
-	
+
+	/**
+	 * Set the position and rotation values directly without any clamping.
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
+	{
+		//FT HORRENDOUS HACK TO JUST IGNORE MOVEMENT PACKETS
+		//FT But it does make the whole thing so much smoother
+		//this.setPosition(x, y, z);
+		//this.setRotation(yaw, pitch);
+	}
 }
