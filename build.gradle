@@ -33,11 +33,11 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
-sourceSets.main {
-    java.srcDirs project.projectDir.name
-    resources.srcDirs project.projectDir.name
-    output.resourcesDir output.classesDir
-}
+//sourceSets.main {
+//    java.srcDirs project.projectDir.name
+//    resources.srcDirs project.projectDir.name
+//    output.resourcesDir output.classesDir
+//}
 
 dependencies {
     // you may put jars on which you depend on in ./libs

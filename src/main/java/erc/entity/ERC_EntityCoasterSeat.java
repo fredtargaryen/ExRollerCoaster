@@ -565,44 +565,44 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 	protected void addPassenger(Entity p)
 	{
 		super.addPassenger(p);
-		if(this.world.isRemote)
-		{
-			MinecraftForge.EVENT_BUS.register(this);
-		}
+//		if(this.world.isRemote)
+//		{
+//			MinecraftForge.EVENT_BUS.register(this);
+//		}
 	}
 
 	@Override
 	public void removePassenger(Entity passenger)
 	{
 		super.removePassenger(passenger);
-		if(this.world.isRemote)
-		{
-			MinecraftForge.EVENT_BUS.unregister(this);
-		}
+//		if(this.world.isRemote)
+//		{
+//			MinecraftForge.EVENT_BUS.unregister(this);
+//		}
 	}
 
 	@SubscribeEvent
 	public void onRenderTick(TickEvent.RenderTickEvent event) {
-		if (event.phase == TickEvent.Phase.START) {
-			// player available is: mc.thePlayer, need to null check if you crash during world start-up
-			// update player rotation (i.e. render view) based on your conditions
-			GlStateManager.pushMatrix();
-            //Yaw = coaster yaw + player yaw
-            //Pitch = coaster pitch + player pitch
-            //Roll = Coaster roll
-			try {
-				GlStateManager.rotate(180.0F - this.parent.ERCPosMat.getFixedYaw(event.renderTickTime), 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate(this.parent.ERCPosMat.getFixedPitch(event.renderTickTime), -1f, 0f, 0f);
-				GlStateManager.rotate(-this.parent.ERCPosMat.getFixedRoll(event.renderTickTime), 0f, 0f, 1f);
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else {
-			//END
-			GlStateManager.popMatrix();
-		}
+//		if (event.phase == TickEvent.Phase.START) {
+//			// player available is: mc.thePlayer, need to null check if you crash during world start-up
+//			// update player rotation (i.e. render view) based on your conditions
+//			GlStateManager.pushMatrix();
+//            //Yaw = coaster yaw + player yaw
+//            //Pitch = coaster pitch + player pitch
+//            //Roll = Coaster roll
+//			try {
+//				GlStateManager.rotate(180.0F - this.parent.ERCPosMat.getFixedYaw(event.renderTickTime), 0.0F, 1.0F, 0.0F);
+//				GlStateManager.rotate(this.parent.ERCPosMat.getFixedPitch(event.renderTickTime), -1f, 0f, 0f);
+//				GlStateManager.rotate(-this.parent.ERCPosMat.getFixedRoll(event.renderTickTime), 0f, 0f, 1f);
+//			}
+//			catch(Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		else {
+//			//END
+//			GlStateManager.popMatrix();
+//		}
 	}
 	////////////////////////////
 	//END OF FT RIDING METHODS//

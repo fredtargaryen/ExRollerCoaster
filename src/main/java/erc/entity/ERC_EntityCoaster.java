@@ -1054,7 +1054,7 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 	{
 		//FT HORRENDOUS HACK TO JUST IGNORE MOVEMENT PACKETS
 		//FT But it does make the whole thing so much smoother
-		//this.setPosition(x, y, z);
-		//this.setRotation(yaw, pitch);
+//		this.setPosition(x, y, z);
+//		this.setRotation(yaw, pitch);
 	}
 }
