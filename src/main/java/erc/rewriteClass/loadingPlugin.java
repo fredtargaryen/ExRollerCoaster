@@ -6,7 +6,8 @@ import java.util.Map;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
-//@TransformerExclusions({"erc.rewriteClass"})
+@IFMLLoadingPlugin.Name("erctransform")
+@IFMLLoadingPlugin.TransformerExclusions({"erc.rewriteClass"})
 @MCVersion("1.12.2")
 public class loadingPlugin implements IFMLLoadingPlugin {
 	
