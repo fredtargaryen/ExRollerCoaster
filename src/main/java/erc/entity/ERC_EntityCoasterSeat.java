@@ -35,6 +35,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 
 	private static final DataParameter<Integer> SEAT_INDEX = EntityDataManager.<Integer>createKey(ERC_EntityCoasterSeat.class, DataSerializers.VARINT);
@@ -250,15 +252,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 //			ERC_Logger.debugInfo("seat update");
 			_onUpdate();						// �U�D�e���ゾ����X�V����
 		}
-
-		/**
-		 * FTHACK
-		 * Problem fixed:
-		 * Sitting in the coaster doesn't always work (1 and 2)
-		 *  * Player updates when seat updateFlag == coaster updateFlag
-		 *    * They alternate but rarely match
-		 */
-		//updateFlag = !updateFlag;
+		updateFlag = !updateFlag;
 	}
 
 	public void _onUpdate() 
@@ -271,8 +265,8 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 		double oy = getOffsetY();
 		double oz = getOffsetZ();
 		this.setPosition(
-				parent.posX + parent.ERCPosMat.offsetX.x*ox + parent.ERCPosMat.offsetY.x*oy + parent.ERCPosMat.offsetZ.x*oz, 
-				parent.posY + parent.ERCPosMat.offsetX.y*ox + parent.ERCPosMat.offsetY.y*oy + parent.ERCPosMat.offsetZ.y*oz, 
+				parent.posX + parent.ERCPosMat.offsetX.x*ox + parent.ERCPosMat.offsetY.x*oy + parent.ERCPosMat.offsetZ.x*oz,
+				parent.posY + parent.ERCPosMat.offsetX.y*ox + parent.ERCPosMat.offsetY.y*oy + parent.ERCPosMat.offsetZ.y*oz,
 				parent.posZ + parent.ERCPosMat.offsetX.z*ox + parent.ERCPosMat.offsetY.z*oy + parent.ERCPosMat.offsetZ.z*oz);
 
 		if(waitUpdateRiderFlag)updateRiderPosition2(this.getControllingPassenger());
@@ -367,7 +361,18 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
     {
         return (double)this.height * 0.4;
     }
-	
+
+	/**
+	 * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
+	 * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
+	 */
+	@Nullable
+	public Entity getControllingPassenger()
+	{
+		List<Entity> passengers = this.getPassengers();
+		return passengers.isEmpty() ? null : passengers.get(0);
+	}
+
 	@Override
 	public void updatePassenger(Entity passenger)
 	{
@@ -558,55 +563,6 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 		}
 	}
 
-	/////////////////////
-	//FT RIDING METHODS//
-	/////////////////////
-	@Override
-	protected void addPassenger(Entity p)
-	{
-		super.addPassenger(p);
-//		if(this.world.isRemote)
-//		{
-//			MinecraftForge.EVENT_BUS.register(this);
-//		}
-	}
-
-	@Override
-	public void removePassenger(Entity passenger)
-	{
-		super.removePassenger(passenger);
-//		if(this.world.isRemote)
-//		{
-//			MinecraftForge.EVENT_BUS.unregister(this);
-//		}
-	}
-
-	@SubscribeEvent
-	public void onRenderTick(TickEvent.RenderTickEvent event) {
-//		if (event.phase == TickEvent.Phase.START) {
-//			// player available is: mc.thePlayer, need to null check if you crash during world start-up
-//			// update player rotation (i.e. render view) based on your conditions
-//			GlStateManager.pushMatrix();
-//            //Yaw = coaster yaw + player yaw
-//            //Pitch = coaster pitch + player pitch
-//            //Roll = Coaster roll
-//			try {
-//				GlStateManager.rotate(180.0F - this.parent.ERCPosMat.getFixedYaw(event.renderTickTime), 0.0F, 1.0F, 0.0F);
-//				GlStateManager.rotate(this.parent.ERCPosMat.getFixedPitch(event.renderTickTime), -1f, 0f, 0f);
-//				GlStateManager.rotate(-this.parent.ERCPosMat.getFixedRoll(event.renderTickTime), 0f, 0f, 1f);
-//			}
-//			catch(Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		else {
-//			//END
-//			GlStateManager.popMatrix();
-//		}
-	}
-	////////////////////////////
-	//END OF FT RIDING METHODS//
-    ////////////////////////////
 	////////////////////////////////////////this.dataManager
 	public int getSeatIndex()
 	{

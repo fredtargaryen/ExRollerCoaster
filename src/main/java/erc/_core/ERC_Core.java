@@ -1,9 +1,6 @@
 /**
  * TODO
  * Coremod loads in IDE but not in normal Forge (Check)
- * COASTER RIDING
- * Seat jerks about once a second in the coaster
- * * Player Roll doesn't update well
  * [Netty Local Client IO #0/WARN]: ERC_EntityCoaster::addSeat, seats is null
  * WRENCH ADJUSTMENT MODE
  * * Pressing smooth causes assorted problems:
