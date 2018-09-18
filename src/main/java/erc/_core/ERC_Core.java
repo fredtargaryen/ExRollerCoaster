@@ -1,12 +1,9 @@
 /**
  * TODO
- * Coremod loads in IDE but not in normal Forge
- * COASTER SHAKES WHEN RIDING
- * * Using a straight rail; pointing towards increasing z
- * * Three or less render ticks per x value...
- * * May be related but riding and turning is not very smooth
- *   * After every mouse movement there is another shake some time after
- * * Must be some sync packets coming in and setting old values, but other entities don't get this...
+ * Coremod loads in IDE but not in normal Forge (Check)
+ * COASTER RIDING
+ * Seat jerks about once a second in the coaster
+ * * Player Roll doesn't update well
  * [Netty Local Client IO #0/WARN]: ERC_EntityCoaster::addSeat, seats is null
  * WRENCH ADJUSTMENT MODE
  * * Pressing smooth causes assorted problems:
