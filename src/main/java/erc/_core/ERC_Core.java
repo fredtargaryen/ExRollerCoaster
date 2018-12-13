@@ -8,7 +8,6 @@
  *   * Can warp the selected rail
  * * Right-clicking the rail should make a dark column on the right
  * COASTER GRAVITY?
- * CHECK COASTER CONNECTORS
  * RAIL GRAPHICS
  * * Rails stop rendering when moving far enough away from them and looking away from block
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.

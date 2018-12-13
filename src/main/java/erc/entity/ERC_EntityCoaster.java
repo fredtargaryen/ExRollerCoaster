@@ -424,10 +424,12 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 		AnswerRequestConnect(player);
 		return true;
     }
-    
+
     protected void AnswerRequestConnect(EntityPlayer player)
     {
 		// �ȉ������A���̉E�N���b�N����͂����Ȃ�
+		//FTThis code is main hand only when it should probably allow offhand too. Problem is calling getActiveHand
+		//FTreturns null...
 		if(world.isRemote)
 		{
 			ERC_ItemCoasterConnector itemcc = (ERC_ItemCoasterConnector) player.getHeldItemMainhand().getItem();
@@ -435,7 +437,7 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 			ERC_CoasterAndRailManager.client_setParentCoaster(this);
 		}
 		if(!player.capabilities.isCreativeMode)player.getHeldItemMainhand().grow(-1);
-		player.swingArm(player.getActiveHand());
+		player.swingArm(EnumHand.MAIN_HAND);
     }
 
 	public void connectionCoaster(ERC_EntityCoasterConnector followCoaster)
