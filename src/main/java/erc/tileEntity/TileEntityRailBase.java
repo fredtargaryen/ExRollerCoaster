@@ -537,12 +537,10 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	    
 		////spline
 		float lT=0f;
-		if(t < 0)
-		{
+		if(t < 0) {
 			ERC_Logger.warn("tileentityrailbase.calcposition2 : paramT is smaller than 0");
 			t = 0;
 		}
-		//FTGets current control point and r
 		int T = (int)Math.floor(t * (PosNum-1));
 		if(PosNum-1 <= T) lT = fixedParamTTable[PosNum-1];
 		else lT = ERC_MathHelper.Lerp(t*(PosNum-1)-T, fixedParamTTable[T], fixedParamTTable[T+1]);

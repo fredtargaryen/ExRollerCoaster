@@ -1,6 +1,6 @@
 /**
  * TODO
- * Coremod loads in IDE but not in normal Forge (Check)
+ * Camera view offset is as if standing normally, when it should be changing like the third person rotation
  * [Netty Local Client IO #0/WARN]: ERC_EntityCoaster::addSeat, seats is null
  * WRENCH ADJUSTMENT MODE
  * * Pressing smooth causes assorted problems:
