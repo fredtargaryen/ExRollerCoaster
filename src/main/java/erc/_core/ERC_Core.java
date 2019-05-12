@@ -1,7 +1,9 @@
 package erc._core;
 
-import java.io.File;
-
+import erc._mc.block.rail.*;
+import erc._mc.item.*;
+import erc._mc.tileentity.TileEntityRailModelConstructor;
+import mochisystems._core._Core;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -11,68 +13,68 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import erc.block.*;
-import erc.entity.ERC_EntityCoaster;
-import erc.entity.ERC_EntityCoasterConnector;
-import erc.entity.ERC_EntityCoasterDoubleSeat;
-import erc.entity.ERC_EntityCoasterMonodentate;
-import erc.entity.ERC_EntityCoasterSeat;
-import erc.entity.entitySUSHI;
+import erc._mc.item.ItemCoaster;
+import erc._mc.entity.EntityCoaster;
+import erc._mc.entity.EntityCoasterSeat;
+import erc._mc.entity.entitySUSHI;
 import erc.gui.ERC_GUIHandler;
-import erc.handler.ERC_TickEventHandler;
-import erc.item.ERC_ItemCoaster;
-import erc.item.ERC_ItemCoasterConnector;
-import erc.item.ERC_ItemCoasterMonodentate;
-import erc.item.ERC_ItemSmoothAll;
-import erc.item.ERC_ItemSwitchingRailModel;
-import erc.item.ERC_ItemWrench;
-import erc.item.ERC_ItemWrenchPlaceBlock;
-import erc.item.itemSUSHI;
-import erc.message.ERC_PacketHandler;
-import erc.proxy.IProxy;
-import erc.tileEntity.*;
+import mochisystems.handler.TickEventHandler;
+import erc._mc.block.*;
+import erc.network.ERC_PacketHandler;
+import erc._core.proxy.IProxy;
+import erc._mc.tileentity.TileEntityRail;
+import erc.model.BlockInvisibleRail;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @Mod( 
 		modid = ERC_Core.MODID, 
 		name = "Ex Roller Coaster", 
 		version = ERC_Core.VERSION,
-		dependencies = "required-after:Forge@[10.12.1.1090,)",
+		dependencies = "required-after:Forge@[10.12.1.1090,);required-after:"+_Core.MODID+"@[1.0,)",
 		useMetadata = true
 		)
 public class ERC_Core {
-	public static final String MODID = ERC_CONST.DOMAIN;
-	public static final String VERSION = "1.41";
+	public static final String MODID = "erc";
+	public static final String VERSION = "2.0beta";
 
 	
 	//proxy////////////////////////////////////////
-	@SidedProxy(clientSide = "erc.proxy.ERC_ClientProxy", serverSide = "erc.proxy.ERC_ServerProxy")
+	@SidedProxy(clientSide = "erc._core.proxy.ERC_ClientProxy", serverSide = "erc._core.proxy.ERC_ServerProxy")
 	public static IProxy proxy;
-	
+
 	//Blocks/////////////////////////////////////////
-	public static Block railNormal = new blockRailNormal();
-	public static Block railRedAccel = new blockRailRedstoneAccelerator();
-	public static Block railConst = new blockRailConstVelocity();
-	public static Block railDetect = new blockRailDetector();
-	public static Block railBranch = new blockRailBranch();
-	public static Block railInvisible = new blockRailInvisible();
-	public static Block railNonGravity = new BlockNonGravityRail();
-	
+	public static Block railNormal = new BlockRail().setTextureBase(Blocks.iron_block);
+	public static Block railAccel = new BlockAccelRail().setTextureBase(Blocks.redstone_block);
+	public static Block railConst = new BlockConstVelocityRail().setTextureBase(Blocks.stone);
+	public static Block railDetect = new BlockDetectorRail().setTextureBase(Blocks.quartz_block);
+	public static Block railBranch = new BlockBranchRail().setTextureBase(Blocks.iron_block);
+	public static Block railInvisible = new BlockInvisibleRail().setTextureBase(Blocks.glass);
+	public static Block railNonGravity = new BlockNonGravityRail().setTextureBase(Blocks.portal);
+
+	public static Block railModelConstructor = new BlockRailModelConstructor();
+	public static ItemBlock ItemRailModelChanger = new ItemBlock(railModelConstructor);
+
 	//special block renderer ID
 	public static int blockRailRenderId;
 //	public static int blockFerrisSupporterRenderID;
 	
 	// items /////////////////////////////////////////
-	public static Item ItemBasePipe = new Item();
-	public static Item ItemWrench = new ERC_ItemWrench();
-	public static Item ItemCoaster = new ERC_ItemCoaster();
-	public static Item ItemCoasterConnector = new ERC_ItemCoasterConnector();
-	public static Item ItemCoasterMono = new ERC_ItemCoasterMonodentate();
-	public static Item ItemSwitchRail = new ERC_ItemSwitchingRailModel();
+	public static Item itemBasePipe = new Item();
+	public static Item itemWrench = new ERC_ItemWrench();
+	public static Item itemCoaster = new ItemCoaster();
+	public static Item ItemSwitchRailModel = new ERC_ItemSwitchingRailModel();
+	public static Item ItemRailBlockModelChanger = new ItemRailModelChanger();
 	public static Item ItemSUSHI = new itemSUSHI();
 	public static Item ItemStick = new ERC_ItemWrenchPlaceBlock();
 	public static Item ItemSmoothAll = new ERC_ItemSmoothAll();
@@ -82,17 +84,18 @@ public class ERC_Core {
     public static ERC_Core INSTANCE;
 //    public static Item sampleGuiItem;
     public static final int GUIID_RailBase = 0;
-//    public static final int GUIID_FerrisConstructor = 1;
+	public static final int GUIID_RailModelConstructor = 1;
+	public static final int GUIID_CoasterModelConstructor = 2;
 //    public static final int GUIID_FerrisBasketConstructor = 2;
 //    public static final int GUIID_FerrisCore = 3;
     
 	////////////////////////////////////////////////////////////////
 	//Creative Tab
-	public static ERC_CreateCreativeTab ERC_Tab = new ERC_CreateCreativeTab("ExRC", ItemBasePipe);
+	public static ERC_CreateCreativeTab ERC_Tab = new ERC_CreateCreativeTab("ExRC", itemCoaster);
 	
 	////////////////////////////////////////////////////////////////
 	// TickEventProxy
-	public static ERC_TickEventHandler tickEventHandler = null;
+	public static TickEventHandler tickEventHandler = null;
 	
 	////////////////////////////////////////////////////////////////
 	
@@ -105,14 +108,14 @@ public class ERC_Core {
 		ERC_PacketHandler.init();
 		
 		// Register TileEntity
-		GameRegistry.registerTileEntity(TileEntityRailBase.class, "ERC:TileEntityRailBase");
-		GameRegistry.registerTileEntity(TileEntityRailNormal.class, "ERC:TileEntityRail");
-		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, "ERC:TileEntityRailRedAcc");
-		GameRegistry.registerTileEntity(TileEntityRailConstVelosity.class, "ERC:TileEntityRailconstvel");
-		GameRegistry.registerTileEntity(TileEntityRailDetector.class, "ERC:TileEntityRailDetector");
-		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, "ERC:TileEntityRailBranch");
-		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, "ERC:TileEntityInvisible");
-		GameRegistry.registerTileEntity(TileEntityNonGravityRail.class, "ERC:TileEntityNonGravity");
+		GameRegistry.registerTileEntity(TileEntityRailModelConstructor.class, "ERC:RailModelConstructor");
+		GameRegistry.registerTileEntity(TileEntityRail.Normal.class, "ERC:TileEntityRail");
+		GameRegistry.registerTileEntity(TileEntityRail.Accel.class, "ERC:TileEntityRailRedAcc");
+		GameRegistry.registerTileEntity(TileEntityRail.Const.class, "ERC:TileEntityRailconstvel");
+		GameRegistry.registerTileEntity(TileEntityRail.Detector.class, "ERC:TileEntityRailDetector");
+		GameRegistry.registerTileEntity(TileEntityRail.Branch.class, "ERC:TileEntityRailBranch");
+		GameRegistry.registerTileEntity(TileEntityRail.Invisible.class, "ERC:TileEntityInvisible");
+		GameRegistry.registerTileEntity(TileEntityRail.AntiGravity.class, "ERC:TileEntityNonGravity");
 
 		proxy.preInit();
 
@@ -129,14 +132,14 @@ public class ERC_Core {
 		
 		//Register Entity
 		int eid=100;
-		EntityRegistry.registerModEntity(ERC_EntityCoaster.class, "erc:coaster", eid++, this, 200, 10, true);
-		EntityRegistry.registerModEntity(ERC_EntityCoasterMonodentate.class, "erc:coaster:mono", eid++, this, 200, 10, true);
-		EntityRegistry.registerModEntity(ERC_EntityCoasterDoubleSeat.class, "erc:coaster:double", eid++, this, 200, 10, true);
-		EntityRegistry.registerModEntity(ERC_EntityCoasterSeat.class, "erc:coaster:seat", eid++, this, 400, 20, true);
-		EntityRegistry.registerModEntity(ERC_EntityCoasterConnector.class, "erc:coaster:connect", eid++, this, 200, 10, true);
+		EntityRegistry.registerModEntity(EntityCoaster.class, "erc:coaster", eid++, this, 400, 10, true);
+		EntityRegistry.registerModEntity(EntityCoasterSeat.class, "erc:coaster:seat", eid++, this, 400, 20, true);
 		EntityRegistry.registerModEntity(entitySUSHI.class, "erc:SUSHI", eid++, this, 200, 50, true);
+//		EntityRegistry.registerModEntity(ERC_EntityCoasterMonodentate.class, "erc:coaster:mono", eid++, this, 200, 10, true);
+//		EntityRegistry.registerModEntity(ERC_EntityCoasterDoubleSeat.class, "erc:coaster:double", eid++, this, 200, 10, true);
+//		EntityRegistry.registerModEntity(ERC_EntityCoasterConnector.class, "erc:coaster:connect", eid++, this, 200, 10, true);
 
-		//Register Items
+		// Register Items
 		InitBlock_RC();
 		InitItem_RC();
 		
@@ -163,11 +166,11 @@ public class ERC_Core {
 			.setCreativeTab(ERC_Tab);
 		GameRegistry.registerBlock(railNormal, "ERC.Rail");
 		
-		railRedAccel
-			.setBlockName("railRedAccel")
+		railAccel
+			.setBlockName("railAccel")
 			.setBlockTextureName("redstone_block")
 			.setCreativeTab(ERC_Tab);
-		GameRegistry.registerBlock(railRedAccel, "ERC.RailAccel");
+		GameRegistry.registerBlock(railAccel, "ERC.RailAccel");
 		
 		railConst
 			.setBlockName("railConstVelocity")
@@ -198,20 +201,26 @@ public class ERC_Core {
             .setBlockTextureName("portal")
             .setCreativeTab(ERC_Tab);
 		GameRegistry.registerBlock(railNonGravity, "ERC.RailNonGravity");
+
+        railModelConstructor
+            .setBlockName("TileEntityRailModelConstructor")
+            .setBlockTextureName("TileEntityRailModelConstructor")
+            .setCreativeTab(ERC_Tab);
+        GameRegistry.registerBlock(railModelConstructor, "ERC.TileEntityRailModelConstructor");
 	}
 	
 	private void InitItem_RC()
 	{
-		ItemBasePipe.setCreativeTab(ERC_Tab);
-		ItemBasePipe.setUnlocalizedName("RailPipe");
-		ItemBasePipe.setTextureName(MODID+":railpipe");
-		GameRegistry.registerItem(ItemBasePipe, "railpipe");
+		itemBasePipe.setCreativeTab(ERC_Tab);
+		itemBasePipe.setUnlocalizedName("RailPipe");
+		itemBasePipe.setTextureName(MODID+":railpipe");
+		GameRegistry.registerItem(itemBasePipe, "railpipe");
 		
-		ItemWrench.setCreativeTab(ERC_Tab);
-		ItemWrench.setUnlocalizedName("Wrench");
-		ItemWrench.setTextureName(MODID+":wrench_c1");
-		ItemWrench.setMaxStackSize(1);
-		GameRegistry.registerItem(ItemWrench, "Wrench");
+		itemWrench.setCreativeTab(ERC_Tab);
+		itemWrench.setUnlocalizedName("Wrench");
+		itemWrench.setTextureName(MODID+":wrench_c1");
+		itemWrench.setMaxStackSize(1);
+		GameRegistry.registerItem(itemWrench, "Wrench");
 		
 		ItemStick.setCreativeTab(ERC_Tab);
 		ItemStick.setUnlocalizedName("BlockPlacer");
@@ -219,30 +228,37 @@ public class ERC_Core {
 		ItemStick.setMaxStackSize(1);
 		GameRegistry.registerItem(ItemStick, "ItemWrenchPlaceBlock");
 		
-		ItemCoaster.setCreativeTab(ERC_Tab);
-		ItemCoaster.setUnlocalizedName("Coaster");
-		ItemCoaster.setTextureName(MODID+":coaster");
-		ItemCoaster.setMaxStackSize(10);
-		GameRegistry.registerItem(ItemCoaster, "Coaster");
+		itemCoaster.setCreativeTab(ERC_Tab);
+		itemCoaster.setUnlocalizedName("Coaster");
+		itemCoaster.setTextureName(MODID+":coaster");
+		itemCoaster.setMaxStackSize(10);
+		GameRegistry.registerItem(itemCoaster, "Coaster");
 
-		ItemCoasterConnector.setCreativeTab(ERC_Tab);
-		ItemCoasterConnector.setUnlocalizedName("CoasterConnector");
-		ItemCoasterConnector.setTextureName(MODID+":coaster_c");
-		ItemCoasterConnector.setMaxStackSize(10);
-		GameRegistry.registerItem(ItemCoasterConnector, "CoasterConnector");
+//		ItemCoasterConnector.setCreativeTab(ERC_Tab);
+//		ItemCoasterConnector.setUnlocalizedName("CoasterConnector");
+//		ItemCoasterConnector.setTextureName(MODID+":coaster_c");
+//		ItemCoasterConnector.setMaxStackSize(10);
+//		GameRegistry.registerItem(ItemCoasterConnector, "CoasterConnector");
 
-		ItemCoasterMono.setCreativeTab(ERC_Tab);
-		ItemCoasterMono.setUnlocalizedName("CoasterMono");
-		ItemCoasterMono.setTextureName(MODID+":coaster");
-		ItemCoasterMono.setMaxStackSize(10);
-		GameRegistry.registerItem(ItemCoasterMono, "CoasterMono");
+//		ItemCoasterMono.setCreativeTab(ERC_Tab);
+//		ItemCoasterMono.setUnlocalizedName("CoasterMono");
+//		ItemCoasterMono.setTextureName(MODID+":coaster");
+//		ItemCoasterMono.setMaxStackSize(10);
+//		GameRegistry.registerItem(ItemCoasterMono, "CoasterMono");
 		
-		ItemSwitchRail.setCreativeTab(ERC_Tab);
-		ItemSwitchRail.setUnlocalizedName("SwitchRailModel");
-//		ItemSwitchRail.setTextureName(MODID+":switchrail");
-		ItemSwitchRail.setMaxStackSize(1);
-		GameRegistry.registerItem(ItemSwitchRail, "SwitchRailModel");
-		
+		ItemSwitchRailModel.setCreativeTab(ERC_Tab);
+		ItemSwitchRailModel.setUnlocalizedName("SwitchRailModel");
+//		ItemSwitchRailModel.setTextureName(MODID+":switchrail");
+		ItemSwitchRailModel.setMaxStackSize(1);
+		GameRegistry.registerItem(ItemSwitchRailModel, "SwitchRailModel");
+
+
+		ItemRailBlockModelChanger
+				.setUnlocalizedName("SwitchBlockRailModel")
+				.setTextureName(MODID+":switchblockrailmodel")
+				.setMaxStackSize(1);
+		GameRegistry.registerItem(ItemRailBlockModelChanger, "SwitchBlockRailModel");
+
 		ItemSUSHI.setCreativeTab(ERC_Tab);
 		ItemSUSHI.setUnlocalizedName("ERCSUSHI");
 		ItemSUSHI.setTextureName(MODID+":SUSHI");
@@ -258,30 +274,27 @@ public class ERC_Core {
 	
 	private void InitItemRecipe()
 	{
-
-		GameRegistry.addRecipe(new ItemStack(ItemBasePipe,2,0),
+		GameRegistry.addRecipe(new ItemStack(itemBasePipe,2,0),
                 " L ",
                 "L L",
                 " L ",
                 'L',Items.iron_ingot
         );
-		
-		
+
 		GameRegistry.addRecipe(new ItemStack(Items.iron_ingot,2,0),
                 "L",
-                'L',ItemBasePipe
+                'L', itemBasePipe
         );
-				
 		
 		GameRegistry.addRecipe(new ItemStack(railNormal,10,0),
 				"P P",
 				"PBP",
 				"P P",
-				'P',ItemBasePipe,
+				'P', itemBasePipe,
 				'B',Blocks.iron_block
 		);
 
-		GameRegistry.addRecipe(new ItemStack(railRedAccel,1,0),
+		GameRegistry.addRecipe(new ItemStack(railAccel,1,0),
 				"R",
 				"r",
 				'R',railNormal,
@@ -317,11 +330,11 @@ public class ERC_Core {
 		);
 		
 
-		GameRegistry.addRecipe(new ItemStack(ItemWrench,1,0),
+		GameRegistry.addRecipe(new ItemStack(itemWrench,1,0),
 				"PI ",
 				"II ",
 				"  I",
-				'P',ItemBasePipe,
+				'P', itemBasePipe,
 				'I',Items.iron_ingot
 		);
 		
@@ -330,7 +343,7 @@ public class ERC_Core {
 				" P ",
 				"  I",
 				'D',Blocks.dirt,
-				'P',ItemBasePipe,
+				'P', itemBasePipe,
 				'I',Items.stick
 		);
 		
@@ -339,7 +352,7 @@ public class ERC_Core {
 				" P ",
 				"  I",
 				'B',Items.book,
-				'P',ItemBasePipe,
+				'P', itemBasePipe,
 				'I',Items.stick
 		);
 		// SUSHI
@@ -350,33 +363,33 @@ public class ERC_Core {
 				'M',Items.wheat
 		);
 		
-		GameRegistry.addRecipe(new ItemStack(ItemCoaster,1,0),
+		GameRegistry.addRecipe(new ItemStack(itemCoaster,1,0),
 				"I I",
 				"PIP",
-				'P',ItemBasePipe,
+				'P', itemBasePipe,
 				'I',Items.iron_ingot
 		);
 		
-		GameRegistry.addRecipe(new ItemStack(ItemCoasterMono,1,0),
-				"C",
-				"R",
-				'C',ItemCoaster,
-				'R',Items.redstone
-		);
+//		GameRegistry.addRecipe(new ItemStack(ItemCoasterMono,1,0),
+//				"C",
+//				"R",
+//				'C', itemCoaster,
+//				'R',Items.redstone
+//		);
+//
+//		GameRegistry.addRecipe(new ItemStack(ItemCoasterConnector,1,0),
+//				"FC",
+//				'F',Blocks.tripwire_hook,
+//				'C', itemCoaster
+//		);
 		
-		GameRegistry.addRecipe(new ItemStack(ItemCoasterConnector,1,0),
-				"FC",
-				'F',Blocks.tripwire_hook,
-				'C',ItemCoaster
-		);
 		
-		
-		GameRegistry.addRecipe(new ItemStack(ItemSwitchRail,1,0),
+		GameRegistry.addRecipe(new ItemStack(ItemSwitchRailModel,1,0),
 				" L ",
                 "LRL",
                 " L ",
 				'R',Blocks.rail,
-				'L',ItemBasePipe
+				'L', itemBasePipe
 		);
 		
 		
@@ -386,5 +399,19 @@ public class ERC_Core {
                 "R R",
 				'R',Blocks.rail
 		);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(entryTicket,64),
+				       "",
+				       "Y",
+				       "P",
+				       'Y', new ItemStack(Items.dye, 1, 11),
+				       'P', Items.paper
+				       );
+	}
+
+	public static InputStream GetInModPackageFileStream(ResourceLocation resource) throws IOException
+	{
+        IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resource);
+        return res.getInputStream();
 	}
 }
