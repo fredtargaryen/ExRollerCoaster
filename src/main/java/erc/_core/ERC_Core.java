@@ -90,6 +90,7 @@ public class ERC_Core {
 	public static Item ItemCoasterMono = new ERC_ItemCoasterMonodentate();
 	public static Item ItemSwitchRail = new ERC_ItemSwitchingRailModel();
 	public static Item ItemSUSHI = new itemSUSHI();
+	public static Item ItemEntryTicket = new itemEntryTicket();
 	public static Item ItemStick = new ERC_ItemWrenchPlaceBlock();
 	public static Item ItemSmoothAll = new ERC_ItemSmoothAll();
 	//ITEMBLOCKS
@@ -252,6 +253,10 @@ public class ERC_Core {
 		ItemSUSHI.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("sushi")
 		.setRegistryName("sushi");
+		
+		ItemEntryTicket.setCreativeTab(ERC_Tab)
+		.setUnlocalizedName("entryTicket")
+		.setRegistryName("entryTicket");
 
 		ItemSmoothAll.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("itemsmoothall")
