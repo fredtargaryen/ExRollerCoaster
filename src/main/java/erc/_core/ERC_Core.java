@@ -74,6 +74,7 @@ public class ERC_Core {
 	public static Item ItemCoasterMono = new ERC_ItemCoasterMonodentate();
 	public static Item ItemSwitchRail = new ERC_ItemSwitchingRailModel();
 	public static Item ItemSUSHI = new itemSUSHI();
+	public static Item entryTicket = new itemEntryTicket();
 	public static Item ItemStick = new ERC_ItemWrenchPlaceBlock();
 	public static Item ItemSmoothAll = new ERC_ItemSmoothAll();
 	
@@ -245,8 +246,12 @@ public class ERC_Core {
 		
 		ItemSUSHI.setCreativeTab(ERC_Tab);
 		ItemSUSHI.setUnlocalizedName("ERCSUSHI");
-		ItemSUSHI.setTextureName(MODID+":SUSHI");
+		ItemSUSHI.setTextureName(MODID+ ":" + SUSHI");
 		GameRegistry.registerItem(ItemSUSHI, "ItemSUSHI");
+		entryTicket.setCreativeTab(ERC_Tab);
+		entryTicket.setunlocalizedName("entryTicket");
+		entryTicket.setTextureName(MODID+":"+ "entryTicket");
+		GameRegistry.registerItem(entryTicket, "entryTicket");
 		
 		
 		ItemSmoothAll.setCreativeTab(ERC_Tab);
@@ -386,5 +391,8 @@ public class ERC_Core {
                 "R R",
 				'R',Blocks.rail
 		);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(entryTicket, 64),
+		new Object[] { Items.paper, new ItemStack(Items.dye, 1, 11) });
 	}
 }
