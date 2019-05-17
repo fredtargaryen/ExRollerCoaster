@@ -4,6 +4,7 @@ bin/
 blender_project/
 modelsafe/
 .idea
+classes
 eclipse
 gradle
 build
