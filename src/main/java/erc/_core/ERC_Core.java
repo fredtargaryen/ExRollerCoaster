@@ -49,6 +49,7 @@ import erc.item.ERC_ItemSwitchingRailModel;
 import erc.item.ERC_ItemWrench;
 import erc.item.ERC_ItemWrenchPlaceBlock;
 import erc.item.itemSUSHI;
+import erc.item.itemEntryTicket;
 import erc.message.ERC_PacketHandler;
 import erc.proxy.IProxy;
 import erc.tileEntity.*;
@@ -255,8 +256,8 @@ public class ERC_Core {
 		.setRegistryName("sushi");
 		
 		ItemEntryTicket.setCreativeTab(ERC_Tab)
-		.setUnlocalizedName("entryTicket")
-		.setRegistryName("entryTicket");
+		.setUnlocalizedName("entryticket")
+		.setRegistryName("entryticket");
 
 		ItemSmoothAll.setCreativeTab(ERC_Tab)
 		.setUnlocalizedName("itemsmoothall")
@@ -295,9 +296,9 @@ public class ERC_Core {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> evt)
 	{
-		evt.getRegistry().registerAll(ItemBasePipe, ItemWrench, ItemStick, ItemCoaster, ItemCoasterConnector,
-				ItemCoasterMono, ItemSwitchRail, ItemSUSHI, ItemSmoothAll, ItemRailBranch, ItemRailConst,
-				ItemRailDetect,ItemRailInvisible, ItemRailNonGravity, ItemRailNormal, ItemRailRedAccel);
+		evt.getRegistry().registerAll(ItemBasePipe, ItemEntryTicket, ItemWrench, ItemStick, ItemCoaster,
+                ItemCoasterConnector, ItemCoasterMono, ItemSwitchRail, ItemSUSHI, ItemSmoothAll, ItemRailBranch,
+                ItemRailConst, ItemRailDetect,ItemRailInvisible, ItemRailNonGravity, ItemRailNormal, ItemRailRedAccel);
 	}
 
 	@SubscribeEvent

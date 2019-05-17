@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:dye",
+      "data": 11
+    },
+    {
+      "item": "minecraft:paper",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "erc:entryticket",
+    "data": 0,
+    "count": 64
+  }
+}

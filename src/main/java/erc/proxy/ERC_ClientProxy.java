@@ -157,5 +157,6 @@ public class ERC_ClientProxy implements IProxy{
 		ModelLoader.setCustomModelResourceLocation(ItemRailNonGravity, 0, new ModelResourceLocation(ERC_Core.MODID+":railnongravity", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailNormal, 0, new ModelResourceLocation(ERC_Core.MODID+":railnormal", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailRedAccel, 0, new ModelResourceLocation(ERC_Core.MODID+":railredaccel", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemEntryTicket, 0, new ModelResourceLocation(ERC_Core.MODID+":entryticket", "inventory"));
 	}
 }
