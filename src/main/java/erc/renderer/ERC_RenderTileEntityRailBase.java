@@ -108,8 +108,8 @@ public class ERC_RenderTileEntityRailBase extends TileEntitySpecialRenderer<Wrap
 		renderTileEntityAt(te,x,y,z);
 	}
 
-	/**
-	 * Fixes rails disappearing from certain viewpoints.
+	/**s
+	 * Fixes rails disappearing from certain viewpoints - FT
 	 */
 	@Override
 	public boolean isGlobalRenderer(Wrap_TileEntityRail te) {
