@@ -13,6 +13,7 @@ public class TileEntityRailDrift extends TileEntityRailBase {
     @Override
     public void SpecialRailProcessing(ERC_EntityCoaster EntityCoaster) {
         EntityCoaster.ERCPosMat.yaw = EntityCoaster.ERCPosMat.prevYaw;
+        EntityCoaster.ERCPosMat.viewYaw = EntityCoaster.ERCPosMat.prevYaw;
     }
 
     @Override

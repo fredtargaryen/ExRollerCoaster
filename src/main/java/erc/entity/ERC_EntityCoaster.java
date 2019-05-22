@@ -790,12 +790,12 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //        prevRotationYaw = fixrot(rotationYaw, prevRotationYaw);
 //        prevRotationPitch = fixrot(rotationPitch, prevRotationPitch);
 //        prevRotationRoll = fixrot(rotationRoll, prevRotationRoll);
+
+		tlrail.SpecialRailProcessing(this);
         
         ERCPosMat.prevYaw = fixrot(ERCPosMat.yaw, ERCPosMat.prevYaw);
         ERCPosMat.prevPitch = fixrot(ERCPosMat.pitch, ERCPosMat.prevPitch);
         ERCPosMat.prevRoll = fixrot(ERCPosMat.roll, ERCPosMat.prevRoll);
-        
-        tlrail.SpecialRailProcessing(this);
 
         // t�����ɍ��W�X�V
     	this.setPosition(ERCPosMat.Pos.x, ERCPosMat.Pos.y, ERCPosMat.Pos.z);
