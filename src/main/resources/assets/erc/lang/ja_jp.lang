@@ -4,6 +4,7 @@ tile.railconst.name=等速レール
 tile.raildetector.name=検知レール
 tile.railbranch.name=分岐レール
 tile.railinvisible.name=透明レール
+tile.raildrift.name=ドリフト
 
 item.railpipe.name=レールパイプ
 item.wrench_c1.name=レンチ

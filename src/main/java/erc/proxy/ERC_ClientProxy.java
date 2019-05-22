@@ -98,6 +98,7 @@ public class ERC_ClientProxy implements IProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailRedstoneAccelerator.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailConstVelocity.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailDetector.class, tileRenderer);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailDrift.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailBranch2.class,tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRailInvisible.class, tileRenderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNonGravityRail.class, tileRenderer);
@@ -153,6 +154,7 @@ public class ERC_ClientProxy implements IProxy{
 		ModelLoader.setCustomModelResourceLocation(ItemRailBranch, 0, new ModelResourceLocation(ERC_Core.MODID+":railbranch", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailConst, 0, new ModelResourceLocation(ERC_Core.MODID+":railconst", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailDetect, 0, new ModelResourceLocation(ERC_Core.MODID+":raildetector", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(ItemRailDrift, 0, new ModelResourceLocation(ERC_Core.MODID+":raildrift", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailInvisible, 0, new ModelResourceLocation(ERC_Core.MODID+":railinvisible", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailNonGravity, 0, new ModelResourceLocation(ERC_Core.MODID+":railnongravity", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(ItemRailNormal, 0, new ModelResourceLocation(ERC_Core.MODID+":railnormal", "inventory"));

@@ -74,6 +74,7 @@ public class ERC_Core {
 	public static Block railBranch = new blockRailBranch();
 	public static Block railConst = new blockRailConstVelocity();
 	public static Block railDetect = new blockRailDetector();
+	public static Block railDrift = new BlockDriftRail();
 	public static Block railInvisible = new blockRailInvisible();
 	public static Block railNonGravity = new BlockNonGravityRail();
 	public static Block railNormal = new blockRailNormal();
@@ -96,6 +97,7 @@ public class ERC_Core {
 	public static Item ItemRailBranch = new ItemBlock(railBranch);
 	public static Item ItemRailConst = new ItemBlock(railConst);
 	public static Item ItemRailDetect = new ItemBlock(railDetect);
+	public static Item ItemRailDrift = new ItemBlock(railDrift);
 	public static Item ItemRailInvisible = new ItemBlock(railInvisible);
 	public static Item ItemRailNonGravity = new ItemBlock(railNonGravity);
 	public static Item ItemRailNormal = new ItemBlock(railNormal);
@@ -137,6 +139,7 @@ public class ERC_Core {
 		GameRegistry.registerTileEntity(TileEntityRailRedstoneAccelerator.class, new ResourceLocation("erc:tileentityrailredacc"));
 		GameRegistry.registerTileEntity(TileEntityRailConstVelocity.class, new ResourceLocation("erc:tileentityrailconstvel"));
 		GameRegistry.registerTileEntity(TileEntityRailDetector.class, new ResourceLocation("erc:tileentityraildetector"));
+		GameRegistry.registerTileEntity(TileEntityRailDrift.class, new ResourceLocation("erc:tileentityraildrift"));
 		GameRegistry.registerTileEntity(TileEntityRailBranch2.class, new ResourceLocation("erc:tileentityrailbranch"));
 		GameRegistry.registerTileEntity(TileEntityRailInvisible.class, new ResourceLocation("erc:tileentityinvisible"));
 		GameRegistry.registerTileEntity(TileEntityNonGravityRail.class, new ResourceLocation( "erc:tileentitynongravity"));
@@ -195,6 +198,11 @@ public class ERC_Core {
 		railDetect
 			.setUnlocalizedName("raildetector")
 				.setRegistryName("raildetector")
+			.setCreativeTab(ERC_Tab);
+
+		railDrift
+			.setUnlocalizedName("raildrift")
+				.setRegistryName("raildrift")
 			.setCreativeTab(ERC_Tab);
 
 		railBranch
@@ -271,6 +279,9 @@ public class ERC_Core {
 		ItemRailDetect
 				.setUnlocalizedName("raildetector")
 				.setRegistryName("raildetector");
+		ItemRailDrift
+				.setUnlocalizedName("raildrift")
+				.setRegistryName("raildrift");
 		ItemRailInvisible
 				.setUnlocalizedName("railinvisible")
 				.setRegistryName("railinvisible");
@@ -288,7 +299,7 @@ public class ERC_Core {
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> evt)
 	{
-		evt.getRegistry().registerAll(railBranch, railConst, railDetect, railInvisible, railNonGravity, railNormal, railRedAccel);
+		evt.getRegistry().registerAll(railBranch, railConst, railDetect, railDrift, railInvisible, railNonGravity, railNormal, railRedAccel);
 	}
 
 	@SubscribeEvent
@@ -296,7 +307,7 @@ public class ERC_Core {
 	{
 		evt.getRegistry().registerAll(ItemBasePipe, ItemEntryTicket, ItemWrench, ItemStick, ItemCoaster,
                 ItemCoasterConnector, ItemCoasterMono, ItemSwitchRail, ItemSUSHI, ItemSmoothAll, ItemRailBranch,
-                ItemRailConst, ItemRailDetect,ItemRailInvisible, ItemRailNonGravity, ItemRailNormal, ItemRailRedAccel);
+                ItemRailConst, ItemRailDetect, ItemRailDrift, ItemRailInvisible, ItemRailNonGravity, ItemRailNormal, ItemRailRedAccel);
 	}
 
 	@SubscribeEvent
