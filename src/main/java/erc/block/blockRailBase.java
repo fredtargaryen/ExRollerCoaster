@@ -237,7 +237,7 @@ public abstract class blockRailBase extends Block
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 	{
-		return boxes[state.getValue(META) & 7];
+		return boxes[state.getValue(META) & 7].offset(pos);
 	}
 	
 	public static boolean isBlockRail(Block block) {
