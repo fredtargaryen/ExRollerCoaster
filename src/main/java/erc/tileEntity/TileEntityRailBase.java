@@ -301,7 +301,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //		Vec3d p = BaseRail.vecPos.subtract(prevtl.getRail().BaseRail.vecPos).normalize();
 		Vec3d n = nexttl.getRail().BaseRail.vecPos;
 		Vec3d p = prevtl.getRail().BaseRail.vecPos;
-		Vec3d tempDir = p.subtract(n).normalize();
+		Vec3d tempDir = n.subtract(p).normalize(); //p.subtract(n) made smoothing go all weird - FT
 		BaseRail.vecDir = tempDir.normalize();
 		switch(world.getBlockState(new BlockPos(this.getXcoord(), this.getYcoord(), this.getZcoord())).getValue(META) & 7)
 		{
