@@ -301,7 +301,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 //		Vec3d p = BaseRail.vecPos.subtract(prevtl.getRail().BaseRail.vecPos).normalize();
 		Vec3d n = nexttl.getRail().BaseRail.vecPos;
 		Vec3d p = prevtl.getRail().BaseRail.vecPos;
-		Vec3d tempDir = n.subtract(p).normalize(); //p.subtract(n) made smoothing go all weird - FT
+		Vec3d tempDir = n.subtract(p).normalize(); //FT p.subtract(n) made smoothing go all weird
 		BaseRail.vecDir = tempDir.normalize();
 		switch(world.getBlockState(new BlockPos(this.getXcoord(), this.getYcoord(), this.getZcoord())).getValue(META) & 7)
 		{
@@ -358,7 +358,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		
 		////pos
 		Vec3d Base = new Vec3d(BaseRail.vecUp.x * 0.5, BaseRail.vecUp.y * 0.5, BaseRail.vecUp.z * 0.5);
-		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos); //Used to be Base subtract Next but that made things go backwards - FT
+		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos); //FT Used to be Base subtract Next but that made things go backwards
 		Next = new Vec3d(Next.x + NextRail.vecUp.x * 0.5, Next.y + NextRail.vecUp.y * 0.5, Next.z + NextRail.vecUp.z * 0.5);
 		
 		////dir
@@ -517,9 +517,9 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	{	
 		//////////////�R�[�X�^�[����v�Z
 		
-		//FTpositions of *rails*, relative to the base (current) rail *block*
+		//FT positions of *rails*, relative to the base (current) rail *block*
 		Vec3d Base = new Vec3d(BaseRail.vecUp.x, BaseRail.vecUp.y, BaseRail.vecUp.z).scale(0.5);
-		//FTMy fix - seems to work
+		//FT My fix - seems to work
 		Vec3d Next = NextRail.vecPos.subtract(BaseRail.vecPos).add(NextRail.vecUp.scale(0.5));
 		//FTMotty's original code said
 		//FTVec3d Next = BaseRail.vecPos.subtract(NextRail.vecPos).add(NextRail.vecUp.scale(0.5));
