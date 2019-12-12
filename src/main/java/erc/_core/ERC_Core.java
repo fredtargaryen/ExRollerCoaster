@@ -1,6 +1,5 @@
 /**
  * TODO
- * [Netty Local Client IO #0/WARN]: ERC_EntityCoaster::addSeat, seats is null
  * WRENCH ADJUSTMENT MODE
  * * Pressing smooth causes assorted problems:
  *   * Can make everything invisible and break coasters

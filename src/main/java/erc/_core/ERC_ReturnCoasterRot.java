@@ -40,6 +40,7 @@ public class ERC_ReturnCoasterRot {
  		offsetZ = new Vec3d(0, 0, 1);
 
  		up = new Vec3d(0, 1, 0);
+ 		Dir = new Vec3d(0, 0, 0);
 	}
 	
 	public float getFixedRoll(float partialTicks)
