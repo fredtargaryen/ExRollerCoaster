@@ -571,6 +571,7 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 		
 		////pair of rail Vertex
 		Vec3d up = ERC_MathHelper.Slerp(t, vecUp_1, vecUp_2).normalize();
+		ret.up = up;
 		Vec3d cross = up.crossProduct(dir1).normalize();
 		
 //		ERC_MathHelper.CalcCoasterRollMatrix(ret, ret.Pos, dir1, up);
