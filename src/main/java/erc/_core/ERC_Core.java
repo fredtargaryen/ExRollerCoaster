@@ -1,10 +1,5 @@
 /**
  * TODO
- * WRENCH ADJUSTMENT MODE
- * * Pressing smooth causes assorted problems:
- *   * Can make everything invisible and break coasters
- *   * Can warp the selected rail
- * * Right-clicking the rail should make a dark column on the right
  * COASTER GRAVITY?
  * Coaster spams the server when rails are not connected. Not great but Motty's decision.
  * * Commented out for now (2, ERC_EntityCoaster:745)
