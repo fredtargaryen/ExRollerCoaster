@@ -22,7 +22,7 @@ public class ERC_ModelCoaster extends ModelBase {
 		modelCoaster = Obj;
 		TextureResource = Tex;
 	}
-	
+
 	public void render(ERC_EntityCoaster coaster, double x, double y, double z, float t) 
 	{
  		GL11.glPushMatrix();

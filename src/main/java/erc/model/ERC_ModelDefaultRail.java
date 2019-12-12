@@ -91,7 +91,7 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag).endVertex();
 			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag).endVertex();
 			turnflag = turnflag>0?0f:1f;
-			//Original method call was tess.setNormal. How to replace this?-FT
+			//FT Original method call was tess.setNormal. How to replace this?
 			//bb.putNormal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
 		}
 		tess.draw();
@@ -103,7 +103,7 @@ public class ERC_ModelDefaultRail extends Wrap_RailRenderer {
 			bb.pos(posArray[index].x, posArray[index].y, posArray[index].z).tex(0.0d, turnflag).endVertex();
 			bb.pos(posArray[index+1].x, posArray[index+1].y, posArray[index+1].z).tex(1.0d, turnflag).endVertex();
 			turnflag = turnflag>0?0f:1f;
-			//Original method call was tess.setNormal. How to replace this?-FT
+			//FT Original method call was tess.setNormal. How to replace this?
 			//bb.putNormal((float)normalArray[i].x, (float)normalArray[i].y, (float)normalArray[i].z);
 		}
 		tess.draw();

@@ -162,7 +162,7 @@ public abstract class blockRailBase extends Block
 		rail.SetBaseRailPosition(x, y, z, vecDir, metadir, 15f);
 //		rail.SetNextRailPosition(x+(int)(vecDir.xCoord*10), y+(int)(vecDir.yCoord*10), z+(int)(vecDir.zCoord*10));
 		rail.SetNextRailVectors(
-				//new Vec3d(x+(int)(vecDir.x*10)+0.5, y+(int)(vecDir.y*10)+0.5, z+(int)(vecDir.z*10)+0.5), // Seemed to cause rails to not be straight when placed -FT
+				//new Vec3d(x+(int)(vecDir.x*10)+0.5, y+(int)(vecDir.y*10)+0.5, z+(int)(vecDir.z*10)+0.5), //FT Seemed to cause rails to not be straight when placed
 				new Vec3d(x+(vecDir.x*10)+0.5, y+(vecDir.y*10)+0.5, z+(vecDir.z*10)+0.5),
 				vecDir, 
 				rail.getRail().BaseRail.vecUp, 
@@ -237,7 +237,7 @@ public abstract class blockRailBase extends Block
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 	{
-		return boxes[state.getValue(META) & 7];
+		return boxes[state.getValue(META) & 7].offset(pos);
 	}
 	
 	public static boolean isBlockRail(Block block) {

@@ -71,9 +71,9 @@ public class DataTileEntityRail {
 		fDirTwist = 0;
 	}
 
-	//FTvecUp is a normalised up direction, which fUp scales
-	//FTvecDir is general direction of entire rail
-	//FTpow is
+	//FT vecUp is a normalised up direction, which fUp scales
+	//FT vecDir is general direction of entire rail
+	//FT pow is
 	//FT((vecUp * fUp) + vecDir) is the resultant of the dir and up vectors
 	//FT((vecUp * fUp) + vecDir) * pow
 	public Vec3d CalcVec3DIRxPOW(float pow)

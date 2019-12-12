@@ -81,11 +81,11 @@ public class ERC_EntityCoasterConnector extends ERC_EntityCoaster {
 		//proxy connection to parent
 		if( !canConnectForrowingCoaster() )
 		{
-			//
-			if(parent.canConnectForrowingCoaster())
-			{
-				parent.AnswerRequestConnect(player);
-				return true;
+			if(parent != null) {
+				if (parent.canConnectForrowingCoaster()) {
+					parent.AnswerRequestConnect(player);
+					return true;
+				}
 			}
 			return false;
 		}

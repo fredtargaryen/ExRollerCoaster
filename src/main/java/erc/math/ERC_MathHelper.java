@@ -149,6 +149,7 @@ public class ERC_MathHelper {
 		Vec4 ans = MulQuaternion(MulQuaternion(Q2, Qsrc), Q1);
 		return new Vec3d(ans.y, ans.z, ans.w);
 	}
+
 	private static Vec4 MulQuaternion(Vec4 q1, Vec4 q2)
 	{
 		return new Vec4(

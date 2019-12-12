@@ -23,7 +23,7 @@ public class ERCMovingSoundRiding extends MovingSound {
 	    this.attenuationType = ISound.AttenuationType.NONE;
 	    this.repeat = true;
 	    this.repeatDelay = 0;
-	    //May be wrong - FT
+	    //FT May be wrong
 	    this.pitch = 10.7f;
 	}
 
