@@ -1,5 +1,10 @@
 package erc.manager;
 
+import com.sun.javafx.geom.Vec3f;
+import erc._core.ERC_ReturnCoasterRot;
+import erc.math.ERC_MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
@@ -168,15 +173,31 @@ public class ERC_CoasterAndRailManager {
     }
     
     @SideOnly(Side.CLIENT)
-    public static void CameraProc(float f)
-    {
-//    	ERC_Logger.debugInfo("CoasterManager:CameraProc   p:"+rotationRoll+", pp:"+prevRotationRoll+", pt:"+f);
-    	GL11.glRotatef(prevRotationRoll + (rotationRoll - prevRotationRoll) * f, 0.0F, 0.0F, 1.0F);
-//    	GL11.glRotatef(prevRotationPitch + (rotationPitch - prevRotationPitch) * f, 1.0F, 0.0F, 0.0F);
-//    	GL11.glRotatef(prevRotationYaw + (rotationYaw - prevRotationYaw) * f, 0.0F, 1.0F, 0.0F);
-//    	GL11.glTranslatef(0, 0, 8);
-//    	GL11.glRotatef(prevRotationPitch + (rotationPitch - prevRotationPitch) * f, -1.0F, 0.0F, 0.0F);
-//    	ERC_Logger.debugInfo(""+f+":::"+rotationViewRoll+":::"+prevRotationViewRoll);
+    public static void CameraProc(float f) {
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		//Rotate coasterVec using rotation of coaster
+		Entity e = player.getRidingEntity();
+		if(e instanceof ERC_EntityCoasterSeat) {
+			ERC_ReturnCoasterRot mat = ((ERC_EntityCoasterSeat) e).parent.ERCPosMat;
+			Vec3d up = mat.up;
+			//Vector to translate the world by relative to Coaster
+			//The offset vector (0, 0, 0) puts the camera where the player's head would be
+			//up=(0, 1, 0) (e.g. when the coaster is upright) puts the camera in the middle of the coaster
+			//up=(0, -1, 0) puts the camera... in the wrong place
+			//The offset vector (0, 2, 0) or (0, 2.5, 0) puts the camera in the appropriate place when upside down
+			//up=(1, 0, 0) puts the camera in the right place!
+			//up=(-1, 0, 0) puts the camera in the right place!
+			//up=(0, 0, 1) puts the camera in the opposite place!
+			//up=(0, 0, -1) puts the camera in the opposite place!
+			//This is why we negate the z and y(translate) = -y(up) + 1.5
+			Vec3d coasterVec = new Vec3d(up.x, -up.y + 1.5, -up.z);
+			//Align this vector with the player pitch and yaw
+			Vec3d alignedToYaw = ERC_MathHelper.rotateAroundVector(coasterVec, new Vec3d(0, 1, 0), player.rotationYaw * Math.PI / 180);
+			Vec3d alignedToPitch = ERC_MathHelper.rotateAroundVector(alignedToYaw, new Vec3d(1, 0, 0), player.rotationPitch * Math.PI / 180);
+			//Put rotation first, so it comes out, then turns at the point it came out to
+			GL11.glRotatef(prevRotationRoll + (rotationRoll - prevRotationRoll) * f, 0.0F, 0.0F, 1.0F);
+			GL11.glTranslated(alignedToPitch.x, alignedToPitch.y, -alignedToPitch.z);
+		}
     }
     
     

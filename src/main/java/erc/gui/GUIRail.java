@@ -127,20 +127,6 @@ public class GUIRail extends GuiContainer {
 		ERC_CoasterAndRailManager.CloseRailGUI();
 	}
     
-
-	@Override
-    public void drawWorldBackground(int p_146270_1_)
-    {
-        if (this.mc.world != null)
-        {
-            this.drawGradientRect(this.width*3/4, 0, this.width, this.height, -1072689136, -804253680);
-        }
-        else
-        {
-            this.drawBackground(p_146270_1_);
-        }
-    }
-    
 	/*GUI�̕������̕`�揈��*/
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseZ)
@@ -171,6 +157,10 @@ public class GUIRail extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseZ)
     {
+        if (this.mc.world != null)
+        {
+            this.drawGradientRect(this.width*3/4, 0, this.width, this.height, -1072689136, -804253680);
+        }
         this.mc.renderEngine.bindTexture(TEXTURE);
         this.ERCRail_drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, xSize, ySize);
     }

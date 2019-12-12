@@ -46,7 +46,7 @@ public class blockRailRedstoneAccelerator extends blockRailBase{
 //        		 if (flag != tgle)
                  {
 //                 	rail.changeToggleFlag();
-                     //Not powered, so use the higher meta values - FT
+                    //FT Not powered, so use the higher meta values
                  	world.setBlockState(pos, state.withProperty(META,8^state.getValue(META)), 2);
 //                 	ERC_PacketHandler.INSTANCE.sendToAll(new ERC_MessageRailMiscStC(rail));
                  	world.playSound((EntityPlayer)null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 0F, 0F); //���ʉ��H
