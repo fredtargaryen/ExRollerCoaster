@@ -1,6 +1,5 @@
 package erc.manager;
 
-import com.sun.javafx.geom.Vec3f;
 import erc._core.ERC_ReturnCoasterRot;
 import erc.math.ERC_MathHelper;
 import net.minecraft.client.Minecraft;
