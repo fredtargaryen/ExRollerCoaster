@@ -320,7 +320,10 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 		seats[idx] = seat;
 		return false;
 	}
-	
+
+	public ERC_EntityCoasterSeat[] getSeats() {
+		return this.seats;
+	}
 //	public Entity[] getParts()
 //	{
 //		return this.seats;
@@ -1064,4 +1067,6 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //		this.setPosition(x, y, z);
 //		this.setRotation(yaw, pitch);
 	}
+
+	public TileEntityRailBase getTlrail() { return this.tlrail; }
 }
