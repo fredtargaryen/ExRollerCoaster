@@ -730,6 +730,11 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
         	if(tlrail==null)return true;
 //        	ERC_Logger.info("adjust paramT .before : "+paramT);
         	tlrail.onPassedCoaster(this);
+        	Wrap_TileEntityRail nextRailWrapper = tlrail.getNextRailTileEntity();
+        	if(nextRailWrapper != null) {
+        		TileEntityRailBase nextRail = nextRailWrapper.getRail();
+        		nextRail.onCoasterEntry(this);
+			}
 
         	do{
         		// ���[���̐悪���邩�ǂ����m�F�@����Β����A������Δ��]����

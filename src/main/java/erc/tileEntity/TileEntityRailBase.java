@@ -684,7 +684,8 @@ public abstract class TileEntityRailBase extends Wrap_TileEntityRail{
 	}
 	
 	public abstract void SpecialRailProcessing(ERC_EntityCoaster EntityCoaster);
-	
+
+	public void onCoasterEntry(ERC_EntityCoaster coaster) {}
 	public void onPassedCoaster(ERC_EntityCoaster EntityCoaster){}
 	public void onApproachingCoaster(){}
 	public void onDeleteCoaster(){}
