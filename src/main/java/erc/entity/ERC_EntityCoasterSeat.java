@@ -3,6 +3,7 @@ package erc.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import erc.tileEntity.TileEntityRailDrift;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -435,14 +436,19 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
     			if(Float.isNaN(rotationRoll))
     				rotationRoll=0;
     		}
+			if(this.parent.tlrail instanceof TileEntityRailDrift) {
+				//Don't actually want to do this because it somehow locks the rider's yaw.
+				// Actually want to make camera movement relative to it
+				this.rotationYaw = this.prevRotationYaw;
+			}
     		prevRotationYaw = ERC_MathHelper.fixrot(rotationYaw, prevRotationYaw);
     		prevRotationPitch = ERC_MathHelper.fixrot(rotationPitch, prevRotationPitch);
     		prevRotationRoll = ERC_MathHelper.fixrot(rotationRoll, prevRotationRoll);
-          
     		passenger.rotationYaw = this.rotationYaw;
     		passenger.rotationPitch = this.rotationPitch;
     		passenger.prevRotationYaw = this.prevRotationYaw;
-    		passenger.prevRotationPitch = this.prevRotationPitch; 
+    		passenger.prevRotationPitch = this.prevRotationPitch;
+
 //    		passenger.rotationYaw = 0;
 //    		passenger.rotationPitch = -ERC_CoasterAndRailManager.rotationViewPitch;
     		
