@@ -35,11 +35,16 @@ public class ModelRenderer {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         //Yes it's deprecated but I don't know any alternatives
-        Collection<OBJModel.Group> groups = model.getMatLib().getGroups().values();
-        Iterator<OBJModel.Group> iterGroup = groups.iterator();
-        renderGroups(vertexbuffer, iterGroup);
-        tessellator.draw();
-        //Clear up
+        if(model == null) {
+            System.out.println("Oh no model was null!");
+        }
+        else {
+            Collection<OBJModel.Group> groups = model.getMatLib().getGroups().values();
+            Iterator<OBJModel.Group> iterGroup = groups.iterator();
+            renderGroups(vertexbuffer, iterGroup);
+            tessellator.draw();
+            //Clear up
+        }
         GlStateManager.enableLighting();
     }
 

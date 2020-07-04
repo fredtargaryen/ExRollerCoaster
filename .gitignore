@@ -24,3 +24,8 @@ config
 crash-reports
 logs
 screenshots
+
+# IntelliJunk
+*.iml
+*.ipr
+*.iws

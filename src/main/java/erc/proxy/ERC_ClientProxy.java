@@ -38,7 +38,6 @@ public class ERC_ClientProxy implements IProxy{
 		OBJLoader.INSTANCE.addDomain(ERC_CONST.D_AM);
 		ModelLoaderRegistry.registerLoader(new erc.model.ModelLoader());
 
-		FMLLog.log.info("Material unsupported spam incoming; I'm aware; don't be alarmed - FredTargaryen");
 		// �f�t�H�R�[�X�^�[�o�^
 		String defaultModel = ERC_CONST.DOMAIN+":models/coaster.obj";
 		String defaultModel_c = ERC_CONST.DOMAIN+":models/coaster_connect.obj";

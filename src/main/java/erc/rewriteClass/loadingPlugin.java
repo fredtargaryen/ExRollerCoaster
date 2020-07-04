@@ -12,10 +12,6 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 public class loadingPlugin implements IFMLLoadingPlugin {
 	
 	static File location;
-	
-	public String[] getLibraryRequestClass() {
-		return null;
-	}
 
     @Override
     public String[] getASMTransformerClass() {
