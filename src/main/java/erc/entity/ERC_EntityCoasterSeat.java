@@ -35,7 +35,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
-
 	private static final DataParameter<Integer> SEAT_INDEX = EntityDataManager.<Integer>createKey(ERC_EntityCoasterSeat.class, DataSerializers.VARINT);
 	private static final DataParameter<Float> OFFSET_X = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
 	private static final DataParameter<Float> OFFSET_Y = EntityDataManager.<Float>createKey(ERC_EntityCoasterSeat.class, DataSerializers.FLOAT);
@@ -48,6 +47,7 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
 	boolean canRide = true;
 	public boolean updateFlag = false;
 	public boolean waitUpdateRiderFlag = false;
+	private float prevRenderYawOffset;
 	//part of Options -> this.dataManager
 //	int seatIndex = -1;
 //	public float offsetX;
@@ -436,11 +436,6 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
     			if(Float.isNaN(rotationRoll))
     				rotationRoll=0;
     		}
-			if(this.parent.tlrail instanceof TileEntityRailDrift) {
-				//Don't actually want to do this because it somehow locks the rider's yaw.
-				// Actually want to make camera movement relative to it
-				this.rotationYaw = this.prevRotationYaw;
-			}
     		prevRotationYaw = ERC_MathHelper.fixrot(rotationYaw, prevRotationYaw);
     		prevRotationPitch = ERC_MathHelper.fixrot(rotationPitch, prevRotationPitch);
     		prevRotationRoll = ERC_MathHelper.fixrot(rotationRoll, prevRotationRoll);
@@ -478,12 +473,23 @@ public class ERC_EntityCoasterSeat extends Wrap_EntityCoaster {
             if(world.isRemote && passenger instanceof EntityLivingBase)
             {
             	EntityLivingBase el = (EntityLivingBase) passenger;
-            	el.renderYawOffset = parent.ERCPosMat.yaw; 
-            	if(passenger == Minecraft.getMinecraft().player)
+            	if(this.parent.tlrail instanceof TileEntityRailDrift)
+				{
+					el.renderYawOffset = this.prevRenderYawOffset;
+				}
+            	else
+				{
+					el.renderYawOffset = this.parent.ERCPosMat.yaw;
+					this.prevRenderYawOffset = el.renderYawOffset;
+				}
+            	if(passenger == Minecraft.getMinecraft().player) {
             		el.rotationYawHead = ERC_CoasterAndRailManager.rotationViewYaw + el.renderYawOffset;
-//            	el.head
+            		if(this.parent.tlrail instanceof TileEntityRailDrift) {
+						el.rotationYaw = el.rotationYawHead;
+						el.prevRotationYaw = el.rotationYaw;
+					}
+            	}
             }
-            
         }
 //    	ERC_CoasterAndRailManager.setRotRoll(rotationRoll, prevRotationRoll);
 	}        
