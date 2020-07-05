@@ -5,6 +5,7 @@ tile.railconst.name=ConstVelocity Rail
 tile.raildetector.name=Detector Rail
 tile.railbranch.name=Branch Rail
 tile.railinvisible.name=Invisible Rail
+tile.raildrift.name=Drift Rail
 
 item.railpipe.name=Rail Pipe
 item.wrench_c1.name=Wrench

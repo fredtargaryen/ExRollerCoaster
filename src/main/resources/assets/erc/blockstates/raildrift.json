@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "inventory": { "model": "erc:raildrift" },
+    "meta=0": { "model": "erc:raildrift" },
+    "meta=1": { "model": "erc:raildrift", "x": 180 },
+    "meta=2": { "model": "erc:raildrift", "x": 90, "y": 180 },
+    "meta=3": { "model": "erc:raildrift", "x": 90 },
+    "meta=4": { "model": "erc:raildrift", "x": 90, "y": 90 },
+    "meta=5": { "model": "erc:raildrift", "x": 90, "y": 270 },
+    "meta=6": { "model": "erc:raildrift" },
+    "meta=7": { "model": "erc:raildrift" },
+    "meta=8": { "model": "erc:raildrift" },
+    "meta=9": { "model": "erc:raildrift" },
+    "meta=10": { "model": "erc:raildrift" },
+    "meta=11": { "model": "erc:raildrift" },
+    "meta=12": { "model": "erc:raildrift" },
+    "meta=13": { "model": "erc:raildrift" },
+    "meta=14": { "model": "erc:raildrift" },
+    "meta=15": { "model": "erc:raildrift" }
+  }
+}

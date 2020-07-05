@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "R",
+    "I"
+  ],
+  "key":
+  {
+    "R":
+    {
+      "item": "erc:railnormal",
+      "data": 0
+    },
+    "I":
+    {
+      "item": "minecraft:ice",
+      "data": 0
+    }
+  },
+  "result":
+  {
+    "item": "erc:raildrift",
+    "count": 1
+  }
+}

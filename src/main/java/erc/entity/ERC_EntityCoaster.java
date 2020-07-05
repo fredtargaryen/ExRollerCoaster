@@ -320,7 +320,10 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 		seats[idx] = seat;
 		return false;
 	}
-	
+
+	public ERC_EntityCoasterSeat[] getSeats() {
+		return this.seats;
+	}
 //	public Entity[] getParts()
 //	{
 //		return this.seats;
@@ -730,6 +733,11 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
         	if(tlrail==null)return true;
 //        	ERC_Logger.info("adjust paramT .before : "+paramT);
         	tlrail.onPassedCoaster(this);
+        	Wrap_TileEntityRail nextRailWrapper = tlrail.getNextRailTileEntity();
+        	if(nextRailWrapper != null) {
+        		TileEntityRailBase nextRail = nextRailWrapper.getRail();
+        		nextRail.onCoasterEntry(this);
+			}
 
         	do{
         		// ���[���̐悪���邩�ǂ����m�F�@����Β����A������Δ��]����
@@ -790,12 +798,12 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //        prevRotationYaw = fixrot(rotationYaw, prevRotationYaw);
 //        prevRotationPitch = fixrot(rotationPitch, prevRotationPitch);
 //        prevRotationRoll = fixrot(rotationRoll, prevRotationRoll);
+
+		tlrail.SpecialRailProcessing(this);
         
         ERCPosMat.prevYaw = fixrot(ERCPosMat.yaw, ERCPosMat.prevYaw);
         ERCPosMat.prevPitch = fixrot(ERCPosMat.pitch, ERCPosMat.prevPitch);
         ERCPosMat.prevRoll = fixrot(ERCPosMat.roll, ERCPosMat.prevRoll);
-        
-        tlrail.SpecialRailProcessing(this);
 
         // t�����ɍ��W�X�V
     	this.setPosition(ERCPosMat.Pos.x, ERCPosMat.Pos.y, ERCPosMat.Pos.z);
@@ -1059,4 +1067,6 @@ public class ERC_EntityCoaster extends Wrap_EntityCoaster{
 //		this.setPosition(x, y, z);
 //		this.setRotation(yaw, pitch);
 	}
+
+	public TileEntityRailBase getTlrail() { return this.tlrail; }
 }
