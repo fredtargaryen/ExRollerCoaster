@@ -93,7 +93,7 @@ public class classTransformer implements IClassTransformer {
 		 * @param operand    short�͈̔͂Ɏ��܂�l�������Ă���B
 		 */
 		public static int MethodCount = 0;
-//		private static final String TARGET_CLASS_NAME = "net/minecraft/client/enderer/RenderGlobal";
+//		private static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/RenderGlobal";
 //		private static final String TARGET_TRANSFORMED_NAME = "func_72719_a"; 
 //		private static final String TARGET_Orginal_NAME = "sortAndRender";
 //		private static final String TARGET_DESC = "(Lnet/minecraft/entity/EntityLivingBase;ID)I";

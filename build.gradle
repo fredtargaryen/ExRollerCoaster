@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -21,7 +21,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "1.12.2-14.23.5.2847"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -32,12 +32,6 @@ minecraft {
     mappings = "snapshot_20171003"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
-
-//sourceSets.main {
-//    java.srcDirs project.projectDir.name
-//    resources.srcDirs project.projectDir.name
-//    output.resourcesDir output.classesDir
-//}
 
 dependencies {
     // you may put jars on which you depend on in ./libs
@@ -61,14 +55,6 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-}
-
-jar {
-    manifest {
-        attributes(
-                "FMLCorePlugin": "erc.rewriteClass.loadingPlugin",
-                "FMLCorePluginContainsFMLMod": "true")
-    }
 }
 
 processResources {

@@ -19,6 +19,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ERC_CoasterAndRailManager {
+	private static Vec3d UP = new Vec3d(0, 1, 0);
+	private static Vec3d RIGHT = new Vec3d(1, 0, 0);
 
 //	public static ERC_TileEntityRailTest prevTileRail;
 	public static int prevX = -1;
@@ -191,8 +193,8 @@ public class ERC_CoasterAndRailManager {
 			//This is why we negate the z and y(translate) = -y(up) + 1.5
 			Vec3d coasterVec = new Vec3d(up.x, -up.y + 1.5, -up.z);
 			//Align this vector with the player pitch and yaw
-			Vec3d alignedToYaw = ERC_MathHelper.rotateAroundVector(coasterVec, new Vec3d(0, 1, 0), player.rotationYaw * Math.PI / 180);
-			Vec3d alignedToPitch = ERC_MathHelper.rotateAroundVector(alignedToYaw, new Vec3d(1, 0, 0), player.rotationPitch * Math.PI / 180);
+			Vec3d alignedToYaw = ERC_MathHelper.rotateAroundVector(coasterVec, UP, player.rotationYaw * Math.PI / 180);
+			Vec3d alignedToPitch = ERC_MathHelper.rotateAroundVector(alignedToYaw, RIGHT, player.rotationPitch * Math.PI / 180);
 			//Put rotation first, so it comes out, then turns at the point it came out to
 			GL11.glRotatef(prevRotationRoll + (rotationRoll - prevRotationRoll) * f, 0.0F, 0.0F, 1.0F);
 			GL11.glTranslated(alignedToPitch.x, alignedToPitch.y, -alignedToPitch.z);
